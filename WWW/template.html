@@ -5,6 +5,8 @@
     <script src="http://fb.me/react-0.11.2.js"></script>
     <script src="http://fb.me/JSXTransformer-0.11.2.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+
   </head>
   <body>
     <div id="content"></div>
@@ -16,19 +18,23 @@
       // tutorial1.js
       var CommentBox = React.createClass(
       {
+        getInitialState: function() 
+        {
+          return {data: []};
+        },
         render: function() 
         {
          return (
             <div className="commentBox">
              <h1>Comments</h1>
-             <CommentList />
+             <CommentList data={this.state.data} />
              <CommentForm />
             </div>
           );
         }
       });
       React.renderComponent(
-        <CommentBox />,
+        <CommentBox url="comments.json" />,
         document.getElementById('content')
       );
 
@@ -37,10 +43,17 @@
       {
         render: function() 
         {
+          var commentNodes = this.props.data.map(function (comment) 
+          {
+            return (
+              <Comment author={comment.author}>
+                {comment.text}
+              </Comment>
+            );
+          });
           return (
             <div className="commentList">
-              <Comment author="Pete Hunt">This is one comment</Comment>
-              <Comment author="Jordan Walke">This is *another* comment</Comment>
+              {commentNodes}
             </div>
           );
         }
@@ -59,20 +72,27 @@
       });
 
       // tutorial5.js
+      var converter = new Showdown.converter();
       var Comment = React.createClass(
       {
         render: function() 
         {
+          var rawMarkup = converter.makeHtml(this.props.children.toString());
           return (
             <div className="comment">
               <h2 className="commentAuthor">
                 {this.props.author}
               </h2>
-              {this.props.children}
+              <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
             </div>
           );
         }
       });
+
+      var data = [
+        {author: "Pete Hunt", text: "This is one comment"},
+        {author: "Jordan Walke", text: "This is *another* comment"}
+      ];
     </script>
   </body>
 </html>
