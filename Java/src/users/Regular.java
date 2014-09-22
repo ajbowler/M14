@@ -2,6 +2,11 @@ package users;
 
 // a user that can do everything that premium can but change the background image
 // Does not include being addressed as his/her majesty
+
+// in order for us to determine when user has reached premium status
+// (http://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java)
+import java.util.Date;
+
 public class Regular {
 	
 	// password that IS for the m14 account
@@ -21,8 +26,10 @@ public class Regular {
 	// int would be 10201993
 	// we can obviously change this system if we wanted to
 	int joinDate;
-	
-	
+
+	//dictates if the user is a premium user
+	boolean isPremium;
+
 	void connect() {
 		//TODO
 	}
