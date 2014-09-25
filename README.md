@@ -10,10 +10,8 @@ Node Package Manager
 
 (Amusing NPM Is Installed)
 
-Install the following globally [npm -g (package name)]
+In 'WWW' directory, execute:
 
-- React
-- Reactify
-- Browserify
-- React-Tools
+npm install
 
+This should read the package.json and install proper dev dependencies
