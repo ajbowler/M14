@@ -8,7 +8,7 @@ By Alex Lende, Thomas Kearney, Andrew Bowler and Nick Montelibano
 
 Node Package Manager
 
-(Amusing NPM Is Installed)
+(Assuming NPM Is Installed)
 
 In 'WWW' directory, execute:
 
