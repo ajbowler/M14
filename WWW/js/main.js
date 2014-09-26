@@ -1,17 +1,17 @@
-require.config({
-    'paths': {
-        'jquery': 'lib/jquery',
-        'react': 'lib/react',
-        'JSXTransformer': 'lib/JSXTransformer',
-        'jsx': 'lib/jsx'
-    },
-    'jsx': {
-        'fileExtension': '.jsx'
-    }
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var Hello = React.createClass({
+
+  render: function() {
+    return <div>Hello, {this.props.name}!</div>
+  }
 });
 
-require(['jquery', 'react'], function($, React) {
-    // Entry point for the program
-    // React.renderComponent(<Hello />, document.getElementById('hello'));
-    React.renderComponent(React.DOM.h1(null, 'Hello, world!'),document.getElementById('hello'));
-});
+React.renderComponent(
+  <Hello name="World" />,
+  document.getElementById('hello')
+);

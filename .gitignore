@@ -99,3 +99,10 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+################
+# App Specific #
+################
+
+WWW/node_modules
+WWW/dist
