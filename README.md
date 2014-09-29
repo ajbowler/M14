@@ -15,7 +15,7 @@ By Alex Lende, Thomas Kearney, Andrew Bowler and Nick Montelibano
 This project makes use of `npm` which can be installed from [nodejs.org](http://nodejs.org/).
 
 1. `cd M14/WWW`
-2. `npm install` to install all of the node dependancies
+2. `npm install` to install all of the node dependencies
 3. `gulp dev` to build with debug options
 4. You should be able to open the `index.html` page locally now.
 
@@ -26,6 +26,8 @@ This project makes use of `npm` which can be installed from [nodejs.org](http://
 Running just `gulp` will watch the js directory for changes and automatically run the `gulp dev` task. This can be useful while developing.
 
 Running `gulp js` will build without debug options.
+
+Running `gulp clean` will remove any files created during the `dev` or `js` processes.
 
 #### JS Code Guidelines
 
