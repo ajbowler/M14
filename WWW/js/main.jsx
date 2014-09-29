@@ -3,13 +3,7 @@
  */
 
 var React = require('react');
-
-var Hello = React.createClass({
-
-  render: function() {
-    return <div>Hello, {this.props.name}!</div>
-  }
-});
+var Hello = require('./components/hello.jsx');
 
 React.renderComponent(
   <Hello name="World" />,
