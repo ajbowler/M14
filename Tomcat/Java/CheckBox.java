@@ -4,8 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 // Extend HttpServlet class
-// Same as HelloFormV1, but implements a POST method
-public class HelloForm extends HttpServlet {
+public class CheckBox extends HttpServlet {
  
   // Method to handle GET method request.
   public void doGet(HttpServletRequest request,
@@ -16,20 +15,22 @@ public class HelloForm extends HttpServlet {
       response.setContentType("text/html");
 
       PrintWriter out = response.getWriter();
-	  String title = "Using GET Method to Read Form Data\nNotice URL is Clean (used doPost): Nick M";
+	  String title = "Example of Setting Bitrate";
       String docType =
       "<!doctype html public \"-//w3c//dtd html 4.0 " +
       "transitional//en\">\n";
       out.println(docType +
                 "<html>\n" +
                 "<head><title>" + title + "</title></head>\n" +
-                "<body bgcolor=\"#99FFFF\">\n" +
+                "<body bgcolor=\"#999999\">\n" +
                 "<h1 align=\"center\">" + title + "</h1>\n" +
                 "<ul>\n" +
-                "  <li><b>First Name</b>: "
-                + request.getParameter("first_name") + "\n" +
-                "  <li><b>Last Name</b>: "
-                + request.getParameter("last_name") + "\n" +
+                "  <li><b>64 Kbit/s Flag : </b>: "
+                + request.getParameter("kbs64") + "\n" +
+                "  <li><b>150 Kbit/s Flag: </b>: "
+                + request.getParameter("kbs150") + "\n" +
+                "  <li><b>200 Kbit/s Flag: </b>: "
+                + request.getParameter("kbs200") + "\n" +
                 "</ul>\n" +
                 "</body></html>");
   }

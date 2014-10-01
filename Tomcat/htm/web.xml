@@ -48,6 +48,32 @@
       <servlet-name>HelloForm</servlet-name>
       <url-pattern>/HelloForm</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+      <servlet-name>HelloForm_V1</servlet-name>
+      <servlet-class>HelloForm_V1</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+      <servlet-name>HelloForm_V1</servlet-name>
+      <url-pattern>/HelloForm_V1</url-pattern>
+    </servlet-mapping>
     
+        <servlet-mapping>
+      <servlet-name>HelloForm</servlet-name>
+      <url-pattern>/HelloForm</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>CheckBox</servlet-name>
+      <servlet-class>CheckBox</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+      <servlet-name>CheckBox</servlet-name>
+      <url-pattern>/CheckBox</url-pattern>
+    </servlet-mapping>
+    
+
 </web-app>
 
