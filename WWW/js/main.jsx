@@ -12,6 +12,6 @@ React.renderComponent(
 );
 
 React.renderComponent(
-	<AnotherDiv name="(No shit!)" />,
+	<AnotherDiv name="(Weeee!)" />,
 	document.getElementById('div2')
 );
