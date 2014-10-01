@@ -2,9 +2,9 @@
   "name": "M14",
   "version": "0.0.0-1",
   "description": "An MPD client that runs in your browser",
-  "main": "gulpfile.js",
+  "main": "build/bundle.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest -c jest.json"
   },
   "repository": {
     "type": "git",
@@ -31,20 +31,5 @@
     "react-tools": "^0.11.2",
     "reactify": "~0.14.0",
     "vinyl-source-stream": "~1.0.0"
-  },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/preprocessor.js",
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json"
-    ],
-    "testFileExtensions": [
-      "js",
-      "jsx"
-    ]
   }
 }
