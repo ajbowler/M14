@@ -1,5 +1,8 @@
 {
   "rootDir": "./",
+  "testDirectoryName": "__tests__",
+  "testPathDirs": ["js"],
+  "testPathIgnorePatterns": ["/node_modules/"],
   "scriptPreprocessor": "preprocessor.js",
   "unmockedModulePathPatterns": [
     "node_modules/react"
