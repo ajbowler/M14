@@ -1,9 +1,13 @@
 var gulp = require('gulp');
 
 var browserify = require('browserify');
-var del = require('del');
 var reactify = require('reactify');
+var streamify = require('gulp-streamify');
+var uglify = require('gulp-uglify');
+
 var source = require('vinyl-source-stream');
+var del = require('del');
+
 var jest = require('jest-cli');
 var jestConfig = require('./jest.json');
 
@@ -21,12 +25,13 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('js', ['clean'], function() {
-  // Browserify/bundle the JS.
+  // bundle/minify the JS.
   browserify(files.main_js)
     .transform(reactify)
     .bundle()
-   .pipe(source('bundle.js'))
-   .pipe(gulp.dest(paths.build));
+    .pipe(source('bundle.js'))
+    .pipe(streamify(uglify()))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('test', function() {
