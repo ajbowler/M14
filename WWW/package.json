@@ -4,7 +4,7 @@
   "description": "An MPD client that runs in your browser",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,28 @@
   },
   "homepage": "https://github.com/ajbowler/M14",
   "devDependencies": {
-    "gulp": "~3.8.8",
-    "react": "~0.11.2",
-    "reactify": "~0.14.0",
-    "vinyl-source-stream": "~1.0.0",
     "browserify": "~5.12.1",
-    "del": "~0.1.3"
+    "del": "~0.1.3",
+    "gulp": "~3.8.8",
+    "jest-cli": "^0.1.18",
+    "react": "~0.11.2",
+    "react-tools": "^0.11.2",
+    "reactify": "~0.14.0",
+    "vinyl-source-stream": "~1.0.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json"
+    ],
+    "testFileExtensions": [
+      "js",
+      "jsx"
+    ]
   }
 }
