@@ -4,25 +4,7 @@
 
 var React = require('react');
 var $ = require('jquery');
-var Hello = require('./components/hello.jsx');
-var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
-var Alert = require('react-bootstrap/Alert');
+//Generic exmaple of pulling in react-bootstrap components, see API for more detail.
+//var <react-bootstrapComponent> = require('react-bootstrap/<componentName>');
 
-React.renderComponent(
-  <Hello name='World' />,
-  document.getElementById('hello')
-);
-
-React.renderComponent(
-  <CheckboxWithLabel labelOn='Checked' labelOff='Unchecked' />,
-  document.getElementById('checkbox')
-);
-
-React.renderComponent(
-	<Alert bsStyle="warning">
-		Check out this awesome react-bootstrap stuff!
-	</Alert>,
-	//non-jQuery is lame!
-	//document.getElementById('alert')
-	$('#alert').get(0)
-);
+// TODO: React components go here.
