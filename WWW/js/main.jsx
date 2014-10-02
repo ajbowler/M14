@@ -1,6 +1,4 @@
-/**
- * @jsx React.DOM
- */
+/** @jsx React.DOM */
 
 var React = require('react');
 var Hello = require('./components/hello.jsx');
