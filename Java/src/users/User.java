@@ -1,5 +1,9 @@
 package users;
 
+/**
+* Abstract class to incorporate essential functionality of all Users
+* 
+*/
 public abstract class Users {
 	// Name which will default to guest.
 	String name;
