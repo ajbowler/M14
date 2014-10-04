@@ -1,22 +1,24 @@
 /** @jsx React.DOM */
 
-var glyphInstance = (
+var React = require('react');
+var ButtonGroup = require('react-bootstrap/ButtonGroup');
+var butan = require('react-bootstrap/Button');
+var ButtonToolbar = require('react-bootstrap/ButtonToolbar');
+var Glyphicon = require('react-bootstrap/Glyphicon');
+
+var playerControlBar = (
   <div>
     <ButtonToolbar>
       <ButtonGroup>
-        <Button><Glyphicon glyph="align-left" /></Button>
-        <Button><Glyphicon glyph="align-center" /></Button>
-        <Button><Glyphicon glyph="align-right" /></Button>
-        <Button><Glyphicon glyph="align-justify" /></Button>
-      </ButtonGroup>
-    </ButtonToolbar>
-    <ButtonToolbar>
-      <ButtonGroup>
-        <Button bsSize="large"><Glyphicon glyph="star" /> Star</Button>
-        <Button><Glyphicon glyph="star" /> Star</Button>
-        <Button bsSize="small"><Glyphicon glyph="star" /> Star</Button>
-        <Button bsSize="xsmall"><Glyphicon glyph="star" /> Star</Button>
+        <butan bsSize="large"><Glyphicon glyph="fast-backward" /> </butan>
+        <butan bsSize="large"><Glyphicon glyph="backward" /> </butan>
+        <butan bsSize="large"><Glyphicon glyph="play" /> </butan>
+        <butan bsSize="large"><Glyphicon glyph="pause" /> </butan>
+        <butan bsSize="large"><Glyphicon glyph="forward" /> </butan>
+        <butan bsSize="large"><Glyphicon glyph="fast-forward" /> </butan>
       </ButtonGroup>
     </ButtonToolbar>
   </div>
 );
+
+module.exports = playerControlBar;
