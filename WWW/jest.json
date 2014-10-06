@@ -1,0 +1,16 @@
+{
+  "rootDir": "./",
+  "scriptPreprocessor": "preprocessor.js",
+  "unmockedModulePathPatterns": [
+    "node_modules/react"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "jsx",
+    "json"
+  ],
+  "testFileExtensions": [
+    "js",
+    "jsx"
+  ]
+}
