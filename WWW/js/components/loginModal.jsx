@@ -21,8 +21,8 @@ var loginModal = (
 	    </form>
       </div>
       <div className="modal-footer">
-        <userInput type="submit" bsStyle='primary' value="Login" />
-	    <userInput type="submit" bsStyle='primary' value="Register New User" />
+        <ModalButton bsStyle='primary'>Login</ModalButton>
+	    <ModalButton bsStyle='primary'>Register New User</ModalButton>
       </div>
     </Modal>
   );
