@@ -13,7 +13,8 @@ var loginModal = (
     <Modal title="Login or Register"
       backdrop={false}
       animation={false}
-      onRequestHide={handleHide}>
+      //onRequestHide={handleHide}
+      >
       <div className="modal-body">
         <form>
 	      <userInput type="text" placeholder='Username'/>
