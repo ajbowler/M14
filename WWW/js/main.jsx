@@ -13,3 +13,4 @@ var loginModal = require('./components/loginModal.jsx');
 
 React.renderComponent(playerControlBar, $('#container').get(0));
 React.renderComponent(requestButton, $('#ajaxButton').get(0));
+React.renderComponent(loginModal, $('#container').get(0));
