@@ -10,8 +10,8 @@ var livereload = require('gulp-livereload');
 
 var files = {
   main_js: ['./js/main.jsx'],
-  jsx: ['./js/*.jsx', './js/components/*.jsx'],
-  html: ['./*.html']
+  jsx: ['./js/**/*.jsx'],
+  html: ['./**/*.html']
 };
 
 var paths = {
@@ -31,10 +31,6 @@ gulp.task('js', ['clean'], function() {
    .pipe(gulp.dest(paths.build));
 });
 
-gulp.task('test', function() {
-    jest.runCLI({config: jestConfig},jestConfig.rootDir);
-});
-
 gulp.task('dev', ['clean'], function() {
   browserify({
     entries: files.main_js,
@@ -44,14 +40,19 @@ gulp.task('dev', ['clean'], function() {
   .transform(reactify)
   .bundle()
   .pipe(source('bundle.js'))
-  .pipe(gulp.dest(paths.build));
+  .pipe(gulp.dest(paths.build))
+  .pipe(livereload());
+});
+
+gulp.task('test', function() {
+    jest.runCLI({config: jestConfig},jestConfig.rootDir);
 });
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
   livereload.listen();
-  gulp.watch(files.jsx, ['dev']).on('change', livereload.changed);
-  gulp.watch(files.html, ['dev']).on('change', livereload.changed);
+  gulp.watch(files.jsx, ['dev']);
+  gulp.watch(files.html).on('change', livereload.changed);
 });
 
 // The default task (called when you run `gulp` from cli)
