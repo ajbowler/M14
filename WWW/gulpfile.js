@@ -9,7 +9,8 @@ var jestConfig = require('./jest.json');
 
 var files = {
   main_js: ['./js/main.jsx'],
-  jsx: ['./js/*.jsx']
+  jsx: ['./js/*.jsx', './js/components/*.jsx'],
+  html: ['./*.html']
 };
 
 var paths = {
@@ -48,6 +49,7 @@ gulp.task('dev', ['clean'], function() {
 // Rerun the task when a file changes
 gulp.task('watch', function() {
   gulp.watch(files.jsx, ['dev']);
+  gulp.watch(files.html, ['dev']);
 });
 
 // The default task (called when you run `gulp` from cli)
