@@ -6,6 +6,7 @@ var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var jest = require('jest-cli');
 var jestConfig = require('./jest.json');
+var livereload = require('gulp-livereload');
 
 var files = {
   main_js: ['./js/main.jsx'],
@@ -48,8 +49,9 @@ gulp.task('dev', ['clean'], function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(files.jsx, ['dev']);
-  gulp.watch(files.html, ['dev']);
+  livereload.listen();
+  gulp.watch(files.jsx, ['dev']).on('change', livereload.changed);
+  gulp.watch(files.html, ['dev']).on('change', livereload.changed);
 });
 
 // The default task (called when you run `gulp` from cli)
