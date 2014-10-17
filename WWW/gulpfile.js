@@ -7,6 +7,8 @@ var source = require('vinyl-source-stream');
 var jest = require('jest-cli');
 var jestConfig = require('./jest.json');
 var livereload = require('gulp-livereload');
+var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
 
 var files = {
   main_js: ['./js/main.jsx'],
@@ -27,8 +29,9 @@ gulp.task('js', ['clean'], function() {
   browserify(files.main_js)
     .transform(reactify)
     .bundle()
-   .pipe(source('bundle.js'))
-   .pipe(gulp.dest(paths.build));
+    .pipe(source('bundle.js'))
+    .pipe(streamify(uglify()))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('dev', ['clean'], function() {
