@@ -6,10 +6,14 @@ var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var jest = require('jest-cli');
 var jestConfig = require('./jest.json');
+var livereload = require('gulp-livereload');
+var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
 
 var files = {
   main_js: ['./js/main.jsx'],
-  jsx: ['./js/*.jsx']
+  jsx: ['./js/**/*.jsx'],
+  html: ['./**/*.html']
 };
 
 var paths = {
@@ -25,12 +29,9 @@ gulp.task('js', ['clean'], function() {
   browserify(files.main_js)
     .transform(reactify)
     .bundle()
-   .pipe(source('bundle.js'))
-   .pipe(gulp.dest(paths.build));
-});
-
-gulp.task('test', function() {
-    jest.runCLI({config: jestConfig},jestConfig.rootDir);
+    .pipe(source('bundle.js'))
+    .pipe(streamify(uglify()))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('dev', ['clean'], function() {
@@ -42,12 +43,19 @@ gulp.task('dev', ['clean'], function() {
   .transform(reactify)
   .bundle()
   .pipe(source('bundle.js'))
-  .pipe(gulp.dest(paths.build));
+  .pipe(gulp.dest(paths.build))
+  .pipe(livereload());
+});
+
+gulp.task('test', function() {
+    jest.runCLI({config: jestConfig},jestConfig.rootDir);
 });
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
+  livereload.listen();
   gulp.watch(files.jsx, ['dev']);
+  gulp.watch(files.html).on('change', livereload.changed);
 });
 
 // The default task (called when you run `gulp` from cli)
