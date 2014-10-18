@@ -7,12 +7,12 @@ var Control = require('react-bootstrap/Button');
 var ButtonToolbar = require('react-bootstrap/ButtonToolbar');
 var Glyphicon = require('react-bootstrap/Glyphicon');
 
-var komponist = require('komponist');
-
-var client = komponist.createConnection(6600, 'localhost', function() {
-  console.log('Connected!');
+var mpd = require('mpd'),
+    cmd = mpd.cmd
+var client = mpd.connect({
+  port: 6600,
+  host: 'localhost',
 });
-
 /*var playerControlBar = (
   <div>
     <ButtonToolbar>
