@@ -7,7 +7,7 @@
  var hello = React.createClass({
  	render: function() {
  		return (
- 			<div className="hello">Hello, {this.props.name}!</div>
+ 			<div className="hello">Hey, {this.props.name}!</div>
  		);
  	}
  });
