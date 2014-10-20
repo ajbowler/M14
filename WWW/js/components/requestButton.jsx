@@ -1,4 +1,4 @@
-
+/*
 var React = require('react');
 var butn = require('react-bootstrap/Button');
 var Glyphicon = require('react-bootstrap/Glyphicon');
@@ -34,4 +34,4 @@ var requestButton = React.createClass({
 
 });
 
-module.exports = <requestButton />;
+module.exports = <requestButton />;*/

@@ -26,7 +26,7 @@ var loginModal = (
 	    <ModalButton bsStyle='primary'>Register New User</ModalButton>
       </div>
     </Modal>
-  );*/
+  );
 
 var React = require('react');
 var Modal = require('react-bootstrap/Modal');
@@ -62,4 +62,4 @@ var launchButton = (
   </ModalTrigger>
 );
 
-module.exports = launchButton;
+module.exports = launchButton;*/
