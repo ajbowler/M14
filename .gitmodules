@@ -1,3 +1,0 @@
-[submodule "Java/src/resources"]
-	path = Java/src/resources
-	url = git://github.com/ajbowler/javampd
