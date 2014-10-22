@@ -2,16 +2,30 @@
 var React = require('react/addons');
 
 var Html5AudioStreamer = React.createClass({
-  getInitialState: function() {
-    return {
-      host:'10.30.202.185',
-      port:'8000',
-      syffix:''
-    };
-  },
+  // This commented out code may be used later to get the user's 
+  // getInitialState: function() {
+  //   return {
+  //     host:'10.30.121.50',
+  //     port:'8000',
+  //     suffix:'ogg.mp3'
+  //   };
+  // },
+  // componentDidMount: function() {
+  //   $.get(this.props.user, function(result) {
+  //     if (this.isMounted()) {
+  //       this.setState({
+  //         host: result.host,
+  //         port: result.port,
+  //         suffix: result.suffix
+  //       });
+  //     }
+  //   }.bind(this));
+  // },
   render: function() {
+    // var url = 'http://' + this.host + ':' + this.port + '/' + this.suffix;
+    var url = 'http://10.30.121.50:8000/mpd.ogg'
     return (
-      <audio src={this.host + ':' + this.port + this.suffix}>
+      <audio controls id="audioStream" src={url}>
         HTML5 Audio not supported.
       </audio>
     );
