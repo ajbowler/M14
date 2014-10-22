@@ -3,13 +3,9 @@
 var React = require('react');
 var $ = require('jquery');
 
-/*var mpd = require('mpd');
+var mpd = require('mpd');
 var cmd = mpd.cmd;
-mpd.connect({port: 6600});*/
-
-var komponist = require('komponist');
-
-var client = komponist.createConnection(6600, 'localhost');
+var client = mpd.connect({port: 6600, host: 'localhost'});
 
 var playButton = React.createClass({
 
