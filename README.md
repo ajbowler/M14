@@ -41,6 +41,8 @@ The following gulp commands can be used:
 - `gulp test` will run the Jest tests.
 - `gulp clean` will remove any files created during the `dev` or `js` processes.
 
+Optionally you can install the [LiveReload](http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-) browser extension for automatic page refreshing.
+
 #### JS Code Guidelines
 
 We follow the [Google JS Style Guide](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
