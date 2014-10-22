@@ -1,21 +1,34 @@
 /**
  * @jsx React.DOM
  */
+
 var React = require('react');
 var $ = require('jquery');
-var playerControls = require('./components/playerControls.jsx');
-/*var playerControlBar = require('./components/playerControls.jsx');
-var requestButton = require('./components/requestButton.jsx');
-var loginModal = require('./components/loginModal.jsx');*/
-//var launchButton = require('./components/launchButton.jsx');
+var Hello = require('./components/hello.jsx');
+var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
+var Alert = require('react-bootstrap/Alert');
+var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
 
-//Generic exmaple of pulling in react-bootstrap components, see API for more detail.
-//var <react-bootstrapComponent> = require('react-bootstrap/<componentName>');
+React.renderComponent(
+  <Hello name='World' />,
+  document.getElementById('hello')
+);
 
-// TODO: React components go here.
+React.renderComponent(
+  <CheckboxWithLabel labelOn='Checked' labelOff='Unchecked' />,
+  document.getElementById('checkbox')
+);
 
-//React.renderComponent(playerControlBar, $('#container').get(0));
-//React.renderComponent(requestButton, $('#ajaxButton').get(0));
-//React.renderComponent(loginModal, $('#container').get(0));
-/*React.renderComponent(loginModal, $('#container').get(0));*/
-React.renderComponent(playerControls, $('#container').get(0));
+React.renderComponent(
+  <Alert bsStyle="warning">
+    Check out this awesome react-bootstrap stuff!
+  </Alert>,
+  //non-jQuery is lame!
+  //document.getElementById('alert')
+  $('#alert').get(0)
+);
+
+React.renderComponent(
+  <Html5AudioStreamer />,
+  $('#audio').get(0)
+);
