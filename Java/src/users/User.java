@@ -11,10 +11,5 @@ public abstract class Users {
 	String mpdPassword;
 	
 	void connect(){}
-	
-	void playMusic(){}
-	
-	void shuffle(){}
-	
 
 }

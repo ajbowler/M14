@@ -27,14 +27,6 @@ public class Regular {
 		//TODO
 	}
 	
-	void playMusic(){
-		//TODO
-	}
-	
-	void shuffle(){
-		//TODO
-	}
-	
 	//adds a friend
 	void addFriend(){
 		//TODO
