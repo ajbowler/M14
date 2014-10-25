@@ -1,12 +1,5 @@
-package users;
+package jdbc;
 
-// basic user that can only listen to music
-// cannot do things like have friends or create playlists
-// nothing is saved after a guest exits the application 
-public class Guest extends Users{
+public class Guest extends User {
 	
-	void connect() {
-		//TODO
-	}
-
 }

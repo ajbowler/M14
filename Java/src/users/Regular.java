@@ -1,9 +1,10 @@
-package users;
+package jdbc;
 
-// a user that can do everything that premium can but change the background image
-// Does not include being addressed as his/her majesty
-public class Regular {
-	
+
+//a user that can do everything that premium can but change the background image
+//Does not include being addressed as his/her majesty
+
+public class Regular extends User{
 	// password that IS for the m14 account
 	String acctPassword;
 	
@@ -14,18 +15,14 @@ public class Regular {
 	Playlist[] playlists;
 	
 	// list of other users if this user actually has 'friends'
-	Users[] friends;
+	User[] friends;
 	
 	// the date that the user created the m14 profile
 	// date will be an eight digit int so if the user joined October 20th, 1993 the
-	// int would be 10201993
+	// int would be 10201993 
 	// we can obviously change this system if we wanted to
 	int joinDate;
 	
-	
-	void connect() {
-		//TODO
-	}
 	
 	//adds a friend
 	void addFriend(){
@@ -58,5 +55,4 @@ public class Regular {
 	void checkLoyalty(){
 		//TODO
 	}
-
 }
