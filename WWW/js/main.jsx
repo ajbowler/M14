@@ -8,6 +8,13 @@ var Hello = require('./components/hello.jsx');
 var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
 var Alert = require('react-bootstrap/Alert');
 var Login = require('./components/LoginBox.jsx');
+var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
+
+//render Html5 Streamer
+React.renderComponent(
+   <Html5AudioStreamer />,
+    $('#audio').get(0)
+);
 
 React.renderComponent(
   <Hello name='Lexie' />,
