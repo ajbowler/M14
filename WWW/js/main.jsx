@@ -7,6 +7,7 @@ var $ = require('jquery');
 var Hello = require('./components/hello.jsx');
 var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
 var Alert = require('react-bootstrap/Alert');
+var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
 
 React.renderComponent(
   <Hello name='World' />,
@@ -19,10 +20,15 @@ React.renderComponent(
 );
 
 React.renderComponent(
-	<Alert bsStyle="warning">
-		Check out this awesome react-bootstrap stuff!
-	</Alert>,
-	//non-jQuery is lame!
-	//document.getElementById('alert')
-	$('#alert').get(0)
+  <Alert bsStyle="warning">
+    Check out this awesome react-bootstrap stuff!
+  </Alert>,
+  //non-jQuery is lame!
+  //document.getElementById('alert')
+  $('#alert').get(0)
+);
+
+React.renderComponent(
+  <Html5AudioStreamer />,
+  $('#audio').get(0)
 );
