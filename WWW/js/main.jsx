@@ -4,31 +4,41 @@
 
 var React = require('react');
 var $ = require('jquery');
-var Hello = require('./components/hello.jsx');
-var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
-var Alert = require('react-bootstrap/Alert');
 var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
-
-React.renderComponent(
-  <Hello name='World' />,
-  document.getElementById('hello')
-);
-
-React.renderComponent(
-  <CheckboxWithLabel labelOn='Checked' labelOff='Unchecked' />,
-  document.getElementById('checkbox')
-);
-
-React.renderComponent(
-  <Alert bsStyle="warning">
-    Check out this awesome react-bootstrap stuff!
-  </Alert>,
-  //non-jQuery is lame!
-  //document.getElementById('alert')
-  $('#alert').get(0)
-);
 
 React.renderComponent(
   <Html5AudioStreamer />,
   $('#audio').get(0)
 );
+
+
+var socket = require('socket.io-client')('10.30.121.50:6600');
+
+socket.on('connect', function(a) {
+  console.log('connected');
+  console.log(a);
+  socket.send('password coms309M14\ncurrentsong');
+  socket.on('event', function(data) {
+    console.log(data);
+  });
+  socket.on('disconnect', function() {
+    console.log('disconnected from 10.30.121.50:6600');
+  });
+});
+
+
+
+/*
+var socket = new WebSocket('ws://localhost:6600');
+socket.onopen = function(event) {
+  socket.send('currentsong');
+  socket.onmessage = function(event) {
+    console.log(event);
+  };
+
+  socket.onclose = function(event) {
+    console.log('connection closed');
+  };
+
+};
+*/

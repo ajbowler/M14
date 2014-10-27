@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head></head>
-<title>MPD Connection</title>
+  <head></head>
+  <title>MPD Connection</title>
 
-<body>
-<script src="http://localhost:6600/socket.io/socket.io.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script type="text/javascript">
-	var socket = io('http://localhost:6600');
-    socket.on('connect', function(){
-    socket.on('event', function(data){});
-    socket.on('disconnect', function(){});
-</script>
-</body>
+  <body>
+    <script src="http://10.30.121.50:6600/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+      var socket = io('http://10.30.121.50:6600');
+      socket.on('connect', function(){
+        socket.send('currentsong');
+      });
+      socket.on('event', function(data){});
+      socket.on('disconnect', function(){});
+    </script>
+  </body>
 </html>
