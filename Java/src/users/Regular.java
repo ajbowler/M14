@@ -1,10 +1,16 @@
 package jdbc;
 
+import java.sql.*;
 
 //a user that can do everything that premium can but change the background image
 //Does not include being addressed as his/her majesty
 
 public class Regular extends User{
+	// STILL NEEDS WORK
+	// This will eventually need to be implimented so that it is the id the database uses to find the user.
+	// As of now, defaulted to 0.
+	FINAL int userID = 0;
+
 	// password that IS for the m14 account
 	String acctPassword;
 	
@@ -23,31 +29,21 @@ public class Regular extends User{
 	// we can obviously change this system if we wanted to
 	int joinDate;
 	
-	
 	//adds a friend
-	void addFriend(){
-		//TODO
-	}
-	
-	// updates the friends list
-	// we can add this to add friend or call it inside of add friend if need be
-	void updateFriends(){
-		//TODO
-	}
-	
-	// yeah I guess we should be able to do this
-	void Login(){
-		//TODO
+	void addFriend(Connection myConn, int friendID){
+
+		//create a statement
+		Statement myStmt = myConn.createStatement();
+		//execute sql command
+		myStmt.executeQuery("insert into friends values(" + userID + "," + friendID + ");");
 	}
 	
 	// adds a connection to connections
-	void addConnection(){
-		//TODO
-	}
-	
-	// updates connections. Can be absorbed or called by addConnection if need be
-	void updateConnections(){
-		//TOD
+	void addConnection(Connectin myConn, int ip, int port, string name){
+		//TODO//create a statement
+		Statement myStmt = myConn.createStatement();
+		//execute sql command
+		myStmt.executeQuery("insert into connections (column 2, column 3, column 4) values(" + name + "," + ip + "," + port + ");");
 	}
 	
 	// checks how long the user has had an account. If it has been long enough the user
