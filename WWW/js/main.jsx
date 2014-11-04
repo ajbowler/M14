@@ -8,6 +8,7 @@ var Hello = require('./components/hello.jsx');
 var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
 var Alert = require('react-bootstrap/Alert');
 var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
+var PlayButton = require('./components/PlayButton.jsx');
 
 React.renderComponent(
   <Hello name='World' />,
@@ -15,6 +16,7 @@ React.renderComponent(
 );
 
 React.renderComponent(
+<<<<<<< HEAD
   <CheckboxWithLabel labelOn='Checked' labelOff='Unchecked' />,
   document.getElementById('checkbox')
 );
@@ -32,3 +34,8 @@ React.renderComponent(
   <Html5AudioStreamer />,
   $('#audio').get(0)
 );
+=======
+  <PlayButton />,
+  $('#playButton').get(0)
+);
+>>>>>>> 20c52cc... Play Button component
