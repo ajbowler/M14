@@ -6,7 +6,7 @@ var WebSocketMixin = {
 	},
 
 	componentWillMount: function() {
-		this.ws = new WebSocket(('ws://' + this.ipAddress + ':1234'), 'echo-protocol');
+		this.ws = new WebSocket(('ws://' + this.state.ipAddress + ':1234'), 'echo-protocol');
 
 		this.ws.addEventListener("message", function(e) {
 			// The data is simply the message that we're sending back
