@@ -5,7 +5,7 @@
 var React = require('react');
 var $ = require('jquery');
 var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
-var PlayButton = require('./components/PlayButton.jsx');
+var PlayerControls = require('./components/PlayerControls.jsx');
 
 React.renderComponent(
   <Html5AudioStreamer />,
@@ -13,6 +13,6 @@ React.renderComponent(
 );
 
 React.renderComponent(
-  <PlayButton />,
-  $('#playButton').get(0)
+  <PlayerControls />,
+  $('#playerControls').get(0)
 );

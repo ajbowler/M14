@@ -20,7 +20,7 @@ ws.addEventListener("message", function(e) {
 	document.getElementById('ws-messages').innerHTML += '<br>' + msg;
 });
 
-var playButton = React.createClass({
+var PlayButton = React.createClass({
 	render: function() {
 		return <Control bSize='large' id='playButton' onClick={this.play}><Glyphicon glyph='play' /> </Control>
 	},
@@ -30,4 +30,4 @@ var playButton = React.createClass({
 	}
 });
 
-module.exports = playButton;
+module.exports = PlayButton;
