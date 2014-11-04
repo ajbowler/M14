@@ -7,7 +7,7 @@ var count = 0;
 var clients = {};
 
 // The mpd connection
-var mpd = net.connect({port: 6600}, function() {
+var mpd = net.connect({host: '10.30.121.50', port: 6600}, function() {
   console.log('Connected to MPD');
   mpd.write('password coms309M14\n'); // Immediately enter the password
 });

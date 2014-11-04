@@ -1,21 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.min.css">
     <script>
-      var ws = new WebSocket('ws://10.30.121.50:1234', 'echo-protocol');
 
-      function sendMessage(message){
-        // var message = document.getElementById('message').value;
-        ws.send(message);
-      }
-
-      ws.addEventListener("message", function(e) {
-          // The data is simply the message that we're sending back
-          var msg = e.data;
-
-          // Append the message
-          document.getElementById('ws-messages').innerHTML += '<br>' + msg;
-      });
     </script>
   </head>
   <body>
@@ -23,6 +11,7 @@
     <div id="checkbox"></div></br>
     <div id="alert"></div>
     <div id="audio"></div>
+    <div id="playButton"></div>
     <input type="button" value="Status" onclick="sendMessage('status')">
     <input type="button" value="Song Info" onclick="sendMessage('currentsong')">
     <input type="button" value="Pause" onclick="sendMessage('pause 1')">
