@@ -3,6 +3,8 @@ Testing JAX-RS
 
 This demonstrates the use of JAX-RS and the Jersey API we are using for the JAVA side of our server (TOMCAT). 
 
+This is also to test using JAX to recieve and send data to and from the database. 
+
 How to use
 ----------------
 

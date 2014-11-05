@@ -19,7 +19,7 @@ public class HelloWorldService {
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String msg) {
  
-		String output = "Jersey say : " + msg;
+		String output = "Param Taken From URL: " + msg + "     __Testing New Line";
  
 		return Response.status(200).entity(output).build();
  
