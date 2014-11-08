@@ -11,7 +11,7 @@ var ProfileModal = React.createClass({
 	render: function() {
 		return this.transferPropsTo(
 			<Modal title={this.props.username}
-				animation={false}>
+				animation={true}>
 				<div>
 					Stuff goes here!
 				</div>
@@ -23,10 +23,4 @@ var ProfileModal = React.createClass({
 	}
 });
 
-var LaunchButton = (
-  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" />}>
-    <ModalButton bsStyle="primary" bsSize="large">Profile Modal Trigger</ModalButton>
-  </ModalTrigger>
-);
-
-module.exports = LaunchButton;
+module.exports = ProfileModal;

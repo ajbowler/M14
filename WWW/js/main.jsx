@@ -20,13 +20,17 @@ React.renderComponent(
   $('#playerControls').get(0)
 );*/
 
-var LaunchButton = (
-  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" />}>
-    <ModalButton bsStyle="primary" bsSize="large">Profile Modal Trigger</ModalButton>
-  </ModalTrigger>
-);
+var LaunchButton = React.createClass({
+	render: function() {
+		return(
+	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" />}>
+	    <ModalButton bsStyle="primary" bsSize="large">Profile Modal Trigger</ModalButton>
+	  </ModalTrigger>
+	  );
+	}
+});
 
 React.renderComponent(
-	<LaunchButton />
+	<LaunchButton />,
 	$('#container').get(0)
 );
