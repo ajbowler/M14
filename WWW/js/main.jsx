@@ -20,11 +20,13 @@ React.renderComponent(
   $('#playerControls').get(0)
 );*/
 
+
+// TODO:  Add REST request for username
 var LaunchButton = React.createClass({
 	render: function() {
-		return(
-	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" />}>
-	    <ModalButton bsStyle="primary" bsSize="large">Profile Modal Trigger</ModalButton>
+		return (
+	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" /* insert username here */ />}>
+	    <ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
 	  </ModalTrigger>
 	  );
 	}
