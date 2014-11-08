@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 //a user that can do everything that premium can but change the background image
 //Does not include being addressed as his/her majesty
@@ -11,8 +13,13 @@ import java.sql.Statement;
 public class Regular extends User {
 	Connection myConn;
 
+	private Date joinDate;
+
 	public Regular(Connection con) {
+
 		myConn = con;
+		this.joinDate = new Date(); // default Date constructor uses time/date
+									// at which it was constructed
 	}
 
 	// STILL NEEDS WORK
@@ -26,16 +33,18 @@ public class Regular extends User {
 	// the
 	// int would be 10201993
 	// we can obviously change this system if we wanted to
-	int joinDate;
+	// int joinDate;
 
 	// returns a string of the user name, or a blank string (for now);
-	String getUsername() {
+	public String getUsername() {
 		try {
 			String usr = null;
 			// Create a statement and a result set to find the username string
 			Statement myStmt = myConn.createStatement();
-			//finds the username based on the userID
-			ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE userID =" + userID+ ";");
+			// finds the username based on the userID
+			ResultSet Rs = myStmt
+					.executeQuery("SELECT * FROM user WHERE userID =" + userID
+							+ ";");
 			while (Rs.next()) {
 				usr = Rs.getString("username");
 			}
@@ -49,13 +58,14 @@ public class Regular extends User {
 	}
 
 	// adds a friend
-	void addFriend(Integer friendID) {
+	public void addFriend(Integer friendID) {
 		try {
 
 			// create a statement
 			Statement myStmt = myConn.createStatement();
 			// execute sql command
-			myStmt.execute("INSERT INTO friends VALUES(" + userID + "," + friendID.toString() + ");");
+			myStmt.execute("INSERT INTO friends VALUES(" + userID + ","
+					+ friendID.toString() + ");");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,21 +73,26 @@ public class Regular extends User {
 	}
 
 	// adds a connection to connections
-	void addConnection(Integer ip, Integer port, String name) {
+	public void addConnection(Integer ip, Integer port, String name) {
 		try {
 
 			Statement myStmt = myConn.createStatement();
 			// Initialize a String
 			String id = "";
 			// Actually creates a connection in the connections table
-			myStmt.execute("INSERT INTO connections (IP, port, name) VALUES ("+ ip.toString() + "," + port.toString() + "," + "\""+name+"\"" +");");
-			//Finds the id of the connection in order to create an edge
-			ResultSet rs = myStmt.executeQuery("SELECT ID FROM connections where IP = " + ip.toString() + ";");
-			while(rs.next()){
+			myStmt.execute("INSERT INTO connections (IP, port, name) VALUES ("
+					+ ip.toString() + "," + port.toString() + "," + "\"" + name
+					+ "\"" + ");");
+			// Finds the id of the connection in order to create an edge
+			ResultSet rs = myStmt
+					.executeQuery("SELECT ID FROM connections where IP = "
+							+ ip.toString() + ";");
+			while (rs.next()) {
 				id = rs.getString("ID");
 			}
-			//Creates edge between user and connection
-			myStmt.execute("INSERT INTO connectionEdges VALUES(" + userID + "," + id + ");");
+			// Creates edge between user and connection
+			myStmt.execute("INSERT INTO connectionEdges VALUES(" + userID + ","
+					+ id + ");");
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -87,7 +102,22 @@ public class Regular extends User {
 	// checks how long the user has had an account. If it has been long enough
 	// the user
 	// will be upgraded to premium
-	void checkLoyalty() {
-		// TODO
+	public void checkLoyalty(Date date) {
+		Date todaysDate = new Date();
+		long difference = date.getTime() - todaysDate.getTime();
+		long days = TimeUnit.MILLISECONDS.toDays(difference);
+		
+		if(difference >= 30) {
+			// Convert this Regular user to a Premium user
+			// This can be done with another class, maybe something like
+			// UserUpgrade.java, and you would pass in the Regular user and all of its
+			// properties (Connection lists, etc.) and create a new Premium user
+			// with the transferred properties. Then update the database to reflect that
+			// user's loyalty.
+		}
+	}
+
+	public Date getJoinDate() {
+		return this.joinDate;
 	}
 }
