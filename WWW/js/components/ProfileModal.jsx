@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('React');
+var React = require('react');
 var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');
