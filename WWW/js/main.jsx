@@ -5,6 +5,8 @@
 var React = require('react');
 var $ = require('jquery');
 var ProfileModal = require('./components/ProfileModal.jsx');
+var LoginModal = require('./components/LoginModal.jsx');
+
 /*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
 var PlayerControls = require('./components/PlayerControls.jsx');
 
@@ -18,7 +20,15 @@ React.renderComponent(
   $('#playerControls').get(0)
 );*/
 
+
+
 React.renderComponent(
-	<ProfileModal />,
+	<LoginModal />,
 	$('#container').get(0)
 );
+
+/*
+React.renderComponent(
+        <loginModal />,
+        $('#container').get(0)
+);*/
