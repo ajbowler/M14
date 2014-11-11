@@ -16,13 +16,13 @@ var ModalButton = require('react-bootstrap/Button');
 var ProfileModal = React.createClass({
 	propTypes: {
 		username: React.PropTypes.string.isRequired,
-		realName: React.PropTypes.string,
+		humanName: React.PropTypes.string,
 		email: React.PropTypes.string
 	},
 
 	componentDidMount: function() {
 		var request = {
-			url: "http://proj-309-m14.cs.iastate.edu:8080/app",
+			url: "http://proj-309-m14.cs.iastate.edu:8080",
 			type: "GET",
 			contentType: "application/json",
 			accepts: "application/json",
