@@ -3,6 +3,7 @@
  */
 
 var React = require('React');
+var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var TabbedArea = require('react-bootstrap/TabbedArea');
@@ -13,6 +14,31 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 
 var ProfileModal = React.createClass({
+	propTypes: {
+		username: React.PropTypes.string.isRequired,
+		realName: React.PropTypes.string,
+		email: React.PropTypes.string
+	},
+
+	componentDidMount: function() {
+		var request = {
+			url: "http://proj-309-m14.cs.iastate.edu:8080/app",
+			type: "GET",
+			contentType: "application/json",
+			accepts: "application/json",
+			cache: false,
+			dataType: "json",
+			data: "username"
+		};
+
+		$.get(request, function(result) {
+			var userName = result[0];
+			if (this.isMounted()) {
+				this.props.username = userName;
+			}
+		}.bind(this));
+	},
+
 	addConnection: function() {
 	// TODO
 	},
@@ -58,7 +84,6 @@ var ProfileModal = React.createClass({
 	}
 });
 
-// TODO:  Add REST request for username
 var LaunchButton = React.createClass({
 	render: function() {
 		return (
