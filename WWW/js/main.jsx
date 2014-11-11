@@ -4,7 +4,7 @@
 
 var React = require('react');
 var $ = require('jquery');
-var ProfileModal = require('./components/ProfileModal.jsx');
+var MusicPlayer = require('./components/MusicPlayer.jsx');
 /*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
 var PlayerControls = require('./components/PlayerControls.jsx');
 
@@ -19,6 +19,6 @@ React.renderComponent(
 );*/
 
 React.renderComponent(
-	<ProfileModal />,
+	<MusicPlayer />,
 	$('#container').get(0)
 );

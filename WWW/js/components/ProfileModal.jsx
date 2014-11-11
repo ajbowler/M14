@@ -5,7 +5,6 @@
 var React = require('React');
 var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
-var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var TabbedArea = require('react-bootstrap/TabbedArea');
 var TabPane = require('react-bootstrap/TabPane');
 var ListGroup = require('react-bootstrap/ListGroup');
@@ -84,14 +83,14 @@ var ProfileModal = React.createClass({
 	}
 });
 
-var LaunchButton = React.createClass({
-	render: function() {
-		return (
-	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler" /* insert username here */ />}>
-	    <ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
-	  </ModalTrigger>
-	  );
-	}
-});
+// var LaunchButton = React.createClass({
+// 	render: function() {
+// 		return (
+// 	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler"  insert username here  />}>
+// 	    <ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
+// 	  </ModalTrigger>
+// 	  );
+// 	}
+// });
 
-module.exports = LaunchButton;
+module.exports = ProfileModal;
