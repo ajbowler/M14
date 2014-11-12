@@ -43,6 +43,10 @@ var ProfileModal = React.createClass({
 	},
 
 	render: function() {
+		function allowEdit() {
+
+		}
+
 		return this.transferPropsTo(
 			<Modal title="Profile"
 				animation={true}>
@@ -50,21 +54,37 @@ var ProfileModal = React.createClass({
 				<TabbedArea defaultActiveKey={1}>
 					<TabPane key={1} tab="About Me">
 						<div>
-							<h3>Basic Info</h3>
-							<ListGroup>
-								<ListGroupItem>
-									<div>Name:</div>
-									{this.props.humanName}
-								</ListGroupItem>
-								<ListGroupItem>
-									<div>Username:</div>
-									{this.props.username}
-								</ListGroupItem>
-								<ListGroupItem>
-									<div>Email:</div>
-									{this.props.email}
-								</ListGroupItem>
-							</ListGroup>
+							<div style={{display: "inline-block"}}>
+								<h3>Basic Info</h3>
+								<a onClick={allowEdit}>Edit</a>
+							</div>
+							<div className="input-group">
+								<form>
+									<input type="text" className="form-control" placeholder="Name" />
+									<input type="text" className="form-control" placeholder="Username" />
+									<input type="text" className="form-control" placeholder="Email" />
+									<ModalButton bsStyle="success" onClick={this.updateUserInfo}>Update</ModalButton>
+								</form>
+							</div>
+							<div>
+								<ListGroup>
+									<ListGroupItem>
+										<div>
+											Name: {this.props.humanName}
+										</div>
+									</ListGroupItem>
+									<ListGroupItem>
+										<div>
+											Username: {this.props.username}
+										</div>
+									</ListGroupItem>
+									<ListGroupItem>
+										<div>
+											Email: {this.props.email}
+										</div>
+									</ListGroupItem>
+								</ListGroup>
+							</div>
 						</div>
 					</TabPane>
 					<TabPane key={2} tab="MPD Connections">
@@ -78,7 +98,7 @@ var ProfileModal = React.createClass({
 			        	<UserInput type="text" placeholder="Connection Name"/>
 			          <UserInput type="text" placeholder="MPD Server Host"/>
 			          <UserInput type="password" placeholder="MPD Server Password (if required)"/>
-			          <ModalButton bsStyle="success" type="submit" onClick={this.addConnection}>Add Connection</ModalButton>
+			          <ModalButton bsStyle="success" onClick={this.addConnection}>Add Connection</ModalButton>
 			        </form>
 	        	</div>
 					</TabPane>
