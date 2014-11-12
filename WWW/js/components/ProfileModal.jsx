@@ -21,13 +21,13 @@ var ProfileModal = React.createClass({
 
 	componentDidMount: function() {
 		var request = {
-			url: "http://proj-309-m14.cs.iastate.edu:8080",
+			url: "http://proj-309-m14.cs.iastate.edu:8080/username",
 			type: "GET",
 			contentType: "application/json",
 			accepts: "application/json",
 			cache: false,
 			dataType: "json",
-			data: "username"
+			data: ""
 		};
 
 		$.get(request, function(result) {
@@ -52,9 +52,18 @@ var ProfileModal = React.createClass({
 						<div>
 							<h3>Basic Info</h3>
 							<ListGroup>
-								<ListGroupItem>Name: {this.props.humanName}</ListGroupItem>
-								<ListGroupItem>Username: {this.props.username}</ListGroupItem>
-								<ListGroupItem>Email: {this.props.email}</ListGroupItem>
+								<ListGroupItem>
+									<div>Name:</div>
+									{this.props.humanName}
+								</ListGroupItem>
+								<ListGroupItem>
+									<div>Username:</div>
+									{this.props.username}
+								</ListGroupItem>
+								<ListGroupItem>
+									<div>Email:</div>
+									{this.props.email}
+								</ListGroupItem>
 							</ListGroup>
 						</div>
 					</TabPane>
