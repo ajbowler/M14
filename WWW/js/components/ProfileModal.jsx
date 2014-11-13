@@ -20,6 +20,8 @@ var ProfileModal = React.createClass({
 	},
 
 	componentDidMount: function() {
+		this.setState({allowEdit: false});
+
 		var request = {
 			url: "http://proj-309-m14.cs.iastate.edu:8080/username",
 			type: "GET",
@@ -38,15 +40,23 @@ var ProfileModal = React.createClass({
 		}.bind(this));
 	},
 
+	updateUserInfo: function() {
+	// TODO
+	},
+
 	addConnection: function() {
 	// TODO
 	},
 
+	getInitialState: function() {
+		return {allowEdit: false};
+	},
+
+	showEdit: function() {
+		this.setState({ allowEdit: !(this.state.allowEdit) });
+	},
+
 	render: function() {
-		function allowEdit() {
-
-		}
-
 		return this.transferPropsTo(
 			<Modal title="Profile"
 				animation={true}>
@@ -54,17 +64,12 @@ var ProfileModal = React.createClass({
 				<TabbedArea defaultActiveKey={1}>
 					<TabPane key={1} tab="About Me">
 						<div>
-							<div style={{display: "inline-block"}}>
+							<div>
 								<h3>Basic Info</h3>
-								<a onClick={allowEdit}>Edit</a>
+								<a onClick={this.showEdit}>Edit</a>
 							</div>
-							<div className="input-group">
-								<form>
-									<input type="text" className="form-control" placeholder="Name" />
-									<input type="text" className="form-control" placeholder="Username" />
-									<input type="text" className="form-control" placeholder="Email" />
-									<ModalButton bsStyle="success" onClick={this.updateUserInfo}>Update</ModalButton>
-								</form>
+							<div>
+								{this.state.allowEdit ? <EditInfo /> : null}
 							</div>
 							<div>
 								<ListGroup>
@@ -108,6 +113,23 @@ var ProfileModal = React.createClass({
 					<ModalButton bsStyle="primary" onClick={this.props.onRequestHide}>Close</ModalButton>
 				</div>
 			</Modal>
+		);
+	}
+});
+
+var EditInfo = React.createClass({
+	render: function() {
+		return (
+		<div className="input-group">
+			<form>
+				<input type="text" className="form-control" placeholder="Name" />
+				<input type="text" className="form-control" placeholder="Username" />
+				<input type="text" className="form-control" placeholder="Email" />
+				<ModalButton bsStyle="success" onClick={this.updateUserInfo}>Update</ModalButton>
+				<br/>
+				<br/>
+			</form>
+		</div>
 		);
 	}
 });
