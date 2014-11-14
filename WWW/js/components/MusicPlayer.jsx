@@ -14,7 +14,10 @@ var MusicPlayer = React.createClass({
 		return this.transferPropsTo(
 			<div>
 				<div>
-					<ModalTrigger modal={<ProfileModal username="Andrew Bowler"/>}>
+					<ModalTrigger modal={<ProfileModal 
+						humanName="Andrew Bowler" 
+						username="ajbowler" 
+						email="ajbowler@iastate.edu"/>}>
 						<ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
 					</ModalTrigger>
 					Replace this button with the dropdown
