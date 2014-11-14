@@ -1,0 +1,5 @@
+<Context>
+
+  <Resource name="jdbc/db309M14" auth="Container" type="javax.sql.DataSource" username="u309M14" password="vtGQsRyY+" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://mysql.cs.iastate.edu:3306" maxActive="8" maxIdle="3"/>
+
+</Context>

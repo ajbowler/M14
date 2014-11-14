@@ -9,18 +9,20 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 
 var LoginModal = React.createClass({
+
     render: function() {
     return this.transferPropsTo(
 
-    <Modal>
+
+    <Modal title=" " backdrop={true} animation={false} >
 
       <div className="modal-body">
 
        <div className="form-group">
 
           <form>
-            <UserInput type="text"  placeholder='' label="Username" bsStyle="sucess" />
-            <UserInput type="text"  placeholder='' label="Password" bsStyle="sucess" />
+            <UserInput type="text"  placeholder="TestUsername" label="Username" bsStyle="default" />
+            <UserInput type="text"  placeholder='TestPassword' label="Password" bsStyle="default" />
           <ModalButton bsStyle="default" type="submit" /* onClick= TODO */>Login</ModalButton>
           </form>
 
