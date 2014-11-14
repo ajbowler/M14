@@ -20,8 +20,8 @@ var ProfileModal = React.createClass({
 	},
 
 	componentDidMount: function() {
-		this.setState({allowEdit: false});
-
+		// Test retrieval of just the current username for now, 
+		// will add email and human name later.
 		var request = {
 			url: "http://proj-309-m14.cs.iastate.edu:8080/username",
 			type: "GET",
@@ -41,15 +41,39 @@ var ProfileModal = React.createClass({
 	},
 
 	updateUserInfo: function() {
-	// TODO
+		var updatedUserInfo = {
+			newUserName: this.props.editUserName,
+			newHumanName: this.props.editHumanName,
+			newEmail: this.props.editEmail
+		};
+
+		var request = {
+			url: "http://proj-309-m14.cs.iastate.edu:8080:/userInfo",
+			type: "POST",
+			contentType: "application/json",
+			cache: false,
+			dataType: "json",
+			data: JSON.stringify(updatedUserInfo)
+		};
+
+		$.ajax(request).done(function(data) {
+			this.props.username = newUserName;
+			this.props.humanName = newHumanName;
+			this.props.email = newEmail;
+			forceUpdate();
+		});
+
+		this.setState({ allowEdit: !(this.state.allowEdit)});
 	},
 
 	addConnection: function() {
-	// TODO
+		// TODO
 	},
 
 	getInitialState: function() {
-		return {allowEdit: false};
+		return {
+			allowEdit: false
+		};
 	},
 
 	showEdit: function() {
@@ -122,9 +146,9 @@ var EditInfo = React.createClass({
 		return (
 		<div className="input-group">
 			<form>
-				<input type="text" className="form-control" placeholder="Name" />
-				<input type="text" className="form-control" placeholder="Username" />
-				<input type="text" className="form-control" placeholder="Email" />
+				<UserInput type="text" className="form-control" placeholder="Name"  value={this.props.editHumanName}/>
+				<UserInput type="text" className="form-control" placeholder="Username" value={this.props.editUserName}/>
+				<UserInput type="text" className="form-control" placeholder="Email" value={this.props.editEmail}/>
 				<ModalButton bsStyle="success" onClick={this.updateUserInfo}>Update</ModalButton>
 				<br/>
 				<br/>
@@ -133,15 +157,5 @@ var EditInfo = React.createClass({
 		);
 	}
 });
-
-// var LaunchButton = React.createClass({
-// 	render: function() {
-// 		return (
-// 	  <ModalTrigger modal={<ProfileModal username="Andrew Bowler"  insert username here  />}>
-// 	    <ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
-// 	  </ModalTrigger>
-// 	  );
-// 	}
-// });
 
 module.exports = ProfileModal;
