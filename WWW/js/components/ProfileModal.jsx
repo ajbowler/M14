@@ -123,16 +123,16 @@ var ProfileModal = React.createClass({
 						</div>
 						<h3>Add New Connection</h3>
 						<div className="form-group">
-			        <form>
-			        	<UserInput type="text" placeholder="Connection Name"/>
-			          <UserInput type="text" placeholder="MPD Server Host"/>
-			          <UserInput type="password" placeholder="MPD Server Password (if required)"/>
-			          <ModalButton bsStyle="success" onClick={this.addConnection}>Add Connection</ModalButton>
-			        </form>
-	        	</div>
+					<form>
+						<UserInput type="text" placeholder="Connection Name"/>
+					  <UserInput type="text" placeholder="MPD Server Host"/>
+					  <UserInput type="password" placeholder="MPD Server Password (if required)"/>
+					  <ModalButton bsStyle="success" onClick={this.addConnection}>Add Connection</ModalButton>
+					</form>
+				</div>
 					</TabPane>
-	      </TabbedArea>
-      	</div>
+		  </TabbedArea>
+		</div>
 				<div className="modal-footer">
 					<ModalButton bsStyle="primary" onClick={this.props.onRequestHide}>Close</ModalButton>
 				</div>
