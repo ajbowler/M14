@@ -1,7 +1,7 @@
 package com.M14.login;
 
 
-import javax.activation.DataSource;
+import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.ws.rs.GET;
@@ -10,6 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -27,9 +29,7 @@ public class Start {
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String msg) {
 	
-	try{
-		
-		
+	try{	
 		
 		//Get connection to data base
 		/*Connection myConn = (Connection) DriverManager.getConnection
@@ -39,7 +39,10 @@ public class Start {
 		Context envCtx = (Context) initCtx.lookup("java:comp/env");
 		DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
 		
-		Connection conn = ((Statement) ds).getConnection();
+		//System.out.println("Made DataSource");
+		//System.out.println(ds.toString());
+		
+		Connection conn = (Connection) ds.getConnection();
 		
 		//create a statement	
 		Statement myStmt = ((java.sql.Connection) conn).createStatement();
@@ -59,13 +62,17 @@ public class Start {
 		
 		//String output = "testingLogin";
 		
+		conn.close();
+		
 		return Response.status(200).entity(output).build();
 		
 	}
 	
 	catch(Exception exc){
-		exc.printStackTrace();
-		return null;
+		StringWriter errors = new StringWriter();
+		exc.printStackTrace(new PrintWriter(errors));
+		
+		return Response.status(420).entity(errors.toString()).build();
 	}
 
 	}
