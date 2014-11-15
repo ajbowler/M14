@@ -7,15 +7,15 @@ var StopButton = require('./StopButton.jsx');
 var ButtonGroup = require('react-bootstrap/ButtonGroup.js');
 
 var PlayerControls = React.createClass({
-	render: function() {
-		return (
-			<ButtonGroup>
-				<PlayButton />
-				<PauseButton />
+  render: function() {
+    return (
+      <ButtonGroup>
+        <PlayButton />
+        <PauseButton />
         <StopButton />
-			</ ButtonGroup>
-		);
-	}
+      </ ButtonGroup>
+    );
+  }
 });
 
 module.exports = PlayerControls;
