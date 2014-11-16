@@ -25,7 +25,7 @@ var PlayButton = React.createClass({
     return <Control bSize='large' id='playButton' onClick={this.play}><Glyphicon glyph='play' /> </Control>
   },
 
-	play: function() {
+    play: function() {
     sendMessage('play');
   }
 });
