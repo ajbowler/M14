@@ -1,20 +1,16 @@
-package users;
+package jdbc;
 
-public abstract class Users {
+public abstract class User {
+	
 	// Name which will default to guest.
 	String name;
+	
 	//list of objects that hold data of user's connections
-	Connection[] Connections;
+	MpdConnection[] Connections;
 	String IP;
 	String port;
+	
 	//NOT the m14 password
 	String mpdPassword;
-	
-	void connect(){}
-	
-	void playMusic(){}
-	
-	void shuffle(){}
-	
 
 }
