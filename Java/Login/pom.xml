@@ -39,11 +39,17 @@
       	<version>3.8.1</version>
       	<scope>test</scope>
     </dependency>
-    
+
+    <dependency>
+      <groupId>com.owlike</groupId>
+      <artifactId>genson</artifactId>
+      <version>1.1</version>
+    </dependency>
+
   </dependencies>
 
 <build>
-    <finalName>Login</finalName>
+    <finalName>Jersey</finalName>
 </build>
 
 </project>

@@ -9,62 +9,55 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
+
+import com.M14.login.Regular;
 
 //By adding the "@path" this class will be executed when "/hello"
 //is appended to the url, "proj-309-m14.cs.iastate.edu:8080/Login/send
 
-@Path("/info")
+@Path("/REST")
 public class Start {
 
 	@GET
-	//This "@Path" declares what the msg is;
-	//Basically uses the next string of the URL to get the value used
-	@Path("/{param}")
-	public Response getMsg(@PathParam("param") String msg) {
-	
+	@Path("/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	//public Regular getUserinJSON(@PathParam("param") String msg) {
+	public Regular getUserinJSON() {
 	try{	
 		
-		//Get connection to data base
-		/*Connection myConn = (Connection) DriverManager.getConnection
-		("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");*/
-		
+		//Create Connection to Database
 		Context initCtx = new InitialContext();
 		Context envCtx = (Context) initCtx.lookup("java:comp/env");
 		DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-		
-		//System.out.println("Made DataSource");
-		//System.out.println(ds.toString());
-		
 		Connection conn = (Connection) ds.getConnection();
 		
-		//create a statement	
+		/*//create a statement	
 		Statement myStmt = ((java.sql.Connection) conn).createStatement();
 		
 		//execute sql query
-		ResultSet myRs = myStmt.executeQuery("select * from user");
+		ResultSet myRs = myStmt.executeQuery("select * from user"); 
 		
 		myRs.next();
-		String output = myRs.getString("username");
+		String output = myRs.getString("username"); 
 		
+				
+		//String output = "testingLogin";*/
 		
-		//process the result
-		/*while(myRs.next()){
-			output = output.concat((myRs.getString("username")));
-			output = output.concat(" ");
-		}*/
-		
-		//String output = "testingLogin";
+		Regular Usr = new Regular(null, conn);
 		
 		conn.close();
 		
-		return Response.status(200).entity(output).build();
+		return Usr;
+		
+		//return Response.status(200).entity(Usr.getUsername()).build();
 		
 	}
 	
@@ -72,19 +65,24 @@ public class Start {
 		StringWriter errors = new StringWriter();
 		exc.printStackTrace(new PrintWriter(errors));
 		
-		return Response.status(420).entity(errors.toString()).build();
+		//return Response.status(420).entity(errors.toString()).build();
+		return null;
 	}
 
 	}
 	
 	@POST
 	@Path("/post")
-	@Consumes("application/json")
-	@Produces("application/json")
-	
-	public Response echoJson(String msg){
-	
-		return Response.status(200).build();
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createUsrinJSON(Regular Usr){
+		try {
+			Usr.getUsername();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return Response.status(420).entity("Didn't Work").build();
+		}
+		String usrInfo = "User Info: " + Usr.toString();
+		return Response.status(201).entity(usrInfo).build();
 	}
 	
 }
