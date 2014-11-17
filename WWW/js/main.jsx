@@ -5,7 +5,7 @@
 var React = require('react');
 var $ = require('jquery');
 var ProfileModal = require('./components/ProfileModal.jsx');
-var LoginModal = require('./components/LoginModal.jsx');
+var MusicPlayer = require('./components/MusicPlayer.jsx');
 
 /*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
 <<<<<<< Updated upstream
