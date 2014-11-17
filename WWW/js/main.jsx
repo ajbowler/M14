@@ -4,31 +4,19 @@
 
 var React = require('react');
 var $ = require('jquery');
-var Hello = require('./components/hello.jsx');
-var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
-var Alert = require('react-bootstrap/Alert');
-var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
-
-React.renderComponent(
-  <Hello name='World' />,
-  document.getElementById('hello')
-);
-
-React.renderComponent(
-  <CheckboxWithLabel labelOn='Checked' labelOff='Unchecked' />,
-  document.getElementById('checkbox')
-);
-
-React.renderComponent(
-  <Alert bsStyle="warning">
-    Check out this awesome react-bootstrap stuff!
-  </Alert>,
-  //non-jQuery is lame!
-  //document.getElementById('alert')
-  $('#alert').get(0)
-);
-
+var MusicPlayer = require('./components/MusicPlayer.jsx');
+/*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
+var PlayerControls = require('./components/PlayerControls.jsx');
 React.renderComponent(
   <Html5AudioStreamer />,
   $('#audio').get(0)
+);
+React.renderComponent(
+  <PlayerControls />,
+  $('#playerControls').get(0)
+);*/
+
+React.renderComponent(
+  <MusicPlayer />,
+  $('#container').get(0)
 );
