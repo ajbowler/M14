@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('React');
+var React = require('react/addons');
 var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
 var TabbedArea = require('react-bootstrap/TabbedArea');

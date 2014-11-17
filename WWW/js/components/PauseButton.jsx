@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('React');
+var React = require('react/addons');
 var Control = require('react-bootstrap/Button.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
 

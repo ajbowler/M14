@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('React');
+var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var ModalButton = require('react-bootstrap/Button');

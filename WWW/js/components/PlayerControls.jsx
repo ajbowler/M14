@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+var React = require('react/addons');
 var PlayButton = require('./PlayButton.jsx');
 var PauseButton = require('./PauseButton.jsx');
 var StopButton = require('./StopButton.jsx');
