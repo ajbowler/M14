@@ -48,15 +48,8 @@ public class Regular extends User {
 	}
 
 
-
-	// the date that the user created the m14 profile
-	// date will be an eight digit int so if the user joined October 20th, 1993
-	// the
-	// int would be 10201993
-	// we can obviously change this system if we wanted to
-	// int joinDate;
-
-	// returns a string of the user name, or a blank string (for now);
+        //Return username as String
+        //For Now also pulls in all other user info into this class
 	public String getUsername() throws SQLException {
 		
 		Connection internalCon = null;
@@ -94,7 +87,6 @@ public class Regular extends User {
 			
 			internalCon.close();
 			
-			//return "UserInfo [username=" + usrName + ", [password=" + passWord + ", [JoinDate=" + this.getJoinDate().toString() + "]";
 			return this.usrName;
 		
 		} catch (SQLException e) {
