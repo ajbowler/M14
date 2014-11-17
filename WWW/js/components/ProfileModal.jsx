@@ -3,6 +3,7 @@
  */
 
 var React = require('react');
+var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');

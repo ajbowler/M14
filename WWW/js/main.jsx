@@ -8,8 +8,12 @@ var ProfileModal = require('./components/ProfileModal.jsx');
 var LoginModal = require('./components/LoginModal.jsx');
 
 /*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
+<<<<<<< Updated upstream
 var PlayerControls = require('./components/PlayerControls.jsx');
 
+=======
+//var PlayerControls = require('./components/PlayerControls.jsx');
+>>>>>>> Stashed changes
 React.renderComponent(
   <Html5AudioStreamer />,
   $('#audio').get(0)
@@ -23,12 +27,6 @@ React.renderComponent(
 
 
 React.renderComponent(
-	<LoginModal />,
-	$('#container').get(0)
+  <MusicPlayer />,
+  $('#container').get(0)
 );
-
-/*
-React.renderComponent(
-        <loginModal />,
-        $('#container').get(0)
-);*/

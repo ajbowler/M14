@@ -13,8 +13,7 @@ var LoginModal = React.createClass({
     render: function() {
     return this.transferPropsTo(
 
-
-    <Modal title=" " backdrop={true} animation={false} >
+    <Modal title="Login" backdrop={true} animation={false} >
 
       <div className="modal-body">
 
@@ -22,7 +21,9 @@ var LoginModal = React.createClass({
 
           <form>
             <UserInput type="text"  placeholder="TestUsername" label="Username" bsStyle="default" />
-            <UserInput type="text"  placeholder='TestPassword' label="Password" bsStyle="default" />
+
+            <UserInput type="text" type="password" label="Password" bsStyle="default" />
+
           <ModalButton bsStyle="default" type="submit" /* onClick= TODO */>Login</ModalButton>
           </form>
 
@@ -41,7 +42,7 @@ var LaunchButton = React.createClass({
   render: function() {
     return (
       <ModalTrigger modal={<LoginModal />}>
-        <ModalButton bsStyle="success" bsSize="large">Login</ModalButton>
+        <ModalButton bsStyle="primary" bsSize="large">Login</ModalButton>
       </ModalTrigger>
     );
   }
