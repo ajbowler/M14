@@ -17,7 +17,7 @@ ws.addEventListener("message", function(e) {
   var msg = e.data;
 
   // Append the message
-  document.getElementById('ws-messages').innerHTML += '<br>' + msg;
+document.getElementById('ws-messages').innerHTML += '<br>' + msg;
 });
 
 var PlayButton = React.createClass({

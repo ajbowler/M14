@@ -13,9 +13,6 @@ function sendMessage(message) {
 }
 
 ws.addEventListener("message", function(e) {
-  // The data is simply the message that we're sending back
-  var msg = e.data;
-  
   // Append the message
   document.getElementById('ws-messages').innerHTML += '<br>' + msg;
 });
@@ -31,3 +28,4 @@ var PauseButton = React.createClass({
 });
 
 module.exports = PauseButton;
+>>>>>>> e94c32a220121de766c52478399fb1414f5ad0e4
