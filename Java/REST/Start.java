@@ -26,51 +26,51 @@ import com.m14.rest.Regular;
 @Path("/test")
 public class Start {
 
-	@GET
-	@Path("/get/{param}")
-	@Produces(MediaType.APPLICATION_JSON)
-	//public Regular getUserinJSON(@PathParam("param") String msg) {
-	public Regular getUserinJSON(@PathParam("param") String index) {
-	try{	
-		
-		Regular Usr = new Regular(null, conn, index);
-		
-		Usr.getUsername();
-		Usr.getEmail();
-		Usr.getJoinDate();
-		Usr.getPassword();
-		return Usr;
-		
-	}
-	
-	catch(Exception exc){
-		StringWriter errors = new StringWriter();
-		exc.printStackTrace(new PrintWriter(errors));
-		
-		return null;
-	}
+  @GET
+  @Path("/get/{param}")
+  @Produces(MediaType.APPLICATION_JSON)
+  //public Regular getUserinJSON(@PathParam("param") String msg) {
+  public Regular getUserinJSON(@PathParam("param") String index) {
+  try{  
+    
+    Regular Usr = new Regular(null, conn, index);
+    
+    Usr.getUsername();
+    Usr.getEmail();
+    Usr.getJoinDate();
+    Usr.getPassword();
+    return Usr;
+    
+  }
+  
+  catch(Exception exc){
+    StringWriter errors = new StringWriter();
+    exc.printStackTrace(new PrintWriter(errors));
+    
+    return null;
+  }
 
-	}
-	
-	@POST
-	@Path("/post")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUsrinJSON(Regular Usr){
-		try {
-			Usr.getUsername();
-			Usr.getEmail();
-			Usr.getJoinDate();
-			Usr.getPassword();
+  }
+  
+  @POST
+  @Path("/post")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createUsrinJSON(Regular Usr){
+    try {
+      Usr.getUsername();
+      Usr.getEmail();
+      Usr.getJoinDate();
+      Usr.getPassword();
                 } 
                 
                 catch (SQLException e) {
-			e.printStackTrace();
-			return Response.status(420).entity("Didn't Work").build();
-		}
+      e.printStackTrace();
+      return Response.status(420).entity("Didn't Work").build();
+    }
 
 
-		String usrInfo = "User Info: " + Usr.toString();
-		return Response.status(201).entity(usrInfo).build();
-	}
-	
+    String usrInfo = "User Info: " + Usr.toString();
+    return Response.status(201).entity(usrInfo).build();
+  }
+  
 }

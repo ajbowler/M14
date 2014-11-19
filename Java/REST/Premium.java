@@ -8,22 +8,22 @@ import java.sql.Connection;
 
 public class Premium extends Regular{
 
-	public Premium(Connection con) {
-		super(myConn, con, "0");
-		// TODO Auto-generated constructor stub
-	}
+  public Premium(Connection con, String index) {
+    super(myConn, con, index);
+    // TODO Auto-generated constructor stub
+  }
 
-	// name of the file that the background image is in
-	String imageName;
-	
-	// adds a connection to connections
-	void addConnection(){
-		//TODO
-	}
-	
-	// changes the background image of the website
-	void changeImage(){
-		//TODO
-	}
-	
+  // name of the file that the background image is in
+  String imageName;
+  
+  // adds a connection to connections
+  void addConnection(){
+    //TODO
+  }
+  
+  // changes the background image of the website
+  void changeImage(){
+    //TODO
+  }
+  
 }

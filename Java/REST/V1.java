@@ -26,27 +26,27 @@ import javax.ws.rs.*;
 @Path("/v1")
 public class V1 {
 
-	@GET
-	//This "@Path" declares what the msg is;
-	//Basically uses the next string of the URL to get the value used
-	@Path("/{param}")
-	public Response getMsg(@PathParam("param") String input) {
-	
-		String output = "eventually a json object, not a " + input;
-		
-		return Response.status(200).entity(output).build();
-		
-	}
+  @GET
+  //This "@Path" declares what the msg is;
+  //Basically uses the next string of the URL to get the value used
+  @Path("/{param}")
+  public Response getMsg(@PathParam("param") String input) {
+  
+    String output = "eventually a json object, not a " + input;
+    
+    return Response.status(200).entity(output).build();
+    
+  }
 
-	@POST
-	@Path("/post")
-	@Consumes("application/json")
-	@Produces("application/json")
-	
-	public Response echoJson(String msg){
-	
-		return Response.status(200).build();
-	}	
-	
+  @POST
+  @Path("/post")
+  @Consumes("application/json")
+  @Produces("application/json")
+  
+  public Response echoJson(String msg){
+  
+    return Response.status(200).build();
+  } 
+  
 }
 
