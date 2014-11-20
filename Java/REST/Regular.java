@@ -9,116 +9,91 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
-
 import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
 
-//a user that can do everything that premium can but change the background image
+//A user that can do everything that premium can but change the background image
 //Does not include being addressed as his/her majesty
-
 public class Regular extends User {
-  
+
   static Connection myConn;
   static java.sql.Connection DBCon;
-  
-  String usrName = null;
-  String passWord = null;
-  String email = null;
 
-  private Timestamp joinDate;
+  // Variables to store user information
+  public String username = null;
+  public String password = null;
+  public String email = null;
+  public Timestamp joindate;
 
   // STILL NEEDS WORK
   // This will eventually need to be implimented so that it is the id the
   // database uses to find the user.
   // As of now, defaulted to 0.
   public String userID = "0";
-  
-  public Regular(Connection con, java.sql.Connection DBCon, String index) {
 
-    myConn = con;
+
+  public Regular(java.sql.Connection DBCon, String index) {
     Regular.DBCon = DBCon;
-  
-    this.joinDate = null; // default Date constructor uses time/date
-                // at which it was constructed
-    
     userID = index;
-    
+    this.joindate = null; // default Date constructor uses time/date
   }
 
-
-        //Return username as String
-        //For Now also pulls in all other user info into this class
+  // return username as String
+  // for Now also pulls in all other user info into this class
   public String getUsername() throws SQLException {
-    
     Connection internalCon = null;
-    
-    //try block for sqlException
+    // try block for sqlException
     try {
-      
-      //try block for Connection Exception
+      // try block for Connection Exception
       try {
-      
-      Context initCtx = new InitialContext();
-      Context envCtx = (Context) initCtx.lookup("java:comp/env");
-      DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-      internalCon = (Connection) ds.getConnection();
-      
+        Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();
       }
-      
-      catch(Exception exc){
-        
-      }
-      
-      // Create a statement and a result set to find the username string
+      catch(Exception exc){}//empty until decide on procedure for not making connection
+      // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // finds the username based on the userID
-      
-      
       ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE userID =" + userID + ";");
       while (Rs.next()) {
-        usrName = Rs.getString("username");
-        passWord = Rs.getString("password");
+        username = Rs.getString("username");
+        password = Rs.getString("password");
         userID = Rs.getString("userID");
-        joinDate = Rs.getTimestamp("JoinDate");
+        joindate = Rs.getTimestamp("JoinDate");
         email = Rs.getString("EmailAddress");
       }
-      
       internalCon.close();
-      
-      return this.usrName;
-    
-    } catch (SQLException e) {
+      return this.username;
+    }
+    // catch statement for original try block
+    catch (SQLException e) {
       StringWriter errors = new StringWriter();
       e.printStackTrace(new PrintWriter(errors));
       System.out.println(errors.toString());
     }
-    
-    // returns a blank string if the above doesn't work
-    String usr = "didntWork";
-    
     internalCon.close();
-    return usr;
+    // return 'Didnt Work" if connection is unsuccessful
+    return "Didnt Work";
   }
-  
-  // returns a string of the user name, or a blank string (for now);
-    public String getPassword(){
-      return this.passWord;
-    }
-    
 
-  // adds a friend
+  // returns a string of the user name
+  public String getPassword(){
+      return this.password;
+    }
+
+  // Adds a friend
   public void addFriend(Integer friendID) {
     try {
-
       // create a statement
       Statement myStmt = myConn.createStatement();
       // execute sql command
       myStmt.execute("INSERT INTO friends VALUES(" + userID + ","
           + friendID.toString() + ");");
-
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
     }
   }
@@ -128,20 +103,20 @@ public class Regular extends User {
     try {
 
       Statement myStmt = myConn.createStatement();
-      // Initialize a String
+      // initialize a String
       String id = "";
-      // Actually creates a connection in the connections table
+      // aSctually creates a connection in the connections table
       myStmt.execute("INSERT INTO connections (IP, port, name) VALUES ("
           + ip.toString() + "," + port.toString() + "," + "\"" + name
           + "\"" + ");");
-      // Finds the id of the connection in order to create an edge
+      // finds the id of the connection in order to create an edge
       ResultSet rs = myStmt
           .executeQuery("SELECT ID FROM connections where IP = "
               + ip.toString() + ";");
       while (rs.next()) {
         id = rs.getString("ID");
       }
-      // Creates edge between user and connection
+      // creates edge between user and connection
       myStmt.execute("INSERT INTO connectionEdges VALUES(" + userID + ","
           + id + ");");
     } catch (SQLException e) {
@@ -154,11 +129,11 @@ public class Regular extends User {
   // the user
   // will be upgraded to premium
   public void checkLoyalty(Timestamp date) {
-    
+
     Date todaysDate = new Date(0);
     long difference = date.getTime() - todaysDate.getTime();
     long days = TimeUnit.MILLISECONDS.toDays(difference);
-    
+
     if(difference >= 30) {
       // Convert this Regular user to a Premium user
       // This can be done with another class, maybe something like
@@ -170,17 +145,17 @@ public class Regular extends User {
   }
 
   public Timestamp getJoinDate() {
-    return this.joinDate;
+    return this.joindate;
   }
-  
+
   public String getEmail(){
     return this.email;
   }
-  
-  
+
   /*
+  // currently overridden toString block until decide on standard toString procedure
   @Override
   public String toString() {
-    return "userInfo [UserName=" + this.usrName + ", password=" + this.passWord + "]";
+    return "userInfo [UserName=" + this.username + ", password=" + this.password + "]";
   }*/
 }
