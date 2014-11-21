@@ -67,4 +67,76 @@ public class RESTservice {
     return Response.status(201).entity(usrInfo).build();
   }
 
+  @POST
+  @Path("/create")
+  @Content-Type("application/json")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createConnectionJSON(Regular user, String ip, Integer port, String mpdPassword) {
+    try {
+      user.addConnection(ip, port, name);
+    }
+
+     catch (SQLException e) {
+      e.printStackTrace();
+      return Response.status(420).entity("Didn't Work").build();
+    }
+
+    // The location of the Node.js server
+    String nodeURL = "http://localhost:8007";
+    URL obj = new URL(obj);
+    HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
+
+    nodeConnection.setDoOutput(true);
+    nodeConnection.setRequestMethod("POST");
+    nodeConnection.setRequestProperty("Content-Type", "application/json");
+    nodeConnection.setRequestProperty("Accept", "application/json");
+ 
+    DataOutputStream wr = new DataOutputStream(nodeConnection.getOutputStream());
+    JSONObject mpdConnection = new JSONObject();
+    mpdConnection.put("host", ip);
+    mpdConnection.put("port", port);
+    mpdConnection.put("password", password);
+    wr.writeBytes(mpdConnection.toString());
+    wr.flush();
+    wr.close();
+
+    return Response.status(200).entity(mpdConnection.toString()).build();
+  }
+
+  @POST
+  @Path("/destroy")
+  @Content-Type("application/json")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response destroyConnectionJSON(Regular user, String ip, Integer port, String mpdPassword) {
+    try {
+      user.removeConnection(ip, port, name);
+    }
+
+     catch (SQLException e) {
+      e.printStackTrace();
+      return Response.status(420).entity("Didn't Work").build();
+    }
+
+    // The location of the Node.js server
+    String nodeURL = "http://localhost:8007";
+    URL obj = new URL(obj);
+    HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
+
+    nodeConnection.setDoOutput(true);
+    nodeConnection.setRequestMethod("POST");
+    nodeConnection.setRequestProperty("Content-Type", "application/json");
+    nodeConnection.setRequestProperty("Accept", "application/json");
+ 
+    DataOutputStream wr = new DataOutputStream(nodeConnection.getOutputStream());
+    JSONObject mpdConnection = new JSONObject();
+    mpdConnection.put("host", ip);
+    mpdConnection.put("port", port);
+    mpdConnection.put("password", password);
+    wr.writeBytes(mpdConnection.toString());
+    wr.flush();
+    wr.close();
+
+    return Response.status(200).entity(mpdConnection.toString()).build(); 
+  }
+
 }
