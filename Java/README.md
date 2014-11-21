@@ -1,11 +1,5 @@
-Testing JAX-RS
-====================
+# Tomcat Server for M14
 
-This demonstrates the use of JAX-RS and the Jersey API we are using for the JAVA side of our server (TOMCAT). 
+Currently working on our Server, proj-309-m14.cs.iastate.edu
 
-How to use
-----------------
-
-Go to: proj-309-m14.cs.iastate.edu:8080/RESTfulExample/rest/hello/***
-
-Where "***" is any string you'd like the page to display
+To access, go to: [proj-309-m14.cs.iastate.edu/REST/v1/test/get/0](http://proj-309-m14.cs.iastate.edu/REST/v1/test/get/0)
