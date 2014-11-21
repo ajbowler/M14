@@ -14,15 +14,15 @@ var MusicPlayer = React.createClass({
     return this.transferPropsTo(
       <div>
         <div>
+          <img src="images/M14.svg" alt="M(usic)14" id="logo"/>
           <ModalTrigger modal={<ProfileModal 
-            humanName="Andrew Bowler" 
-            username="ajbowler" 
-            email="ajbowler@iastate.edu"/>}>
-            <ModalButton bsStyle="primary" bsSize="large">Profile</ModalButton>
+            humanName='Andrew Bowler' 
+            username='ajbowler' 
+            email='ajbowler@iastate.edu'/>}>
+            <ModalButton id='profile' title='Replace this button with the dropdown' bsStyle='primary' bsSize='large' className='pull-right'>Profile</ModalButton>
           </ModalTrigger>
-          Replace this button with the dropdown
         </div>
-        <Panel className="panel-heading text-center" header="M(usic)14 INSERT GRAPHIC HERE">
+        <Panel className='panel-heading text-center'>
           <div>
             <PlayerControls />
           </div>
