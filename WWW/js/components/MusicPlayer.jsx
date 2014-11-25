@@ -8,6 +8,7 @@ var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var ModalButton = require('react-bootstrap/Button');
 var ProfileModal = require('./ProfileModal.jsx');
 var PlayerControls = require('./PlayerControls.jsx');
+var LoginModal = require('./LoginModal.jsx');
 
 var MusicPlayer = React.createClass({
   render: function() {
@@ -21,6 +22,7 @@ var MusicPlayer = React.createClass({
             email='ajbowler@iastate.edu'/>}>
             <ModalButton id='profile' title='Replace this button with the dropdown' bsStyle='primary' bsSize='large' className='pull-right'>Profile</ModalButton>
           </ModalTrigger>
+          <LoginModal />
         </div>
         <Panel className='panel-heading text-center'>
           <div>
