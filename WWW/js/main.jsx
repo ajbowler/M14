@@ -4,39 +4,13 @@
 
 var React = require('react');
 var $ = require('jquery');
-var Hello = require('./components/hello.jsx');
-var CheckboxWithLabel = require('./components/CheckboxWithLabel.jsx');
-var Alert = require('react-bootstrap/Alert');
-var Login = require('./components/LoginBox.jsx');
-var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
-
-//render Html5 Streamer
+var MusicPlayer = require('./components/MusicPlayer.jsx');
+/*var Html5AudioStreamer = require('./components/Html5AudioStreamer.jsx');
+var PlayerControls = require('./components/PlayerControls.jsx');
 React.renderComponent(
-   <Html5AudioStreamer />,
-    $('#audio').get(0)
+  <Html5AudioStreamer />,
+  $('#audio').get(0)
 );
-
 React.renderComponent(
-  <Hello name='Lexie' />,
-  document.getElementById('hello')
-);
-
-React.renderComponent(
-<CheckboxWithLabel labelOn='TestOn' labelOff='TestOff' />,  
-  document.getElementById('checkbox')
-);
-
-React.renderComponent(
-	<Alert bsStyle="warning">
-		This is my computer youre looking at, my website
-	</Alert>,
-	//non-jQuery is lame!
-	//document.getElementById('alert')
-	$('#alert').get(0)
-);
-
-
-React.rederComponent(
-     <Login />,
-     document.getElementById('Unique')
-);
+  <PlayerControls />,
+  $
