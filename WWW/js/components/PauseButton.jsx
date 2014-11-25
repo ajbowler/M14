@@ -6,7 +6,7 @@ var React = require('react/addons');
 var Control = require('react-bootstrap/Button.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
 
-var ws = new WebSocket('ws://10.30.121.50:1234', 'echo-protocol');
+var ws = new WebSocket('ws://65.110.226.243:1234', 'echo-protocol');
 
 function sendMessage(message) {
   ws.send(message);
