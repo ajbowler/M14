@@ -5,25 +5,37 @@ var _ = require('lodash');
 
 var net = require('net');
 var http = require('http');
+var url = require('url');
+var request = require('request');
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
 var util = require('util');
 
 process.stdin.on('data', function (text) {
-  var content, options, req;
+  var contentString, headers, content, options, req;
   var args = text.replace(/^\s+|\s+$/g, '').split(' ');
   if (args[0] === 'create') {
 
     content = {
-      host: args[1] || 'localhost',
-      port: args[2] || 6600,
-      pass: args[3] || ''
+      'host': args[1] || 'localhost',
+      'port': args[2] || '6600',
+      'pass': args[3] || ''
     };
 
     console.log('==================>\ncreate\nhost: ' + content.host + '\nport: ' + content.port + '\npass: ' + content.pass);
 
+    contentString = JSON.stringify(content);
+
+    headers = {
+      'content-length': contentString.length,
+      'content-type': 'application/json',
+      'connection': 'keep-alive',
+      'accept': '*/*'
+    };
+
     options = {
+      headers: headers,
       host: 'localhost',
       port: 8008,
       path: '/create',
@@ -39,9 +51,24 @@ process.stdin.on('data', function (text) {
       });
     });
 
-    req.write(JSON.stringify(content));
+    req.write(contentString);
 
     req.end();
+
+    /*
+    options = {
+      url: url.parse('http://localhost/create:8008'),
+      'method': 'POST',
+      'json': true,
+      'body': content
+    };
+
+    request(options, function(err,res,body) {
+      console.log(err);
+      console.log(res);
+      console.log(body);
+    });
+    */
 
   } else if (args[0] === 'destroy') {
 

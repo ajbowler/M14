@@ -8,8 +8,9 @@ var net = require('net');
 var http = require('http');
 var restify = require('restify');
 
-function Proxy(mpd, wsServer) {
+function Proxy(mpd, httpServer, wsServer) {
   this.mpd = mpd;
+  this.httpServer = httpServer;
   this.wsServer = wsServer;
   this.clients = {};
 }
@@ -28,13 +29,15 @@ Proxy.prototype.disconnectClient = function(clientAddress) {
 Proxy.prototype.setupMPD = function(host, port, pass) {
 
   // The mpd connection
-  var mpd = net.connect({host: host, port: port}, function() {
-    mpd.write('password ' + pass + '\n'); // Immediately enter the password
+  this.mpd = net.connect({host: host, port: port}, function() {
+    if (pass !== null && pass !== '') this.mpd.write('password ' + pass + '\n'); // Immediately enter the password if there is a password
   });
 
-  mpd.on('data', function(data) {
+  this.mpd.on('data', function(data) {
     // The string message that was sent to us
     var msgString = data.toString();
+
+    console.log(msgString);
 
     // Loop through all clients
     _.forEach(this.clients, function (client) {
@@ -43,9 +46,10 @@ Proxy.prototype.setupMPD = function(host, port, pass) {
     });
   });
 
-  mpd.on('end', function() {
+  this.mpd.on('end', function() {
     // TODO: decide what happens if a MPD connection shuts down.
-    process.exit();
+    console.log('mpd connection closing');
+    // process.exit();
     return 0;
   });
 
@@ -55,17 +59,17 @@ Proxy.prototype.setupWS = function(port) {
 
   port = port || 8007;
 
-  var server = http.createServer(function(request, response) {});
+  this.httpServer = http.createServer(function(request, response) {});
 
-  server.listen(port, function() {
+  this.httpServer.listen(port, function() {
     console.log((new Date()) + ' Server is listening on port ' + port);
   });
 
   var WebSocketServer = require('websocket').server;
 
-  wsServer = new WebSocketServer({httpServer: server});
+  this.wsServer = new WebSocketServer({httpServer: this.httpServer});
 
-  wsServer.on('request', function(r){
+  this.wsServer.on('request', function(r){
     // Code here to run on connection
 
     var connection = r.accept('echo-protocol', r.origin);
@@ -84,12 +88,14 @@ Proxy.prototype.setupWS = function(port) {
       // The string message that was sent to us
       var msgString = message.utf8Data;
 
+      console.log(msgString);
+
       this.mpd.write(msgString.toString() + '\n');
 
     });
 
     connection.on('close', function(reasonCode, description) {
-      delete clients[id];
+      delete this.clients[id];
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 
@@ -102,6 +108,7 @@ var test = {
 };
 
 var localServer = restify.createServer();
+localServer.use(restify.bodyParser());
 
 var connections = {}; // The object containing all of the proxy connections.
 
