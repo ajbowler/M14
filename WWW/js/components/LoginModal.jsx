@@ -13,7 +13,8 @@ var LoginModal = React.createClass({
   propTypes: {
     username: React.PropTypes.string,
     email: React.PropTypes.string,
-    joinDate: React.PropTypes.string
+    joinDate: React.PropTypes.string,
+    userID: React.PropTypes.string
   },
 
   handleLogin: function() {
@@ -48,9 +49,9 @@ var LoginModal = React.createClass({
         <div className='modal-body'>
           <div className='form-group'>
             <form>
-              <UserInput type='text'  placeholder='Username' label='Username' bsStyle='default' />
-              <UserInput type='text' type='password' placeholder='Password' label='Password' bsStyle='default' />
-              <ModalButton bsStyle='default' type='submit' onClick={this.handleLogin; this.props.onRequestHide}>Login</ModalButton>
+              <UserInput type='text'  placeholder='Username' label='Username' />
+              <UserInput type='text' type='password' placeholder='Password' label='Password' />
+              <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
             </form>
             </div>
          </div>
