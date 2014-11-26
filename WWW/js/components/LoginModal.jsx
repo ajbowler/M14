@@ -11,13 +11,13 @@ var ModalButton = require('react-bootstrap/Button');
 var LoginModal = React.createClass({
     render: function() {
     return this.transferPropsTo(
-      <Modal title="Login" backdrop={true} animation={false} >
-        <div className="modal-body">
-          <div className="form-group">
+      <Modal title='Login' backdrop={true} animation={false} >
+        <div className='modal-body'>
+          <div className='form-group'>
             <form>
-              <UserInput type="text"  placeholder="TestUsername" label="Username" bsStyle="default" />
-              <UserInput type="text" type="password" label="Password" bsStyle="default" />
-              <ModalButton bsStyle="default" type="submit" /* onClick= TODO */>Login</ModalButton>
+              <UserInput type='text'  placeholder='Username' label='Username' bsStyle='default' />
+              <UserInput type='text' type='password' placeholder='Password' label='Password' bsStyle='default' />
+              <ModalButton bsStyle='default' type='submit' /* onClick= TODO */>Login</ModalButton>
             </form>
             </div>
          </div>
@@ -32,7 +32,7 @@ var LaunchButton = React.createClass({
   render: function() {
     return (
       <ModalTrigger modal={<LoginModal />}>
-        <ModalButton bsStyle="primary" bsSize="large">Login</ModalButton>
+        <ModalButton bsStyle='primary' bsSize='large'>Login</ModalButton>
       </ModalTrigger>
     );
   }
