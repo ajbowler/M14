@@ -4,7 +4,6 @@
 
 var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
-var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var PlayerControls = require('./PlayerControls.jsx');
 var DropdownMenu = require('./DropdownMenu.jsx');
 

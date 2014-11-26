@@ -4,7 +4,6 @@
 
 var React = require('react/addons');
 var Modal = require('react-bootstrap/Modal');
-var ModalButton = require('react-bootstrap/Button');
 var DropdownButton = require('react-bootstrap/DropdownButton.js');
 var ProfileModal = require('./ProfileModal.jsx');
 var MenuItem = require('react-bootstrap/MenuItem.js');
