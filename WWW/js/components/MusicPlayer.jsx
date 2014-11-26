@@ -16,7 +16,7 @@ var MusicPlayer = React.createClass({
       <div>
         <div>
           <img src="images/M14.svg" alt="M(usic)14" id="logo"/>
-          <DropdownMenu bsStyle='primary' bsSize='large' className='pull-right' />
+          <DropdownMenu />
         </div>
         <Panel className='panel-heading text-center'>
           <div>
