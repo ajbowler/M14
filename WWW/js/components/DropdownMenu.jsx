@@ -2,14 +2,13 @@
 * @jsx React.DOM
 */
 
-var React = require('react');
+var React = require('react/addons');
 var Modal = require('react-bootstrap/Modal');
 var ModalButton = require('react-bootstrap/Button');
-var ButtonGroup = require('react-bootstrap/ButtonGroup.js');
 var DropdownButton = require('react-bootstrap/DropdownButton.js');
 var ProfileModal = require('./ProfileModal.jsx');
-var MenuItem = require('react-bootstrap/MenuItem.js')
-var ModalTrigger = require('react-bootstrap/ModalTrigger.js')
+var MenuItem = require('react-bootstrap/MenuItem.js');
+var ModalTrigger = require('react-bootstrap/ModalTrigger.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
 
 var cogGlyph = React.createClass({
@@ -27,7 +26,7 @@ var DropdownMenu = React.createClass({
             humanName='Andrew Bowler' 
             username='ajbowler' 
             email='ajbowler@iastate.edu'/>}>
-            <ModalButton id='profile'>Profile</ModalButton>
+            <MenuItem id='profile'>Profile</MenuItem>
           </ModalTrigger>
           </DropdownButton>
       </div>

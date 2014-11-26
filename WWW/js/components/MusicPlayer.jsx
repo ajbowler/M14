@@ -5,10 +5,9 @@
 var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
-var ModalButton = require('react-bootstrap/Button');
-var ProfileModal = require('./ProfileModal.jsx');
 var PlayerControls = require('./PlayerControls.jsx');
 var DropdownMenu = require('./DropdownMenu.jsx');
+
 var MusicPlayer = React.createClass({
 
   render: function() {
