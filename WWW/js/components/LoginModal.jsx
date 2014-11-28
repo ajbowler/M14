@@ -7,7 +7,6 @@ var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
-var MusicPlayer = require('./MusicPlayer.jsx');
 
 var LoginModal = React.createClass({
   propTypes: {
@@ -17,6 +16,12 @@ var LoginModal = React.createClass({
     userID: React.PropTypes.string
   },
 
+  getInitialState: function() {
+    return {
+      loggedIn: false
+    };
+  },
+
   handleLogin: function() {
     var request = {
       url: "http://proj-309-m14.cs.iastate.edu:8080:/login",
@@ -24,7 +29,7 @@ var LoginModal = React.createClass({
       contentType: "application/json",
       cache: false,
       dataType: "json",
-      data: JSON.stringify(userInfo)
+      data: ""
     };
 
     $.get(request, function(result) {
@@ -34,13 +39,7 @@ var LoginModal = React.createClass({
       this.props.joinDate = userInfo.joinDate;
     });
 
-    React.renderComponent(
-      <MusicPlayer 
-        username={this.props.uesrname} 
-        email={this.props.email} 
-        joinDate={this.props.joinDate} />,
-      $('#container').get(0)
-    );
+    this.setState({ loggedIn: true});
   },
 
   render: function() {
