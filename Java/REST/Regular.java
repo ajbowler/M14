@@ -152,6 +152,30 @@ public class Regular extends User {
     return this.email;
   }
 
+  public MpdConnection[] getConnections(){
+
+    try{
+      Statement myStmt = myConn.createStatement();
+      ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
+      int i = 0;
+      String[] conID;
+      MpdConnection[] cons;
+
+      while(Rs.next){
+        conID[i] = Rs.getString("conID")
+      }
+
+      for(int k = 0, k < array.length(), k++){
+        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE conID =" + conID[k] + ";");
+        cons[k] = MpdConnection( (rs.getString("host")), rs.getString("port") );
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return cons;
+  }
+
   /*
   // currently overridden toString block until decide on standard toString procedure
   @Override
