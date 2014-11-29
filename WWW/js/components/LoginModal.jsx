@@ -10,7 +10,7 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 
 var LoginModal = React.createClass({
-  getDefaultProps: function() {
+  getInitialState: function() {
     return {
       loggedIn: false
     };
@@ -25,29 +25,21 @@ var LoginModal = React.createClass({
   },
 
   handleLogin: function() {
+    var app = this;
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu:8080/REST/v1/test/get/0',
       type: 'GET',
       contentType: 'application/json',
       cache: false,
       dataType: 'json',
-      // data: {
-      //   username: this.state.username, 
-      //   password: this.state.password
-      // }
       data: ''
     };
 
-    console.log(request.data);
-
     $.ajax(request).done(function(data) {
-      console.log(data);
-      this.props.login(true);
+      app.props.login(data);
     }).error(function() {
       console.log('error');
     });
-
-    this.props.login(true);
   },
 
   render: function() {
