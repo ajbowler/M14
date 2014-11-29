@@ -18,6 +18,11 @@ public class MpdConnection {
     return this.port;
   }
 
+  public MpdConnection[] retrieveMpdConnections(String userID){
+    Regular user = new Regular(userID);
+    return user.getConnections();
+  }
+
   public Statement createStatement() {
     // TODO Auto-generated method stub
     return null;
