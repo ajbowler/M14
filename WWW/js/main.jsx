@@ -20,7 +20,6 @@ var App = React.createClass({
     var app = this;
     var login = function() {
       app.setState({loggedIn: true});
-      console.log("logged in!");
     };
 
     if (this.state.loggedIn === false) {

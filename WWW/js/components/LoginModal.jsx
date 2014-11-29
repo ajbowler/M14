@@ -25,23 +25,18 @@ var LoginModal = React.createClass({
 
   handleLogin: function() {
     var request = {
-      url: "http://proj-309-m14.cs.iastate.edu:8080/REST/v1/test/get/0",
-      type: "GET",
-      contentType: "application/json",
+      url: 'http://proj-309-m14.cs.iastate.edu:8080/REST/v1/test/get/0',
+      type: 'GET',
+      contentType: 'application/json',
       cache: false,
-      dataType: "json",
-      data: ""
+      dataType: 'json',
     };
 
-    this.props.login(true);
-
-    // $.get(request.url, function(result) {
-    //   var userInfo = JSON.parse(result);
-    //   this.props.username = userInfo.username;
-    //   this.props.email = userInfo.email;
-    //   this.props.joinDate = userInfo.joinDate;
-    //   this.props.loggedIn = true;
-    // });
+    $.ajax(request).done(function(data) {
+      console.log(data);
+    }).error(function() {
+      console.log('error');
+    });
   },
 
   render: function() {
