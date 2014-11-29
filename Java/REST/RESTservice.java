@@ -18,29 +18,17 @@ import java.sql.Connection;
 
 import com.m14.rest.Regular;
 
-//By adding the "@path" this class will be executed when "/hello"
-//is appended to the url, "proj-309-m14.cs.iastate.edu:8080/Login/send
-@Path("/test")
 public class RESTservice {
 
-  @GET
-  @Path("/get/{param}")
+  @POST
+  @Path("/login/{param}")
   @Produces(MediaType.APPLICATION_JSON)
-  //public Regular getUserinJSON(@PathParam("param") String msg) {
-  public Regular getUserinJSON(@PathParam("param") String index) {
-    try{
-      // Create new Regular user from index given
-      Regular Usr = new Regular(null, index);
-      // Get all variables to return as JSON
-      Usr.getUsername();
-      Usr.getEmail();
-      Usr.getJoinDate();
-      Usr.getPassword();
-      return Usr;
+  public Regular getUserinJSON(@PathParam("param") String username) {
+    try {
+      return Regular.getUserFromDatabase(username);
     }
 
-    //If exception, create a stackflow to print if needed
-    catch(Exception exc){
+    catch(Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
       return null;
