@@ -25,10 +25,8 @@ var App = React.createClass({
 
     if (this.state.loggedIn === false) {
       renderedComponent = <LoginModal login={login} />;
-      this.setState({ currentComponent: 'LoginModal' });
     } else {
       renderedComponent = <MusicPlayer />;
-      this.setState({ currentComponent: 'MusicPlayer' });
     }
 
     return (
