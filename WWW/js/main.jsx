@@ -21,7 +21,6 @@ var App = React.createClass({
   render: function() {
     var app = this;
     var login = function(user) {
-      console.log(user);
       app.setState({
         loggedIn: true,
         username: user.username,

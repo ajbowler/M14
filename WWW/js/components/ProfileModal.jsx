@@ -15,35 +15,12 @@ var ModalButton = require('react-bootstrap/Button');
 var ProfileModal = React.createClass({
   propTypes: {
     username: React.PropTypes.string.isRequired,
-    humanName: React.PropTypes.string,
-    email: React.PropTypes.string
-  },
-
-  componentDidMount: function() {
-    // Test retrieval of just the current username for now, 
-    // will add email and human name later.
-    var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu:8080/username',
-      type: 'GET',
-      contentType: 'application/json',
-      accepts: 'application/json',
-      cache: false,
-      dataType: 'json',
-      data: ''
-    };
-
-    $.get(request, function(result) {
-      var userName = result[0];
-      if (this.isMounted()) {
-        this.props.username = userName;
-      }
-    }.bind(this));
+    email: React.PropTypes.string.isRequired
   },
 
   updateUserInfo: function() {
     var updatedUserInfo = {
       newUserName: this.props.editUserName,
-      newHumanName: this.props.editHumanName,
       newEmail: this.props.editEmail
     };
 
@@ -58,7 +35,6 @@ var ProfileModal = React.createClass({
 
     $.ajax(request).done(function(data) {
       this.props.username = newUserName;
-      this.props.humanName = newHumanName;
       this.props.email = newEmail;
       forceUpdate();
     });
@@ -97,11 +73,6 @@ var ProfileModal = React.createClass({
               </div>
               <div>
                 <ListGroup>
-                  <ListGroupItem>
-                    <div>
-                      Name: {this.props.humanName}
-                    </div>
-                  </ListGroupItem>
                   <ListGroupItem>
                     <div>
                       Username: {this.props.username}

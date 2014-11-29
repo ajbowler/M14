@@ -9,6 +9,7 @@ var DropdownMenu = require('./DropdownMenu.jsx');
 
 var MusicPlayer = React.createClass({
   render: function() {
+    console.log(this.props);
     return this.transferPropsTo(
       <div>
         <div>

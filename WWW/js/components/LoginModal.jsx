@@ -44,7 +44,7 @@ var LoginModal = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
-      <Modal title='Login' backdrop={true} animation={false} >
+      <Modal title='Login' backdrop={true} animation={true} >
         <div className='modal-body'>
           <div className='form-group'>
             <form>
