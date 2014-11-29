@@ -23,8 +23,8 @@ var DropdownMenu = React.createClass({
         <DropdownButton title = {<cogGlyph />} pullRight>
           <ModalTrigger modal={<ProfileModal 
             humanName='Andrew Bowler' 
-            username='ajbowler' 
-            email='ajbowler@iastate.edu'/>}>
+            username={this.props.username} 
+            email={this.props.email}/>}>
             <MenuItem id='profile'>Profile</MenuItem>
           </ModalTrigger>
           </DropdownButton>

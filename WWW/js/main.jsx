@@ -9,23 +9,35 @@ var LoginModal = require('./components/LoginModal.jsx');
 var ExampleParent = require('./components/ExampleParent.jsx');
 
 var App = React.createClass({
-
   getInitialState: function() {
     return {
-      loggedIn: false
+      loggedIn: false,
+      username: 'GUEST',
+      userID: '-1',
+      email: null
     };
   },
 
   render: function() {
     var app = this;
-    var login = function() {
-      app.setState({loggedIn: true});
+    var login = function(user) {
+      app.setState({
+        loggedIn: true,
+        username: user.username,
+        userID: user.userID,
+        email: user.email
+      });
     };
 
     if (this.state.loggedIn === false) {
       renderedComponent = <LoginModal login={login} />;
     } else {
-      renderedComponent = <MusicPlayer />;
+      renderedComponent = 
+      <MusicPlayer 
+        username={this.state.username} 
+        userID={this.state.userID} 
+        email={this.state.email}
+      />;
     }
 
     return (

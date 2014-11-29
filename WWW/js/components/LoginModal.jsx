@@ -10,17 +10,18 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 
 var LoginModal = React.createClass({
-  propTypes: {
-    username: React.PropTypes.string,
-    email: React.PropTypes.string,
-    joinDate: React.PropTypes.string,
-    userID: React.PropTypes.string
-  },
-
   getDefaultProps: function() {
     return {
       loggedIn: false
     };
+  },
+
+  updateUsername: function(e) {
+    this.setState({username: $('#login_username').val()});
+  },
+
+  updatePassword: function(e) {
+    this.setState({password: $('#login_password').val()});
   },
 
   handleLogin: function() {
@@ -30,13 +31,23 @@ var LoginModal = React.createClass({
       contentType: 'application/json',
       cache: false,
       dataType: 'json',
+      // data: {
+      //   username: this.state.username, 
+      //   password: this.state.password
+      // }
+      data: ''
     };
+
+    console.log(request.data);
 
     $.ajax(request).done(function(data) {
       console.log(data);
+      this.props.login(true);
     }).error(function() {
       console.log('error');
     });
+
+    this.props.login(true);
   },
 
   render: function() {
@@ -45,8 +56,19 @@ var LoginModal = React.createClass({
         <div className='modal-body'>
           <div className='form-group'>
             <form>
-              <UserInput type='text'  placeholder='Username' label='Username' />
-              <UserInput type='text' type='password' placeholder='Password' label='Password' />
+              <UserInput 
+                type='text' 
+                id='login_username' 
+                placeholder='Username' 
+                label='Username' 
+                onChange={this.updateUsername} />
+              <UserInput 
+                type='text' 
+                type='password' 
+                id='login_password' 
+                placeholder='Password' 
+                label='Password' 
+                onChange={this.updatePassword} />
               <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
             </form>
             </div>
