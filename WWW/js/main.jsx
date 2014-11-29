@@ -6,7 +6,6 @@ var React = require('react');
 var $ = require('jquery');
 var MusicPlayer = require('./components/MusicPlayer.jsx');
 var LoginModal = require('./components/LoginModal.jsx');
-var ExampleParent = require('./components/ExampleParent.jsx');
 
 var App = React.createClass({
   getInitialState: function() {
