@@ -3,6 +3,7 @@
 */
 
 var React = require('react/addons');
+var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');
@@ -16,7 +17,7 @@ var LoginModal = React.createClass({
     userID: React.PropTypes.string
   },
 
-  getInitialState: function() {
+  getDefaultProps: function() {
     return {
       loggedIn: false
     };
@@ -24,7 +25,7 @@ var LoginModal = React.createClass({
 
   handleLogin: function() {
     var request = {
-      url: "http://proj-309-m14.cs.iastate.edu:8080:/login",
+      url: "http://proj-309-m14.cs.iastate.edu:8080/REST/v1/test/get/0",
       type: "GET",
       contentType: "application/json",
       cache: false,
@@ -32,14 +33,15 @@ var LoginModal = React.createClass({
       data: ""
     };
 
-    $.get(request, function(result) {
-      var userInfo = JSON.parse(result);
-      this.props.username = userInfo.username;
-      this.props.email = userInfo.email;
-      this.props.joinDate = userInfo.joinDate;
-    });
+    this.props.login(true);
 
-    this.setState({ loggedIn: true});
+    // $.get(request.url, function(result) {
+    //   var userInfo = JSON.parse(result);
+    //   this.props.username = userInfo.username;
+    //   this.props.email = userInfo.email;
+    //   this.props.joinDate = userInfo.joinDate;
+    //   this.props.loggedIn = true;
+    // });
   },
 
   render: function() {

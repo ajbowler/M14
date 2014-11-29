@@ -6,8 +6,40 @@ var React = require('react');
 var $ = require('jquery');
 var MusicPlayer = require('./components/MusicPlayer.jsx');
 var LoginModal = require('./components/LoginModal.jsx');
+var ExampleParent = require('./components/ExampleParent.jsx');
+
+var App = React.createClass({
+
+  getInitialState: function() {
+    return {
+      loggedIn: false
+    };
+  },
+
+  render: function() {
+    var app = this;
+    var login = function() {
+      app.setState({loggedIn: true});
+      console.log("logged in!");
+    };
+
+    if (this.state.loggedIn === false) {
+      renderedComponent = <LoginModal login={login} />;
+      this.setState({ currentComponent: 'LoginModal' });
+    } else {
+      renderedComponent = <MusicPlayer />;
+      this.setState({ currentComponent: 'MusicPlayer' });
+    }
+
+    return (
+      <div>
+        {renderedComponent}
+      </div>
+    );
+  }
+});
 
 React.renderComponent(
-  <LoginModal />, 
+  <App />,
   $('#container').get(0)
 );
