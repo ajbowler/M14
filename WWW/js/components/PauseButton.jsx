@@ -2,6 +2,10 @@
  * @jsx React.DOM
  */
 
+/* jslint browserify: true */
+/* jslint devel: true */
+'use strict';
+
 var React = require('react/addons');
 var Control = require('react-bootstrap/Button.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
@@ -18,17 +22,11 @@ function sendMessage(message) {
   console.log('sent: ' + message);
 }
 
-ws.addEventListener("message", function(e) {
-  // The data is simply the message that we're sending back
-  var msg = e.data;
-
-  // Append the message
-  document.getElementById('ws-messages').innerHTML += '<br>' + msg;
-});
-
 var PauseButton = React.createClass({
   render: function() {
+    /*jslint ignore:start */
     return <Control bSize='large' id='pauseButton' onClick={this.pause}><Glyphicon glyph='pause' /> </Control>
+    /*jslint ignore:end */
   },
 
   pause: function() {

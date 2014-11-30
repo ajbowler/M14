@@ -2,6 +2,9 @@
  * This server_v2.js handles all of the proxy connections between the client and mpd.
  */
 
+/* jslint node: true */
+'use strict';
+
 var _ = require('lodash');
 
 var net = require('net');
@@ -11,6 +14,8 @@ var WebSocketServer = require('websocket').server;
 
 function Proxy(mpd, httpServer, wsServer) {
   this.mpd = mpd;
+  this.mpdConnected = false;
+  this.mpdAuthenticated = false;
   this.httpServer = httpServer;
   this.wsServer = wsServer;
   this.clients = {};
@@ -21,31 +26,34 @@ Proxy.connectionCount = 0;
 
 Proxy.prototype.setupMPD = function(host, port, pass) {
 
+  var self = this;
+
   pass = pass || '';
 
   // The mpd connection
-  this.mpd = net.connect({host: host, port: port}, function() {
-    if (pass !== '') this.mpd.write('password ' + pass + '\n'); // Immediately enter the password if there is a password
+  self.mpd = net.connect({host: host, port: port}, function() {
+    // Immediately enter the password if there is a password
+    // if (pass !== '') self.mpd.write('password ' + pass + '\n');
+    self.mpdConnected = true;
   });
 
-  this.mpd.on('data', function(data) {
+  self.mpd.on('data', function(data) {
     // The string message that was sent to us
     var msgString = data.toString();
-
     console.log(msgString);
 
-    // this.mpd.write('ping\n');
-
     // Loop through all clients
-    _.forEach(this.clients, function (client) {
+    _.forEach(self.clients, function (client) {
       // Send a message to the client with the message
       client.sendUTF(msgString);
     });
   });
 
-  this.mpd.on('end', function() {
+  self.mpd.on('end', function() {
     // TODO: decide what happens if a MPD connection shuts down.
     console.log('mpd connection closing');
+    self.mpdConnected = false;
+    self.mpdAuthenticated = false;
     // process.exit();
     return 0;
   });
@@ -54,28 +62,22 @@ Proxy.prototype.setupMPD = function(host, port, pass) {
 
 Proxy.prototype.setupWS = function(port) {
 
+  var self = this;
+
   port = port || 8007;
 
-  this.httpServer = http.createServer(function(request, response) {});
+  self.httpServer = http.createServer(function(request, response) {});
 
-  this.httpServer.listen(port, function() {
+  self.httpServer.listen(port, function() {
     console.log((new Date()) + ' Server is listening on port ' + port);
   });
 
-  this.wsServer = new WebSocketServer({httpServer: this.httpServer});
+  self.wsServer = new WebSocketServer({httpServer: self.httpServer});
 
-  this.wsServer.on('request', function(r){
+  self.wsServer.on('request', function(r) {
     // Code here to run on connection
 
     var connection = r.accept('echo-protocol', r.origin);
-
-    // Specific id for this client & increment count
-    var id = this.clientCount++;
-
-    // Store the connection method so we can loop through & contact all clients
-    this.clients[id] = connection;
-
-    console.log((new Date()) + ' Connection accepted [' + id + ']');
 
     // Create event listener
     connection.on('message', function(message) {
@@ -83,33 +85,34 @@ Proxy.prototype.setupWS = function(port) {
       // The string message that was sent to us
       var msgString = message.utf8Data;
 
-      console.log(msgString);
-
-      this.mpd.write(msgString.toString() + '\n');
+      self.mpd.write(msgString.toString() + '\n');
 
     });
 
     connection.on('close', function(reasonCode, description) {
-      delete this.clients[id];
+      delete self.clients[id];
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 
+    // Specific id for this client & increment count
+    var id = self.clientCount++;
+
+    console.log((new Date()) + ' Connection accepted [' + id + ']');
+    // Store the connection method so we can loop through & contact all clients
+    self.clients[id] = connection;
+
   });
 
-};
-
-var test = {
-  connectionCount: 0
 };
 
 var localServer = restify.createServer();
 localServer.use(restify.bodyParser());
 
 var connections = {}; // The object containing all of the proxy connections.
+var connectionCount = 0;
 
-localServer.listen(8008, function() {
-  // this is listening to Java to create new connection objects
-});
+// this is listening to Java to create new connection objects
+localServer.listen(8008, function() {});
 
 // POST remove a connection by id
 localServer.post('/destroy', function(req, res, next) {
@@ -130,7 +133,7 @@ localServer.post('/create', function(req, res, next) {
   var mpdHost = req.params.host;
   var mpdPort = req.params.port;
   var mpdPass = req.params.pass;
-  var id = test.connectionCount++; // TODO: generate a connection id in a better way
+  var id = connectionCount++; // TODO: generate a connection id in a better way
 
   console.log('created ' + id);
 
@@ -143,7 +146,6 @@ localServer.post('/create', function(req, res, next) {
     // create a new mpd connection
     connections[id].setupMPD(mpdHost, mpdPort, mpdPass);
     connections[id].setupWS();
-
   }
 
   // TODO: generate the result to send

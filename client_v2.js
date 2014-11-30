@@ -1,6 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////
-// This will be reomved once the Java call is set up                          //
-////////////////////////////////////////////////////////////////////////////////
+/* jslint node: true */
+'use strict';
+
 var _ = require('lodash');
 
 var net = require('net');
@@ -22,7 +22,7 @@ process.stdin.on('data', function (text) {
     content = {
       'host': args[1] || 'localhost',
       'port': args[2] || '6600',
-      'pass': args[3] || ''
+      'pass': args[3] || 'coms309M14'
     };
 
     console.log('==================>\ncreate\nhost: ' + content.host + '\nport: ' + content.port + '\npass: ' + content.pass);
@@ -93,7 +93,7 @@ process.stdin.on('data', function (text) {
 
     req.end();
 
-  } else if (text === 'quit\n') {
+  } else if (args[0] === 'quit') {
     done();
   } else {
     console.log('invalid command');
