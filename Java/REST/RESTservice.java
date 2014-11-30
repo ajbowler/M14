@@ -71,7 +71,7 @@ public class RESTservice {
 
     // The location of the Node.js server
     String nodeURL = "http://localhost:8007";
-    URL obj = new URL(obj);
+    URL obj = new URL(nodeURL);
     HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
 
     nodeConnection.setDoOutput(true);
@@ -107,7 +107,7 @@ public class RESTservice {
 
     // The location of the Node.js server
     String nodeURL = "http://localhost:8007";
-    URL obj = new URL(obj);
+    URL obj = new URL(nodeURL);
     HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
 
     nodeConnection.setDoOutput(true);

@@ -27,8 +27,8 @@ var LoginModal = React.createClass({
   handleLogin: function() {
     var app = this;
     var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu:8080/REST/v1/test/get/0',
-      // url: 'http://proj-309-m14.cs.iastate.edu:8080:/REST/v1/login/' + this.state.username,
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/test/get/0',
+      // url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/login/' + this.state.username,
       type: 'GET',
       contentType: 'application/json',
       cache: false,
@@ -39,7 +39,7 @@ var LoginModal = React.createClass({
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
-      console.log('error');
+      console.log('Could not login.');
     });
   },
 

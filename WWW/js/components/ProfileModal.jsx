@@ -25,7 +25,7 @@ var ProfileModal = React.createClass({
     };
 
     var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu:8080:/userInfo',
+      url: 'http://proj-309-m14.cs.iastate.edu/userInfo',
       type: 'POST',
       contentType: 'application/json',
       cache: false,
