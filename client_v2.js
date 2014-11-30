@@ -13,8 +13,10 @@ process.stdin.setEncoding('utf8');
 var util = require('util');
 
 process.stdin.on('data', function (text) {
-  var contentString, headers, content, options, req;
+  var contentString = '', headers = {}, content = {}, options = {}, req;
+
   var args = text.replace(/^\s+|\s+$/g, '').split(' ');
+
   if (args[0] === 'create') {
 
     content = {
@@ -55,30 +57,23 @@ process.stdin.on('data', function (text) {
 
     req.end();
 
-    /*
-    options = {
-      url: url.parse('http://localhost/create:8008'),
-      'method': 'POST',
-      'json': true,
-      'body': content
-    };
-
-    request(options, function(err,res,body) {
-      console.log(err);
-      console.log(res);
-      console.log(body);
-    });
-    */
-
   } else if (args[0] === 'destroy') {
 
-    content = {
-      connectionId: args[1]
+    content.connectionId = args[1] || '';
+
+    console.log('==================>\ndestroy\nconnectionID: ' + content.connectionId);
+
+    contentString = JSON.stringify(content);
+
+    headers = {
+      'content-length': contentString.length,
+      'content-type': 'application/json',
+      'connection': 'keep-alive',
+      'accept': '*/*'
     };
 
-    console.log('==================>\ndestroy\nconnectionID: ' + content.connectionID);
-
     options = {
+      headers: headers,
       host: 'localhost',
       port: 8008,
       path: '/destroy',
@@ -94,7 +89,7 @@ process.stdin.on('data', function (text) {
       });
     });
 
-    req.write(JSON.stringify(content));
+    req.write(contentString);
 
     req.end();
 

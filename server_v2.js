@@ -7,30 +7,25 @@ var _ = require('lodash');
 var net = require('net');
 var http = require('http');
 var restify = require('restify');
+var WebSocketServer = require('websocket').server;
 
 function Proxy(mpd, httpServer, wsServer) {
   this.mpd = mpd;
   this.httpServer = httpServer;
   this.wsServer = wsServer;
   this.clients = {};
+  this.clientCount = 0;
 }
 
 Proxy.connectionCount = 0;
 
-Proxy.prototype.connectClient = function(client) {
-  this.clients.push(client);
-};
-
-Proxy.prototype.disconnectClient = function(clientAddress) {
-  var idx = _.find(this.clients, { remoteAddress: clientAddress });
-  this.clients.splice(idx, 1);
-};
-
 Proxy.prototype.setupMPD = function(host, port, pass) {
+
+  pass = pass || '';
 
   // The mpd connection
   this.mpd = net.connect({host: host, port: port}, function() {
-    if (pass !== null && pass !== '') this.mpd.write('password ' + pass + '\n'); // Immediately enter the password if there is a password
+    if (pass !== '') this.mpd.write('password ' + pass + '\n'); // Immediately enter the password if there is a password
   });
 
   this.mpd.on('data', function(data) {
@@ -38,6 +33,8 @@ Proxy.prototype.setupMPD = function(host, port, pass) {
     var msgString = data.toString();
 
     console.log(msgString);
+
+    // this.mpd.write('ping\n');
 
     // Loop through all clients
     _.forEach(this.clients, function (client) {
@@ -65,8 +62,6 @@ Proxy.prototype.setupWS = function(port) {
     console.log((new Date()) + ' Server is listening on port ' + port);
   });
 
-  var WebSocketServer = require('websocket').server;
-
   this.wsServer = new WebSocketServer({httpServer: this.httpServer});
 
   this.wsServer.on('request', function(r){
@@ -75,7 +70,7 @@ Proxy.prototype.setupWS = function(port) {
     var connection = r.accept('echo-protocol', r.origin);
 
     // Specific id for this client & increment count
-    var id = count++;
+    var id = this.clientCount++;
 
     // Store the connection method so we can loop through & contact all clients
     this.clients[id] = connection;
@@ -118,7 +113,7 @@ localServer.listen(8008, function() {
 
 // POST remove a connection by id
 localServer.post('/destroy', function(req, res, next) {
-  var cid = req.params.connectionID; //TODO: use connection id to delete connections
+  var cid = req.params.connectionId; //TODO: use connection id to delete connections
   delete connections[cid];
 
   console.log('destroyed ' + cid);
