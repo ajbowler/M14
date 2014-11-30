@@ -3,7 +3,7 @@ package com.m14.rest;
 import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.print.DocFlavor.URL;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.DataOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.net.HttpURLConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
