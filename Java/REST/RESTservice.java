@@ -50,18 +50,18 @@ public class RESTservice {
     }
   }
 
-  @POST
-  @Path("/post")
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response createUsrinJSON(Regular Usr) throws SQLException{
-    Usr.getUsername();
-    Usr.getEmail();
-    Usr.getJoinDate();
-    Usr.getPassword();
+  // @POST
+  // @Path("/post")
+  // @Consumes(MediaType.APPLICATION_JSON)
+  // public Response createUsrinJSON(Regular Usr) throws SQLException{
+  //   Usr.getUsername();
+  //   Usr.getEmail();
+  //   Usr.getJoinDate();
+  //   Usr.getPassword();
 
-    String usrInfo = "User Info: " + Usr.toString();
-    return Response.status(201).entity(usrInfo).build();
-  }
+  //   String usrInfo = "User Info: " + Usr.toString();
+  //   return Response.status(201).entity(usrInfo).build();
+  // }
 
   @POST
   @Path("/create")
