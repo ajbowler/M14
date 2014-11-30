@@ -144,6 +144,10 @@ public class Regular extends User {
   public String getEmail(){
     return this.email;
   }
+  
+  public String getUsername(){
+	  return this.username;
+  }
 
   /*
   // currently overridden toString block until decide on standard toString procedure

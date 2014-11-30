@@ -1,3 +1,7 @@
+package com.m14.rest;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement
 public class UserPassBean {
   public String username;
