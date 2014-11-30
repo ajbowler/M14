@@ -92,7 +92,7 @@ public class Regular extends User {
   }
 
   // adds a connection to connections
-  public void addConnection(Integer ip, Integer port, String name) {
+  public void addConnection(String ip, Integer port, String name) {
     try {
 
       Statement myStmt = myConn.createStatement();
