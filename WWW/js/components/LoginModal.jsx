@@ -28,12 +28,16 @@ var LoginModal = React.createClass({
     var app = this;
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/test/get/0',
-      // url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/login/' + this.state.username,
+      // url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/login/,
       type: 'GET',
+      // type: 'POST',
       contentType: 'application/json',
       cache: false,
       dataType: 'json',
-      data: ''
+      data: {
+        username: this.state.username, 
+        password: this.state.password
+      }
     };
 
     $.ajax(request).done(function(data) {

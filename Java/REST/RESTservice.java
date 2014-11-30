@@ -21,17 +21,22 @@ import com.m14.rest.Regular;
 public class RESTservice {
 
   @POST
-  @Path("/login/{param}")
+  @Path("/login")
   @Produces(MediaType.APPLICATION_JSON)
-  public Regular getUserinJSON(@PathParam("param") String username) {
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response getUserinJSON(final UserPassBean input) {
     try {
-      return Regular.getUserFromDatabase(username);
+      Regular user =  Regular.getUserFromDatabase(input.username);
+      if (user.password.equals(input.password)) {
+        return Response.status(201).entity(user).build();
+      } else {
+        return Response.status(401).entity("Authentication failed!").build();
+      }
     }
-
     catch(Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
-      return null;
+      return Response.status(401).entity("Authentication failed!").build();
     }
   }
 
