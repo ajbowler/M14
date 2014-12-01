@@ -152,28 +152,35 @@ public class Regular extends User {
     return this.email;
   }
 
+  // Returns an array of connections that the user owns
   public MpdConnection[] getConnections(){
-
     try{
+      // Create a statement and a result set so that we can read all of the connection edges that 
+      // the user belongs to
       Statement myStmt = myConn.createStatement();
       ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
       int i = 0;
+      // array that holds the connectionIDs that the user owns
       String[] conID;
+      // To be returned array that will hold all of the connections the user owns
       MpdConnection[] cons;
-
+      
+      // A few loops that find all of the connection ids that the user owns and then 
+      // creates the array based on these ids.
       while(Rs.next){
-        conID[i] = Rs.getString("conID")
+        conID[i] = Rs.getString("connectionID");
       }
-
-      for(int k = 0, k < array.length(), k++){
-        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE conID =" + conID[k] + ";");
+      
+      for(int k = 0, k < conID.length, k++){
+        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE connectionID =" + conID[k] + ";");
         cons[k] = MpdConnection( (rs.getString("host")), rs.getString("port") );
       }
+      return cons;
     }
     catch (SQLException e) {
       e.printStackTrace();
     }
-    return cons;
+    return;
   }
 
   /*
