@@ -1,3 +1,7 @@
+/*
+ * This a client meant for testing server_vs.js until the same REST calls can be made from Java
+ */
+
 /* jslint node: true */
 'use strict';
 
