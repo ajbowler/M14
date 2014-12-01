@@ -10,6 +10,7 @@ var ProfileModal = require('./ProfileModal.jsx');
 var PlayerControls = require('./PlayerControls.jsx');
 var LoginModal = require('./LoginModal.jsx');
 var Html5AudioStreamer = require('./Html5AudioStreamer.jsx');
+var StatusModal = require('./StatusModal.jsx')
 
 var MusicPlayer = React.createClass({
   render: function() {
@@ -31,6 +32,7 @@ var MusicPlayer = React.createClass({
           </div>
         </Panel>
         <Html5AudioStreamer />
+        <StatusModal />
       </div>
     );
   }

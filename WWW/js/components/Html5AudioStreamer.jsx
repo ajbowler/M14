@@ -26,7 +26,7 @@ render: function() {
 // var url = 'http://' + this.host + ':' + this.port + '/' + this.suffix;
 var url = 'http://65.110.226.243:8000/mpd.ogg'
 return (
-  <audio autoPlay id="audioStream" src={url}>
+  <audio autoPlay preload="auto" id="audioStream" src={url}>
     HTML5 Audio not supported.
   </audio>
 );
