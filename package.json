@@ -2,7 +2,7 @@
   "name": "M14-Node",
   "version": "0.0.0-1",
   "description": "A node server for managing an MPD client that runs in your browser",
-  "main": "server_v2.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ajbowler/M14"
