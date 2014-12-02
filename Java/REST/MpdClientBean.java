@@ -4,20 +4,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class MpdClientBean {
-  public Regular user;
+  public String username;
   public String host;
   public Integer port;
 
   public MpdClientBean() {}; //JAXB needs this
 
-  public MpdClientBean(Regular user, String host, Integer port) {
-    this.user = user;
+  public MpdClientBean(String username, String host, Integer port) {
+    this.username = username;
     this.host = host;
     this.port = port;
   }
 
-  public Regular getUser() {
-    return this.user;
+  public String getUser() {
+    return this.username;
   }
 
   public String getHost() {
@@ -28,8 +28,8 @@ public class MpdClientBean {
     return this.port;
   }
 
-  public void setUser(Regular user) {
-    this.user = user;
+  public void setUser(String username) {
+    this.username = username;
   }
 
   public void setHost(String host) {
