@@ -1,25 +1,22 @@
 import java.sql.Statement;
 
-import jdbc.MpdConnection;
-import jdbc.Regular;
-
 //data class that holds information for the user's connections
 public class MpdConnection {
 
 private String host;
 
-private int port;
+private String port;
 
-public MpdConnection(String host, int port) {
- this.host = host;
- this.port = port;
+public MpdConnection(String inHost, String inPort) {
+ this.host = inHost;
+ this.port = inPort;
 }
 
 public String getHost() {
  return this.host;
 }
 
-public int getPort() {
+public String getPort() {
  return this.port;
 }
 

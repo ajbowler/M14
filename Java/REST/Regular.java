@@ -34,8 +34,7 @@ public class Regular extends User {
   public String userID = "0";
 
 
-  public Regular(java.sql.Connection DBCon, String index) {
-    Regular.DBCon = DBCon;
+  public Regular(String index) {
     userID = index;
     this.joindate = null; // default Date constructor uses time/date
   }
@@ -167,20 +166,20 @@ public class Regular extends User {
       
       // A few loops that find all of the connection ids that the user owns and then 
       // creates the array based on these ids.
-      while(Rs.next){
+      while(Rs.next()){
         conID[i] = Rs.getString("connectionID");
       }
       
-      for(int k = 0, k < conID.length, k++){
+      for(int k = 0; k < conID.length; k++){
         Rs = myStmt.executeQuery("SELECT * FROM connections WHERE connectionID =" + conID[k] + ";");
-        cons[k] = MpdConnection( (rs.getString("host")), rs.getString("port") );
+        cons[k] = MpdConnection( (Rs.getString("host")), Rs.getString("port") );
       }
       return cons;
     }
     catch (SQLException e) {
       e.printStackTrace();
     }
-    return;
+    return null;
   }
 
   /*
