@@ -2,8 +2,6 @@ package com.m14.rest;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.m14.rest.Regular;
-
 @XmlRootElement
 public class MpdClientBean {
   public Regular user;
