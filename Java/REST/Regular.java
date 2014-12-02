@@ -26,22 +26,16 @@ public class Regular extends User {
   public String password = null;
   public String email = null;
   public Timestamp joindate;
-
-  // STILL NEEDS WORK
-  // This will eventually need to be implimented so that it is the id the
-  // database uses to find the user.
-  // As of now, defaulted to 0.
   public String userID = "0";
 
 
-  public Regular(String index) {
-    userID = index;
+  public Regular(java.sql.Connection DBCon, String username) {
+    Regular.DBCon = DBCon;
+    this.username = username;
     this.joindate = null; // default Date constructor uses time/date
   }
 
-  // return username as String
-  // for Now also pulls in all other user info into this class
-  public String getUsername() throws SQLException {
+  public Regular getUserFromDatabase(String username) throws SQLException {
     Connection internalCon = null;
     // try block for sqlException
     try {
@@ -56,16 +50,16 @@ public class Regular extends User {
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // finds the username based on the userID
-      ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE userID =" + userID + ";");
+      ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE username =" + username + ";");
       while (Rs.next()) {
-        username = Rs.getString("username");
-        password = Rs.getString("password");
-        userID = Rs.getString("userID");
-        joindate = Rs.getTimestamp("JoinDate");
-        email = Rs.getString("EmailAddress");
+        this.username = Rs.getString("username");
+        this.password = Rs.getString("password");
+        this.userID = Rs.getString("userID");
+        this.joindate = Rs.getTimestamp("JoinDate");
+        this.email = Rs.getString("EmailAddress");
       }
       internalCon.close();
-      return this.username;
+      return this;
     }
     // catch statement for original try block
     catch (SQLException e) {
@@ -75,7 +69,7 @@ public class Regular extends User {
     }
     internalCon.close();
     // return 'Didnt Work" if connection is unsuccessful
-    return "Didnt Work";
+    return null;
   }
 
   // returns a string of the user name
@@ -98,7 +92,7 @@ public class Regular extends User {
   }
 
   // adds a connection to connections
-  public void addConnection(Integer ip, Integer port, String name) {
+  public void addConnection(String ip, Integer port, String name) {
     try {
 
       Statement myStmt = myConn.createStatement();
@@ -150,36 +144,9 @@ public class Regular extends User {
   public String getEmail(){
     return this.email;
   }
-
-  // Returns an array of connections that the user owns
-  public MpdConnection[] getConnections(){
-    try{
-      // Create a statement and a result set so that we can read all of the connection edges that 
-      // the user belongs to
-      Statement myStmt = myConn.createStatement();
-      ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
-      int i = 0;
-      // array that holds the connectionIDs that the user owns
-      String[] conID;
-      // To be returned array that will hold all of the connections the user owns
-      MpdConnection[] cons;
-      
-      // A few loops that find all of the connection ids that the user owns and then 
-      // creates the array based on these ids.
-      while(Rs.next()){
-        conID[i] = Rs.getString("connectionID");
-      }
-      
-      for(int k = 0; k < conID.length; k++){
-        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE connectionID =" + conID[k] + ";");
-        cons[k] = MpdConnection( (Rs.getString("host")), Rs.getString("port") );
-      }
-      return cons;
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
+  
+  public String getUsername(){
+	  return this.username;
   }
 
   /*
