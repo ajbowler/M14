@@ -6,6 +6,7 @@ var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
 var PlayerControls = require('./PlayerControls.jsx');
 var Html5AudioStreamer = require('./Html5AudioStreamer.jsx');
+var StatusModal = require('./StatusModal.jsx');
 var DropdownMenu = require('./DropdownMenu.jsx');
 
 var MusicPlayer = React.createClass({
