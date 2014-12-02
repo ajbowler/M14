@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
 import javax.sql.DataSource;
 import javax.naming.Context;
@@ -29,9 +31,8 @@ public class Regular extends User {
   public String userID = "0";
 
 
-  public Regular(java.sql.Connection DBCon, String username) {
-    Regular.DBCon = DBCon;
-    this.username = username;
+  public Regular(String index) {
+    this.username = index;
     this.joindate = null; // default Date constructor uses time/date
   }
 
@@ -147,6 +148,39 @@ public class Regular extends User {
   
   public String getUsername(){
 	  return this.username;
+  }
+  
+  // Returns an array of connections that the user owns
+  public ArrayList<MpdConnection> getConnections(){
+    try{
+      // Create a statement and a result set so that we can read all of the connection edges that 
+      // the user belongs to
+      Statement myStmt = myConn.createStatement();
+      ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
+      // array that holds the connectionIDs that the user owns
+      ArrayList<String> conID = new ArrayList<String>();
+      // To be returned array that will hold all of the connections the user owns
+      ArrayList<MpdConnection> cons = new ArrayList<MpdConnection>();
+      
+      // A few loops that find all of the connection ids that the user owns and then 
+      // creates the array based on these ids.
+      while(Rs.next()){
+        conID.add( Rs.getString("connectionID") );
+      }
+      
+      ListIterator<String> listIt = conID.listIterator();
+      
+      while(listIt.hasNext()){
+        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE connectionID =" + listIt.next() + ";");
+        MpdConnection mCon = new MpdConnection( (Rs.getString("host")), Rs.getString("port") );
+        cons.add(mCon);
+      }
+      return cons;
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   /*
