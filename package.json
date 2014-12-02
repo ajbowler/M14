@@ -1,0 +1,23 @@
+{
+  "name": "M14-Node",
+  "version": "0.0.0-1",
+  "description": "A node server for managing an MPD client that runs in your browser",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajbowler/M14"
+  },
+  "author": "Alex Lende",
+  "bugs": {
+    "url": "https://github.com/ajbowler/M14/issues"
+  },
+  "homepage": "https://github.com/ajbowler/M14",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "restify": "^2.8.3",
+    "websocket": "^1.0.13"
+  },
+  "devDependencies": {
+    "request": "^2.49.0"
+  }
+}
