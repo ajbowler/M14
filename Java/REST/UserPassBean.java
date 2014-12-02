@@ -9,8 +9,8 @@ public class UserPassBean {
 
   public UserPassBean() {} // JAXB needs this
 
-    public UserPassBean(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+  public UserPassBean(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 }

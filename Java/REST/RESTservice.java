@@ -24,22 +24,44 @@ import java.sql.Connection;
 
 import com.m14.rest.Regular;
 
+@Path("/app")
 public class RESTservice {
+	
+  @GET
+  @Path("/test/{name}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public UserPassBean getUserinJSON(@PathParam("name") String name) {
+  
+	UserPassBean upb = new UserPassBean("Nicholas Montelibano", "password");
+	
+    Regular Usr = new Regular(null);
+    try {
+		Usr = Usr.getUserFromDatabase(upb.username);
+		//upb = new UserPassBean(Usr.getUsername(), Usr.getPassword());
+		return upb;
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return upb;
+  }
+	
 	
   @POST
   @Path("/login")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response getUserinJSON(final UserPassBean input) {
+  @Consumes("text/plain")
+  public Response getUserinJSON2(String Pass) {
     try {
       // Must first create the object before getting information from input.username with getUserFromDatabase
-      Regular user =  new Regular(null, null);
-      user = user.getUserFromDatabase(input.username);
+      Regular user =  new Regular(null);
+      user = user.getUserFromDatabase("Nicholas Montelibano");
       
-      if (user.password.equals(input.password)) {
-        return Response.status(201).entity(user).build();
+      if (user.getPassword().equals(Pass)) {
+        return Response.status(201).entity("IT WORKED").build();
       } else {
-        return Response.status(401).entity("Authentication failed!").build();
+        return Response.status(401).entity("Authentication failed!" + user.getPassword()).build();
       }
     }
     catch(Exception exc) {
@@ -47,7 +69,7 @@ public class RESTservice {
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Authentication failed!").build();
+      return Response.status(401).entity("Authentication failed! \n \n \n " + errors.toString()).build();
     }
   }
 

@@ -29,8 +29,7 @@ public class Regular extends User {
   public String userID = "0";
 
 
-  public Regular(java.sql.Connection DBCon, String username) {
-    Regular.DBCon = DBCon;
+  public Regular(String username) {
     this.username = username;
     this.joindate = null; // default Date constructor uses time/date
   }
@@ -46,11 +45,14 @@ public class Regular extends User {
         DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
         internalCon = (Connection) ds.getConnection();
       }
-      catch(Exception exc){}//empty until decide on procedure for not making connection
+      catch(Exception exc){
+    	  System.out.println("Does not create internal connection");
+      }//empty until decide on procedure for not making connection
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // finds the username based on the userID
-      ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE username =" + username + ";");
+      System.out.println("SELCT * FROM user WHERE username =" + username + ";");
+      ResultSet Rs = myStmt.executeQuery("SELECT * FROM user WHERE username =\"" + username + "\";");
       while (Rs.next()) {
         this.username = Rs.getString("username");
         this.password = Rs.getString("password");
@@ -65,7 +67,7 @@ public class Regular extends User {
     catch (SQLException e) {
       StringWriter errors = new StringWriter();
       e.printStackTrace(new PrintWriter(errors));
-      System.out.println(errors.toString());
+      System.out.println("SQL ERROR: =================== " + errors.toString());
     }
     internalCon.close();
     // return 'Didnt Work" if connection is unsuccessful

@@ -9,8 +9,8 @@ import java.sql.Connection;
 
 public class Premium extends Regular{
 
-  public Premium(Connection con, String index) {
-    super(con, index);
+  public Premium(Connection con, String name) {
+    super(name);
     // TODO Auto-generated constructor stub
   }
 
