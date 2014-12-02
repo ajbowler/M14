@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
+
 import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -20,8 +21,8 @@ import javax.naming.InitialContext;
 //Does not include being addressed as his/her majesty
 public class Regular extends User {
 
-  static Connection myConn;
-  static java.sql.Connection DBCon;
+	static Connection myConn;
+	static java.sql.Connection DBCon;
 
   // Variables to store user information
   public String username = null;
@@ -80,12 +81,20 @@ public class Regular extends User {
 
   // Adds a friend
   public void addFriend(Integer friendID) {
+	  Connection internalCon = null;
     try {
-      // create a statement
-      Statement myStmt = myConn.createStatement();
+    	try {
+    		Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();
+      }
+      catch(Exception exc){}//empty until decide on procedure for not making connection
+      // create a statement and a result set to find the username string
+      Statement myStmt = internalCon.createStatement();
       // execute sql command
-      myStmt.execute("INSERT INTO friends VALUES(" + userID + ","
-          + friendID.toString() + ");");
+      myStmt.execute("INSERT INTO friends VALUES(" + userID + "," + friendID.toString() + ");");
+      internalCon.close();
     }
     catch (SQLException e) {
       e.printStackTrace();
@@ -94,9 +103,17 @@ public class Regular extends User {
 
   // adds a connection to connections
   public void addConnection(String ip, Integer port, String name) {
+  	Connection internalCon = null;
     try {
-
-      Statement myStmt = myConn.createStatement();
+    	try {
+    		Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();
+      }
+      catch(Exception exc){}//empty until decide on procedure for not making connection
+      // create a statement and a result set to find the username string
+      Statement myStmt = internalCon.createStatement();
       // initialize a String
       String id = "";
       // aSctually creates a connection in the connections table
@@ -104,17 +121,14 @@ public class Regular extends User {
           + ip.toString() + "," + port.toString() + "," + "\"" + name
           + "\"" + ");");
       // finds the id of the connection in order to create an edge
-      ResultSet rs = myStmt
-          .executeQuery("SELECT ID FROM connections where IP = "
-              + ip.toString() + ";");
+      ResultSet rs = myStmt.executeQuery("SELECT ID FROM connections where IP = " + ip.toString() + ";");
       while (rs.next()) {
         id = rs.getString("ID");
       }
       // creates edge between user and connection
-      myStmt.execute("INSERT INTO connectionEdges VALUES(" + userID + ","
-          + id + ");");
+      myStmt.execute("INSERT INTO connectionEdges VALUES(" + userID + "," + id + ");");
+      internalCon.close();
     } catch (SQLException e) {
-
       e.printStackTrace();
     }
   }
@@ -152,10 +166,17 @@ public class Regular extends User {
   
   // Returns an array of connections that the user owns
   public ArrayList<MpdConnection> getConnections(){
-    try{
-      // Create a statement and a result set so that we can read all of the connection edges that 
-      // the user belongs to
-      Statement myStmt = myConn.createStatement();
+  	Connection internalCon = null;
+    try {
+    	try {
+    		Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();
+      }
+      catch(Exception exc){}//empty until decide on procedure for not making connection
+      // create a statement and a result set to find the username string
+      Statement myStmt = internalCon.createStatement();
       ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
       // array that holds the connectionIDs that the user owns
       ArrayList<String> conID = new ArrayList<String>();
@@ -175,6 +196,7 @@ public class Regular extends User {
         MpdConnection mCon = new MpdConnection( (Rs.getString("host")), Rs.getString("port") );
         cons.add(mCon);
       }
+      internalCon.close();
       return cons;
     }
     catch (SQLException e) {
