@@ -24,7 +24,7 @@ var WebSocketServer = require('websocket').server;
 function Proxy(mpdHost, mpdPort, mpdPass, wsPort) {
   // The MPD side of the connection
   this.mpd = {
-    connection: {},
+    netConnection: {},
     host: mpdHost,
     port: mpdPort,
     pass: mpdPass || '',
@@ -130,8 +130,21 @@ Proxy.setupWS = function(port) {
 
       // The string message that was sent to us
       // Parse msgString for the MPD to connect to.
-      var msgString = message.utf8Data;
+      message = JSON.parse(message);
+      var msgString = message.mpdCommand;
+      var selectedMPD = message.mpdHost;
       console.log('msgString: ' + msgString);
+
+      /*
+      connections = {
+        '10.30.121.50:6600': mpdConnection
+        '0.0.0.0:6600': anotherMpdConnection,
+      };
+
+      var mpdConnection = connections[message.mpdHost].netDotConnection;
+
+      mpdConnection.write(things);
+      */
 
       // Reconnect if necessicary
       if (!self.mpd.isConnected) {
@@ -198,7 +211,7 @@ localServer.post('/create', function(req, res, next) {
   var mpdHost = req.params.host;
   var mpdPort = req.params.port;
   var mpdPass = req.params.pass;
-  var id = connectionCount++; // TODO: generate a connection id in a better way
+  var id = connectionCount++; // TODO: id = host:port
 
   console.log((new Date()) + ' Proxy created [' + id + ']');
 
