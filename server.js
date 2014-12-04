@@ -131,6 +131,7 @@ Proxy.setupWS = function(port) {
       // The string message that was sent to us
       // Parse msgString for the MPD to connect to.
       var msgString = message.utf8Data;
+      console.log('msgString: ' + msgString);
 
       // Reconnect if necessicary
       if (!self.mpd.isConnected) {
@@ -154,10 +155,8 @@ Proxy.setupWS = function(port) {
     connection.on('close', function(reasonCode, description) {
       delete self.clients[id];
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected [' + id + ']');
+      self.ws.serverActive = false;
     });
-
-    //websocket end
-    connection.on('')
 
     console.log((new Date()) + ' Connection accepted [' + id + ']');
 
@@ -204,7 +203,9 @@ localServer.post('/create', function(req, res, next) {
   console.log((new Date()) + ' Proxy created [' + id + ']');
 
   //Check if websocket server is set up.
-
+  if(!Proxy.ws.serverActive) {
+    Proxy.setupWS(8007);
+  }
 
   // create a new mpd connection if the connection id doesn't exist
   if (!_.contains(id)) {
