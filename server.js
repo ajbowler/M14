@@ -33,16 +33,24 @@ function Proxy(mpdHost, mpdPort, mpdPass, wsPort) {
   };
 
   // The websocket side of the connection
-  this.ws = {
-    httpServer: {},
-    wsServer: {},
-    clients: {},
-    clientCount: 0
-  };
+  // this.ws = {
+  //   httpServer: {},
+  //   wsServer: {},
+  //   clients: {},
+  //   clientCount: 0
+  // };
 
   this.setupMPD(mpdHost, mpdPort, mpdPass);
-  this.setupWS(wsPort);
+  //this.setupWS(wsPort);
 }
+
+Proxy.ws = {
+  httpServer: {},
+  wsServer: {},
+  clients: {},
+  clientCount: 0,
+  serverActive: false
+};
 
 /**
  * @desc Sets up the MPD side of the connection
@@ -93,15 +101,19 @@ Proxy.prototype.setupMPD = function(host, port, pass) {
  *
  * @param {number} [port=8007] - The port the websocket runs on
  */
-Proxy.prototype.setupWS = function(port) {
+Proxy.setupWS = function(port) {
+  console.log('setupWS called!');
 
   var self = this;
 
   port = port || 8007;
 
-  self.ws.httpServer = http.createServer(function(request, response) {});
+  self.ws.httpServer = http.createServer(function(request, response) {
+    self.ws.serverActive = true;
+  });
 
   self.ws.httpServer.listen(port, function() {
+    self.ws.serverActive = true;
     console.log((new Date()) + ' Server is listening on port ' + port);
   });
 
@@ -117,6 +129,7 @@ Proxy.prototype.setupWS = function(port) {
     connection.on('message', function(message) {
 
       // The string message that was sent to us
+      // Parse msgString for the MPD to connect to.
       var msgString = message.utf8Data;
 
       // Reconnect if necessicary
@@ -142,6 +155,9 @@ Proxy.prototype.setupWS = function(port) {
       delete self.clients[id];
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected [' + id + ']');
     });
+
+    //websocket end
+    connection.on('')
 
     console.log((new Date()) + ' Connection accepted [' + id + ']');
 
@@ -186,6 +202,9 @@ localServer.post('/create', function(req, res, next) {
   var id = connectionCount++; // TODO: generate a connection id in a better way
 
   console.log((new Date()) + ' Proxy created [' + id + ']');
+
+  //Check if websocket server is set up.
+
 
   // create a new mpd connection if the connection id doesn't exist
   if (!_.contains(id)) {
