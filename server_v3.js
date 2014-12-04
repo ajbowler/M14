@@ -8,13 +8,15 @@ var http = require('http');
 var restify = require('restify');
 var WebSocketServer = require('websocket').server;
 
-function MPD(mpdHost, mpdPort, mpdPass) = {
-  netConnection: {},
-  host: mpdHost,
-  port: mpdPort,
-  pass: mpdPass || '',
-  isConnected: false,
-  isAuthenticated: false
+function MPD(mpdHost, mpdPort, mpdPass) {
+  this.netConnection = {};
+  this.host = mpdHost;
+  this.port = mpdPort;
+  this.pass = mpdPass || '';
+  this.isConnected = false;
+  this.isAuthenticated = false;
+
+  this.setupMPD(this.host, this.port, this.pass);
 };
 
 var WS = {
@@ -66,7 +68,7 @@ MPD.prototype.setupMPD(host, port, pass) {
   });
 };
 
-function setupWS(port, mpd) {
+function setupWS(port) {
   console.log('setupWS called!');
 
   port = port || 8007;
@@ -96,25 +98,15 @@ function setupWS(port, mpd) {
       message = JSON.parse(message);
       var msgString = message.mpdCommand;
       var selectedMPD = message.mpdHost;
-      console.log('msgString: ' + msgString);
 
-      /*
-      connections = {
-        '10.30.121.50:6600': mpdConnection
-        '0.0.0.0:6600': anotherMpdConnection,
-      };
+      var mpd = mpdConnectionList[selectedMPD];
 
-      var mpdConnection = connections[message.mpdHost].netDotConnection;
-
-      mpdConnection.write(things);
-      */
-
-      // Reconnect if necessicary
+      // Reconnect if necessary
       if (!mpd.isConnected) {
         mpd.setupMPD(mpd.host, mpd.port, mpd.pass);
       }
 
-      // Reauthenticate if necessicary
+      // Reauthenticate if necessary
       if (!mpd.isAuthenticated) {
         mpd.connection.write('password ' + mpd.pass + '\n');
         // TODO: Check to see if authentication was successful and set
@@ -141,3 +133,52 @@ function setupWS(port, mpd) {
 
   });
 };
+
+/*
+ * This is where the REST service for creating and destroying connections starts
+ */
+
+var localServer = restify.createServer();
+localServer.use(restify.bodyParser());
+
+// this is listening to Java to create new connection objects
+localServer.listen(8008, function() {});
+
+// POST remove a connection by id
+localServer.post('/destroy', function(req, res, next) {
+  var cid = req.params.connectionId; //TODO: use connection id to delete connections
+  delete mpdConnectionList[cid];
+
+  console.log((new Date()) + ' MPD destroyed [' + cid + ']');
+
+  res.send(200);
+
+  return next();
+});
+
+// POST make a new connection with a unique id
+localServer.post('/create', function(req, res, next) {
+  // TODO: check the format for reqest. i.e. do we need to JSON.parse()?
+  var mpdHost = req.params.host;
+  var mpdPort = req.params.port;
+  var mpdPass = req.params.pass;
+  var id = mpdHost + ':' + mpdPort; // TODO: id = host:port
+
+  console.log((new Date()) + ' MPD created [' + id + ']');
+
+  //Check if websocket server is set up.
+  if(!WS.serverActive) {
+    setupWS(8007);
+  }
+
+  // create a new mpd connection if the connection id doesn't exist
+  if (!_.contains(id)) {
+    mpdConnectionList[id] = new MPD(mpdHost, mpdPort, mpdPass);
+  } else {
+    console.warn((new Date()) + ' MPD exists [' + id + '}');
+  }
+
+  res.send(200, JSON.stringify({'connectionID': id}));
+
+  return next();
+});
