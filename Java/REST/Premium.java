@@ -14,11 +14,6 @@ public class Premium extends Regular{
 	// name of the file that the background image is in
 	String imageName;
 	
-	// adds a connection to connections
-	void addConnection(){
-		//TODO
-	}
-	
 	// changes the background image of the website
 	void changeImage(){
 		//TODO
