@@ -1,6 +1,7 @@
-/**
- * @jsx React.DOM
- */
+/** @jsx React.DOM */
+
+/* jslint browserify: true */
+'use strict';
 
 var React = require('react/addons');
 var $ = require('jquery');
@@ -34,9 +35,8 @@ var ProfileModal = React.createClass({
     };
 
     $.ajax(request).done(function(data) {
-      this.props.username = newUserName;
-      this.props.email = newEmail;
-      forceUpdate();
+      this.props.username = data.newUserName;
+      this.props.email = data.newEmail;
     });
 
     this.setState({ allowEdit: !(this.state.allowEdit)});
@@ -58,6 +58,7 @@ var ProfileModal = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
+    /*jslint ignore: start */
       <Modal title='Profile'
         animation={true}>
         <div className='modal-body'>
@@ -108,6 +109,7 @@ var ProfileModal = React.createClass({
           <ModalButton bsStyle='primary' onClick={this.props.onRequestHide}>Close</ModalButton>
         </div>
       </Modal>
+      /*jslint ignore: end */
     );
   }
 });
@@ -115,16 +117,18 @@ var ProfileModal = React.createClass({
 var EditInfo = React.createClass({
   render: function() {
     return (
-    <div className='input-group'>
-      <form>
-        <UserInput type='text' className='form-control' placeholder='Name'  value={this.props.editHumanName}/>
-        <UserInput type='text' className='form-control' placeholder='Username' value={this.props.editUserName}/>
-        <UserInput type='text' className='form-control' placeholder='Email' value={this.props.editEmail}/>
-        <ModalButton bsStyle='success' onClick={this.updateUserInfo}>Update</ModalButton>
-        <br/>
-        <br/>
-      </form>
-    </div>
+      /*jslint ignore: start */
+      <div className='input-group'>
+        <form>
+          <UserInput type='text' className='form-control' placeholder='Name'  value={this.props.editHumanName}/>
+          <UserInput type='text' className='form-control' placeholder='Username' value={this.props.editUserName}/>
+          <UserInput type='text' className='form-control' placeholder='Email' value={this.props.editEmail}/>
+          <ModalButton bsStyle='success' onClick={this.updateUserInfo}>Update</ModalButton>
+          <br/>
+          <br/>
+        </form>
+      </div>
+    /*jslint ignore: end */
     );
   }
 });

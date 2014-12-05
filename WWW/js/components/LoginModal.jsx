@@ -1,6 +1,7 @@
-/**
-* @jsx React.DOM
-*/
+/** @jsx React.DOM */
+
+/* jslint browserify: true */
+'use strict';
 
 var React = require('react/addons');
 var $ = require('jquery');
@@ -35,7 +36,7 @@ var LoginModal = React.createClass({
       cache: false,
       dataType: 'json',
       data: {
-        username: this.state.username, 
+        username: this.state.username,
         password: this.state.password
       }
     };
@@ -43,34 +44,36 @@ var LoginModal = React.createClass({
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
-      console.log('Could not login.');
+      console.log('Could not login.'); // TODO: handle incorrect login by rendering an error message
     });
   },
 
   render: function() {
     return this.transferPropsTo(
+      /*jslint ignore: start */
       <Modal title='Login' backdrop={true} animation={true} >
         <div className='modal-body'>
           <div className='form-group'>
             <form>
-              <UserInput 
-                type='text' 
-                id='login_username' 
-                placeholder='Username' 
-                label='Username' 
+              <UserInput
+                type='text'
+                id='login_username'
+                placeholder='Username'
+                label='Username'
                 onChange={this.updateUsername} />
-              <UserInput 
-                type='text' 
-                type='password' 
-                id='login_password' 
-                placeholder='Password' 
-                label='Password' 
+              <UserInput
+                type='text'
+                type='password'
+                id='login_password'
+                placeholder='Password'
+                label='Password'
                 onChange={this.updatePassword} />
               <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
             </form>
             </div>
          </div>
       </Modal>
+      /*jslint ignore: end */
     );
   }
 });
