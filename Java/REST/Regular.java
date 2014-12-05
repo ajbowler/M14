@@ -1,4 +1,4 @@
-package sendingcommands;
+package com.m14.rest;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
