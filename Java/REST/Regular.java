@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -168,11 +169,21 @@ public class Regular extends User {
   public ArrayList<MpdConnection> getConnections(){
   	Connection internalCon = null;
     try {
+    	
+    	//Creates The Connections
     	try {
-    		Context initCtx = new InitialContext();
+    	/*Context initCtx = new InitialContext();
         Context envCtx = (Context) initCtx.lookup("java:comp/env");
         DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-        internalCon = (Connection) ds.getConnection();
+        internalCon = (Connection) ds.getConnection();*/
+		Connection myConn = DriverManager.getConnection
+		("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");
+					
+		//create a statement
+		Statement myStmt = myConn.createStatement();
+					
+		//execute sql query
+		ResultSet myRs = myStmt.executeQuery("select * from user");
       }
       catch(Exception exc){}//empty until decide on procedure for not making connection
       // create a statement and a result set to find the username string
