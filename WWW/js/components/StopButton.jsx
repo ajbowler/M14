@@ -23,12 +23,11 @@ var StopButton = React.createClass({
 
   stop: function() {
     console.log(ws);
-    var req = {
+    console.log('sending: stop');
+    ws.send(JSON.stringify({
       mpdCommand: 'stop',
       mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
-    };
-    ws.send(JSON.stringify(req));
-    console.log('sent: stop');
+    }));
   }
 });
 

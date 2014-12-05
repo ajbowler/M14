@@ -62,7 +62,6 @@ var LoginModal = React.createClass({
                 label='Username'
                 onChange={this.updateUsername} />
               <UserInput
-                type='text'
                 type='password'
                 id='login_password'
                 placeholder='Password'

@@ -23,12 +23,11 @@ var PlayButton = React.createClass({
 
   play: function() {
     console.log(ws);
-    var req = {
+    console.log('sending: play');
+    ws.send(JSON.stringify({
       mpdCommand: 'play',
       mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
-    };
-    ws.send(JSON.stringify(req));
-    console.log('sent: play');
+    }));
   }
 });
 

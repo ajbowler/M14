@@ -23,12 +23,11 @@ var PauseButton = React.createClass({
 
   pause: function() {
     console.log(ws);
-    var req = {
+    console.log('sending: pause');
+    ws.send(JSON.stringify({
       mpdCommand: 'pause',
       mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
-    };
-    ws.send(JSON.stringify(req));
-    console.log('sent: pause');
+    }));
   }
 });
 
