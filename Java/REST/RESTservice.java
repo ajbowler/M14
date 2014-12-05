@@ -24,6 +24,7 @@ import java.sql.Connection;
 
 import com.m14.rest.Regular;
 import com.m14.rest.AuthBean;
+import com.m14.rest.DestroyBean;
 
 @Path("/app")
 public class RESTservice {
@@ -71,8 +72,46 @@ public class RESTservice {
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Couldn't build user!").build();
+      return Response.status(401).entity("Couldn't register user!").build();
     }
+  }
+
+  @POST
+  @Path("/getConnections")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response getMPDConnectionsForUser(final AuthBean input) {
+    try {
+      Regular user = new Regular();
+      user = user.getUserFromDatabase(input.username);
+
+      ArrayList<MpdConnection> mpdConnections = user.getConnections();
+      // TODO: Convert ArrayList into JSON somehow, and return it in the Response.
+      return null; // TODO
+    }
+    catch(Exception exc) {
+      StringWriter errors = new StringWriter();
+      exc.printStackTrace(new PrintWriter(errors));
+      // prints stack trace to Catalina.out
+      System.out.println(errors.toString());
+      return Response.status(401).entity("Couldn't return connections!").build();
+    }
+  }
+
+  @POST
+  @Path("/createConnection")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createMPDConnection(final MpdClientBean input) {
+    return null; // TODO
+  }
+
+  @POST
+  @Path("/destroy")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response destroyMPDConnection(final DestroyBean input) {
+    return null; // TODO
   }
 
   // @POST
