@@ -1,9 +1,8 @@
-package sendingcommands;
+package com.m14.rest;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 //data class that holds information for the user's connections
-package com.m14.rest;
 
 public class MpdConnection {
 
@@ -30,10 +29,4 @@ public class MpdConnection {
    Regular user = new Regular(userID);
    return user.getConnections();
   }
-
-  public Statement createStatement() {
-   // TODO Auto-generated method stub
-   return null;
-  }
-
 }

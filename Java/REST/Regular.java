@@ -28,14 +28,12 @@ public class Regular extends User {
   // Variables to store user information
   public String username = null;
   public String password = null;
-  public String email = null;
-  public Timestamp joindate;
+  public String email = null;\
   public String userID = "0";
   public Connection internalCon = null;
 
   public Regular(String index) {
     this.username = index;
-    this.joindate = null; // default Date constructor uses time/date
     
   }
   public void DbAddUser( String name, String pswrd, String eml){
@@ -76,7 +74,6 @@ public class Regular extends User {
         this.username = Rs.getString("username");
         this.password = Rs.getString("password");
         this.userID = Rs.getString("userID");
-        this.joindate = Rs.getTimestamp("JoinDate");
         this.email = Rs.getString("EmailAddress");
       }
       this.Close();
@@ -94,40 +91,42 @@ public class Regular extends User {
   }
 
   private void Close() {
-  // TODO Auto-generated method stub
-  
-}
+    try{
+      internalCon.close();
+    } catch(SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
 // Connects to a Database Connection
   public void Connect(){
-     // try block for Connection Exception
-      try {/*
-        Context initCtx = new InitialContext();
-        Context envCtx = (Context) initCtx.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-        internalCon = (Connection) ds.getConnection();*/
-        internalCon = DriverManager.getConnection
-        ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");
-    
-      }
-      catch(Exception exc){}//empty until decide on procedure for not making connection
+    // try block for Connection Exception
+    try {/*
+      Context initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+      internalCon = (Connection) ds.getConnection();*/
+      internalCon = DriverManager.getConnection
+      ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");
+    }
+    catch(Exception exc){}//empty until decide on procedure for not making connection
   }
   
   // Disconnects from a database
   public void Disconnect(){
     try {
-    internalCon.close();
-  } catch (SQLException e) {
-    // TODO decide 
-    e.printStackTrace();
-  }
+      internalCon.close();
+    } catch (SQLException e) {
+      // TODO decide 
+      e.printStackTrace();
+    }
   }
   
   
   // returns a string of the user name
   public String getPassword(){
       return this.password;
-    }
+  }
 
   // Adds a friend
   public void addFriend(Integer friendID) {
@@ -211,10 +210,6 @@ public class Regular extends User {
       // with the transferred properties. Then update the database to reflect that
       // user's loyalty.
     }
-  }
-
-  public Timestamp getJoinDate() {
-    return this.joindate;
   }
 
   public String getEmail(){
