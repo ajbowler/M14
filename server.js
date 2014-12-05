@@ -1,7 +1,3 @@
-/*
- * This server_v2.js handles all of the proxy connections between the client and mpd.
- */
-
 /* jslint node: true */
 'use strict';
 
@@ -13,35 +9,22 @@ var restify = require('restify');
 var WebSocketServer = require('websocket').server;
 
 /**
- * @desc Creates a new Proxy
+ * @desc Creates a new MPD Object
  *
  * @param {string} mpdHost - The MPD host
  * @param {number} mpdPort - The MPD port
  * @param {string} [mpdPass] - The optional MPD password
- * @param {number} [wsPort=8007] - The websocket port default 8007
  * @class
  */
-function Proxy(mpdHost, mpdPort, mpdPass, wsPort) {
-  // The MPD side of the connection
-  this.mpd = {
-    connection: {},
-    host: mpdHost,
-    port: mpdPort,
-    pass: mpdPass || '',
-    isConnected: false,
-    isAuthenticated: false
-  };
+function MPD(mpdHost, mpdPort, mpdPass) {
+  this.netConnection = {};
+  this.host = mpdHost;
+  this.port = mpdPort;
+  this.pass = mpdPass || '';
+  this.isConnected = false;
+  this.isAuthenticated = false;
 
-  // The websocket side of the connection
-  this.ws = {
-    httpServer: {},
-    wsServer: {},
-    clients: {},
-    clientCount: 0
-  };
-
-  this.setupMPD(mpdHost, mpdPort, mpdPass);
-  this.setupWS(wsPort);
+  this.setupMPD(this.host, this.port, this.pass);
 }
 
 /**
@@ -51,41 +34,39 @@ function Proxy(mpdHost, mpdPort, mpdPass, wsPort) {
  * @param {number} port - the MPD port
  * @param {string} [pass] - an optional password for MPD
  */
-Proxy.prototype.setupMPD = function(host, port, pass) {
-
+MPD.prototype.setupMPD = function(host, port, pass) {
   var self = this;
 
   pass = pass || '';
 
   // The mpd connection
-  self.mpd.connection = net.connect({host: host, port: port}, function() {
-    self.mpd.isConnected = true;
+  self.netConnection = net.connect({host: host, port: port}, function() {
+    self.isConnected = true;
   });
 
-  self.mpd.connection.on('data', function(data) {
+  self.netConnection.on('data', function(data) {
     // The string message that was sent to us
     var msgString = data.toString();
-    console.log((new Date()) + ' MPD says ' + msgString.replace(/^\s+|\s+$/g,''));
+    console.log((new Date()) + ' MPD at ' + host + ':' + port + ' says ' + msgString.replace(/^\s+|\s+$/g,''));
 
     // Loop through all clients
-    _.forEach(self.ws.clients, function (client) {
+    _.forEach(WS.clients, function (client) {
       // Send a message to the client with the message
       client.sendUTF(msgString);
     });
   });
 
-  self.mpd.connection.on('end', function() {
-    console.log((new Date()) + ' MPD Connection Closed');
+  self.netConnection.on('end', function() {
+    console.log((new Date()) + ' MPD Connection [' + host + ':' + port + '] Closed');
 
     // Notify the clients that the connection was closed
-    _.forEach(self.ws.clients, function (client) {
-      client.sendUTF('MPD Connection Closed');
+    _.forEach(WS.clients, function (client) {
+      client.sendUTF('MPD Connection [' + host + ':' + port + '] Closed');
     });
 
-    self.mpd.isConnected = false;
-    self.mpd.isAuthenticated = false;
+    self.isConnected = false;
+    self.isAuthenticated = false;
   });
-
 };
 
 /**
@@ -93,105 +74,130 @@ Proxy.prototype.setupMPD = function(host, port, pass) {
  *
  * @param {number} [port=8007] - The port the websocket runs on
  */
-Proxy.prototype.setupWS = function(port) {
-
-  var self = this;
+function setupWS(port) {
 
   port = port || 8007;
 
-  self.ws.httpServer = http.createServer(function(request, response) {});
+  WS.httpServer = http.createServer(function(request, response) {});
 
-  self.ws.httpServer.listen(port, function() {
+  WS.httpServer.listen(port, function() {
+    WS.serverActive = true;
     console.log((new Date()) + ' Server is listening on port ' + port);
   });
 
-  self.ws.wsServer = new WebSocketServer({httpServer: self.ws.httpServer});
+  WS.wsServer = new WebSocketServer({httpServer: WS.httpServer});
 
-  self.ws.wsServer.on('request', function(r) {
+  WS.wsServer.on('request', function(r) {
 
     var connection = r.accept('echo-protocol', r.origin);
 
     // Specific id for this client & increment count
-    var id = self.ws.clientCount++;
+    var id = WS.clientCount++;
+
+    console.log((new Date()) + ' Connection accepted [' + id + ']');
+
+    connection.on('connectFailed', function(error) {
+      console.log('Connect Error: ' + error.toString());
+    });
 
     connection.on('message', function(message) {
 
       // The string message that was sent to us
-      var msgString = message.utf8Data;
+      // Parse msgString for the MPD to connect to.
+      var messageJSON = JSON.parse(message.utf8Data);
+      var msgString = messageJSON.mpdCommand;
+      var selectedMPD = messageJSON.mpdHost;
 
-      // Reconnect if necessicary
-      if (!self.mpd.isConnected) {
-        self.setupMPD(self.mpd.host, self.mpd.port, self.mpd.pass);
+      var mpd = mpdConnectionList[selectedMPD];
+
+      // Reconnect if necessary
+      if (!mpd.isConnected) {
+        mpd.setupMPD(mpd.host, mpd.port, mpd.pass);
       }
 
-      // Reauthenticate if necessicary
-      if (!self.mpd.isAuthenticated) {
-        self.mpd.connection.write('password ' + self.mpd.pass + '\n');
+      // Reauthenticate if necessary
+      if (!mpd.isAuthenticated && mpd.pass !== '' ) {
+        mpd.netConnection.write('password ' + mpd.pass + '\n');
         // TODO: Check to see if authentication was successful and set
         // isAuthenticated to true. For now, enter password every time.
       }
 
-      console.log((new Date()) + ' Sending MPD ' + msgString);
+      console.log((new Date()) + ' Sending MPD [' + selectedMPD + '] ' + msgString);
 
       // Send the command to MPD
-      self.mpd.connection.write(msgString + '\n');
+      mpd.netConnection.write(msgString + '\n');
 
     });
 
     connection.on('close', function(reasonCode, description) {
-      delete self.clients[id];
+      delete WS.clients[id];
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected [' + id + ']');
+      WS.serverActive = false;
     });
 
-    console.log((new Date()) + ' Connection accepted [' + id + ']');
 
     // Store the connection method so we can loop through & contact all clients
-    self.ws.clients[id] = connection;
+    WS.clients[id] = connection;
 
   });
+}
 
+///////////////////////////////////////////////////////////////////////////////////
+// This is where the REST service for creating and destroying connections starts //
+///////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @desc The single websocket that all traffic is running through
+ */
+var WS = {
+  httpServer: {},
+  wsServer: {},
+  clients: {},
+  clientCount: 0,
+  serverActive: false
 };
 
-/*
- * This is where the REST service for creating and destroying connections starts
+/**
+ * @desc The list of MPD connections. Key-value pairs with 'host:port' as the key.
  */
+var mpdConnectionList = {};
 
 var localServer = restify.createServer();
 localServer.use(restify.bodyParser());
-
-var connections = {};
-var connectionCount = 0;
 
 // this is listening to Java to create new connection objects
 localServer.listen(8008, function() {});
 
 // POST remove a connection by id
 localServer.post('/destroy', function(req, res, next) {
-  var cid = req.params.connectionId; //TODO: use connection id to delete connections
-  delete connections[cid];
+  var cid = req.params.connectionId;
+  delete mpdConnectionList[cid];
 
-  console.log((new Date()) + ' Proxy destroyed [' + cid + ']');
+  console.log((new Date()) + ' MPD destroyed [' + cid + ']');
 
   res.send(200);
 
   return next();
 });
 
-// POST make a new connection with a unique id
+// POST make a new connection
 localServer.post('/create', function(req, res, next) {
-  // TODO: check the format for reqest. i.e. do we need to JSON.parse()?
   var mpdHost = req.params.host;
   var mpdPort = req.params.port;
   var mpdPass = req.params.pass;
-  var id = connectionCount++; // TODO: generate a connection id in a better way
+  var id = mpdHost + ':' + mpdPort;
 
-  console.log((new Date()) + ' Proxy created [' + id + ']');
+  //Check if websocket server is set up.
+  if(!WS.serverActive) {
+    setupWS(8007);
+  }
 
   // create a new mpd connection if the connection id doesn't exist
-  if (!_.contains(id)) {
-    connections[id] = new Proxy(mpdHost, mpdPort, mpdPass);
+  if (!_.has(mpdConnectionList, id)) {
+    mpdConnectionList[id] = new MPD(mpdHost, mpdPort, mpdPass);
+    console.log((new Date()) + ' MPD created [' + id + ']');
   } else {
-    console.warn((new Date()) + ' Proxy exists [' + id + '}');
+    console.warn((new Date()) + ' MPD exists [' + id + ']');
   }
 
   res.send(200, JSON.stringify({'connectionID': id}));

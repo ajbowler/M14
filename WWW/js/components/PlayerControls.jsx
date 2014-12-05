@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
 
+/* jslint browserify: true */
+'use strict';
+
 var React = require('react/addons');
 var PlayButton = require('./PlayButton.jsx');
 var PauseButton = require('./PauseButton.jsx');
@@ -11,12 +14,14 @@ var ButtonGroup = require('react-bootstrap/ButtonGroup.js');
 var PlayerControls = React.createClass({
   render: function() {
     return (
+      /*jslint ignore: start */
       <ButtonGroup>
         <PlayButton />
         <PauseButton />
         <StopButton />
         <NextButton />
       </ ButtonGroup>
+      /*jslint ignore: end */
     );
   }
 });

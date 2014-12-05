@@ -1,6 +1,7 @@
-/**
- * @jsx React.DOM
- */
+/** @jsx React.DOM */
+
+/* jslint browserify: true */
+'use strict';
 
 var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
@@ -12,6 +13,7 @@ var DropdownMenu = require('./DropdownMenu.jsx');
 var MusicPlayer = React.createClass({
   render: function() {
     return this.transferPropsTo(
+      /* jshint ignore: start */
       <div>
         <div>
           <img src="images/M14.svg" alt="M(usic)14" id="logo"/>
@@ -28,6 +30,7 @@ var MusicPlayer = React.createClass({
         <Html5AudioStreamer />
         <StatusModal />
       </div>
+      /* jshint ignore: end */
     );
   }
 });
