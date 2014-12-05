@@ -1,6 +1,4 @@
-/**
- * @jsx React.DOM
- */
+/** @jsx React.DOM */
 
 /* jslint browserify: true */
 /* jslint devel: true */
@@ -10,27 +8,26 @@ var React = require('react/addons');
 var Control = require('react-bootstrap/Button.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
 
-var ws = new WebSocket('ws://proj-309-M14.cs.iastate.edu:8007', 'echo-protocol');
-ws.addEventListener('message', function(e) {
-  var msg = e.data;
-  console.log(msg);
-});
+var ws = new WebSocket('ws://proj-309-m14.cs.iastate.edu:8007', 'echo-protocol');
 
-function sendMessage(message) {
-  console.log(ws);
-  ws.send(message);
-  console.log('sent: ' + message);
-}
+ws.onmessage = function(e) {
+  console.log(e.data);
+};
 
 var PauseButton = React.createClass({
   render: function() {
-    /*jslint ignore:start */
+    /*jslint ignore: start */
     return <Control bSize='large' id='pauseButton' onClick={this.pause}><Glyphicon glyph='pause' /> </Control>
-    /*jslint ignore:end */
+    /*jslint ignore: end */
   },
 
   pause: function() {
-    sendMessage('pause');
+    console.log(ws);
+    console.log('sending: pause');
+    ws.send(JSON.stringify({
+      mpdCommand: 'pause',
+      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+    }));
   }
 });
 
