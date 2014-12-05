@@ -124,11 +124,10 @@ public class Regular extends User {
       e.printStackTrace();
     }
   }
-
-  /**
-   * @return a String of username
-   */
-  public String getPassword() {
+  
+  
+  // returns a string of the user name
+  public String getPassword(){
     return this.password;
   }
 
@@ -164,21 +163,22 @@ public class Regular extends User {
       Statement myStmt = internalCon.createStatement();
       // initialize a String
       String id = "";
+     
       // actually creates a connection in the connections table
-      myStmt.execute("INSERT INTO connections (host, port, name, password) VALUES (\"" + host
-          + "\",\"" + port + "\"," + "\"" + name + "\",\"" + pswrd + "\");");
+      myStmt.execute("INSERT INTO connections (host, port, name, password) VALUES (\""
+          + host + "\",\"" + port + "\"," + "\"" + name
+          + "\"," + "\"" + pswrd + "\");");
       // finds the id of the connection in order to create an edge
-      ResultSet rs =
-          myStmt.executeQuery("SELECT ID FROM connections where name = \"" + name + "\";");
+      ResultSet rs = myStmt.executeQuery("SELECT ID FROM connections where name = \"" + name + "\";");
       while (rs.next()) {
         id = rs.getString("ID");
       }
       // creates edge between user and connection
       System.out.println("User ID: " + userID);
-      myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"" + userID
-          + "\",\"" + id + "\");");
-      // myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"6\", \"22\");");
-    } catch (SQLException e) {
+      myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"" + userID + "\",\"" + id + "\");");
+      //myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"6\", \"22\");");
+    }
+    catch (SQLException e) {
       e.printStackTrace();
       this.disconnect();
     }
@@ -192,7 +192,8 @@ public class Regular extends User {
       Statement myStmt = internalCon.createStatement();
       myStmt.execute("DELETE FROM connections where ID = " + MPDID + ";");
       myStmt.execute("DELETE FROM connectionEdges where connectionID = " + MPDID + ";");
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
     }
     this.disconnect();
@@ -260,10 +261,8 @@ public class Regular extends User {
       MpdConnection mCon;
       for (int i = 0; i < conID.size(); i++) {
         Rs = myStmt.executeQuery("SELECT * FROM connections WHERE ID =" + conID.get(i) + ";");
-        while (Rs.next()) {
-          mCon =
-              new MpdConnection((Rs.getString("host")), Rs.getString("port"),
-                  Rs.getString("password"));
+        while(Rs.next()) {  
+          mCon = new MpdConnection( (Rs.getString("host")), Rs.getString("port"), Rs.getString("password") );
           cons.add(mCon);
         }
       }

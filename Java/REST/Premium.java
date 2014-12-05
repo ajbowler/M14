@@ -6,22 +6,17 @@ package sendingcommands;
 
 public class Premium extends Regular{
 
-	public Premium() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+  public Premium(String index) {
+    super(index);
+    // TODO Auto-generated constructor stub
+  }
 
-	// name of the file that the background image is in
-	String imageName;
-	
-	// adds a connection to connections
-	void addConnection(){
-		//TODO
-	}
-	
-	// changes the background image of the website
-	void changeImage(){
-		//TODO
-	}
-	
+  // name of the file that the background image is in
+  String imageName;
+  
+  // changes the background image of the website
+  void changeImage(){
+    //TODO
+  }
+  
 }
