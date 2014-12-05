@@ -39,25 +39,18 @@ public class Regular extends User {
     
   }
   public void DbAddUser( String name, String pswrd, String eml){
-    
-    Connection internalCon = null;
+    this.Connect();
     try {
-      try {
-        Context initCtx = new InitialContext();
-        Context envCtx = (Context) initCtx.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-        internalCon = (Connection) ds.getConnection();
-      }
-      catch(Exception exc){}//empty until decide on procedure for not making connection
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // execute sql command
-      myStmt.execute("INSERT INTO user VALUES( userName, password, email ) values(\"" + name + "\" \"" + pswrd + "\" \"" + eml + "\");");
+      myStmt.execute("INSERT INTO user ( username, password, EmailAddress ) values(\"" + name + "\", \"" + pswrd + "\", \"" + eml + "\");");
       internalCon.close();
     }
     catch (SQLException e) {
       e.printStackTrace();
     }
+    this.Close();
   }
 
   public Regular getUserFromDatabase(String username) throws SQLException {
@@ -233,7 +226,6 @@ public class Regular extends User {
   }
   
   // Returns an array of connections that the user owns
-  @SuppressWarnings("resource")
   public ArrayList<MpdConnection> getConnections(){
     this.Connect();
     try{
