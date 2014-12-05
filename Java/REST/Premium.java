@@ -1,4 +1,4 @@
-package sendingcommands;
+package com.m14.rest;
 
 //The most royal of users. All users under this category will be refered to as
 //his/her majesty.... also they can do everything else a regular user can do but 
