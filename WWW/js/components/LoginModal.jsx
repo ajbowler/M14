@@ -75,11 +75,7 @@ var LoginModal = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
-<<<<<<< HEAD
       /*jslint ignore: start */
-=======
-      /*jslint ignore:start */
->>>>>>> 3564318... Forgot to JSLint. I'm learning!
       <Modal title='Login' backdrop={true} animation={true} >
         <div className='modal-body'>
           <div className='form-group'>
@@ -104,11 +100,7 @@ var LoginModal = React.createClass({
             </div>
          </div>
       </Modal>
-<<<<<<< HEAD
       /*jslint ignore: end */
-=======
-      /*jslint ignore:end */
->>>>>>> 3564318... Forgot to JSLint. I'm learning!
     );
   }
 });
