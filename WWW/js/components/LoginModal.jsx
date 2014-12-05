@@ -3,6 +3,10 @@
 /* jslint browserify: true */
 'use strict';
 
+/* jslint browserify: true */
+/* jslint devel: true */
+'use strict';
+
 var React = require('react/addons');
 var $ = require('jquery');
 var Modal = require('react-bootstrap/Modal');
@@ -18,17 +22,17 @@ var LoginModal = React.createClass({
     };
   },
 
-  updateUsername: function(e) {
+  updateUsername: function() {
     this.setState({username: $('#login_username').val()});
   },
 
-  updatePassword: function(e) {
+  updatePassword: function() {
     this.setState({password: $('#login_password').val()});
   },
 
   handleLogin: function() {
     var app = this;
-    var request = {      
+    var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/login',
       type: 'POST',
       contentType: 'application/json',
@@ -47,7 +51,7 @@ var LoginModal = React.createClass({
     });
   },
 
-  handleRegister: function () {
+  handleRegister: function() {
     var app = this;
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createUsr',
@@ -71,7 +75,11 @@ var LoginModal = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
+<<<<<<< HEAD
       /*jslint ignore: start */
+=======
+      /*jslint ignore:start */
+>>>>>>> 3564318... Forgot to JSLint. I'm learning!
       <Modal title='Login' backdrop={true} animation={true} >
         <div className='modal-body'>
           <div className='form-group'>
@@ -96,7 +104,11 @@ var LoginModal = React.createClass({
             </div>
          </div>
       </Modal>
+<<<<<<< HEAD
       /*jslint ignore: end */
+=======
+      /*jslint ignore:end */
+>>>>>>> 3564318... Forgot to JSLint. I'm learning!
     );
   }
 });
