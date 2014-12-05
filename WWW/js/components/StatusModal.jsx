@@ -5,18 +5,9 @@
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
 
-var StatusModal = React.createClass({
+var ws = new WebSocket('ws://65.110.226.243:8007', 'echo-protocol');
 
-  getInitialState: function() {
-
-    return {
-      status: "Getting Song Info"
-    };
-  },
-
-  ws : new WebSocket('ws://65.110.226.243:8007', 'echo-protocol'),
-
-  this.ws.addEventListener("message", function(e) {
+ws.onmessage = function(e) {
     // data we're getting back
     msg = e.data;
 
@@ -44,8 +35,16 @@ var StatusModal = React.createClass({
     this.setState({status:msg});
     //document.getElementById('ws-messages').innerHTML += '<br>' + msg;
 
-  }),
+  }
 
+var StatusModal = React.createClass({
+
+  getInitialState: function() {
+
+    return {
+      status: "Getting Song Info"
+    };
+  },
 
   sendMessage: function(message) {
     this.ws.send(message);
@@ -59,7 +58,7 @@ var StatusModal = React.createClass({
     var app = this;
     return (
       <div>
-        <Panel header={"Playing"} bsStyle="primary">
+        <Panel ws={this.props.ws} header={"Playing"} bsStyle="primary">
         {this.state.status}
         </Panel>
         <button onClick={this.getInfo}>Get Song</button>
