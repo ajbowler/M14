@@ -23,19 +23,22 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 import com.m14.rest.Regular;
+import com.m14.rest.AuthBean;
 
+@Path("/app")
 public class RESTservice {
 	
   @POST
   @Path("/login")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response getUserinJSON(final UserPassBean input) {
+  public Response loginUser(final AuthBean input) {
     try {
       // Must first create the object before getting information from input.username with getUserFromDatabase
-      Regular user =  new Regular(null, null);
+      Regular user =  new Regular();
       user = user.getUserFromDatabase(input.username);
       
+      // Authentication
       if (user.password.equals(input.password)) {
         return Response.status(201).entity(user).build();
       } else {
@@ -48,6 +51,27 @@ public class RESTservice {
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
       return Response.status(401).entity("Authentication failed!").build();
+    }
+  }
+
+  @POST
+  @Path("/createUsr")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createUser(final AuthBean input) {
+    try {
+      Regular registeredUser = new Regular();
+
+      // Instantiate and add the user to the database.
+      user.dbAddUser(input.username, input.password, input.email);
+      return Response.status(201).entity(registeredUser).build();
+    }
+    catch(Exception exc) {
+      StringWriter errors = new StringWriter();
+      exc.printStackTrace(new PrintWriter(errors));
+      // prints stack trace to Catalina.out
+      System.out.println(errors.toString());
+      return Response.status(401).entity("Couldn't build user!").build();
     }
   }
 
