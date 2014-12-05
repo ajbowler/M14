@@ -3,13 +3,13 @@ package com.m14.rest;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class LoginBean {
+public class AuthBean {
   public String username;
   public String password;
 
-  public LoginBean() {} // JAXB needs this
+  public AuthBean() {} // JAXB needs this
 
-  public LoginBean(String username, String password) {
+  public AuthBean(String username, String password) {
     this.username = username;
     this.password = password;
   }
