@@ -9,6 +9,7 @@ var Modal = require('react-bootstrap/Modal');
 var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
+var ButtonToolbar = require('react-bootstrap/ButtonToolbar');
 
 var LoginModal = React.createClass({
   getInitialState: function() {
@@ -27,11 +28,9 @@ var LoginModal = React.createClass({
 
   handleLogin: function() {
     var app = this;
-    var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/test/get/0',
-      // url: 'http://proj-309-m14.cs.iastate.edu/REST/v1/login/,
-      type: 'GET',
-      // type: 'POST',
+    var request = {      
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/login',
+      type: 'POST',
       contentType: 'application/json',
       cache: false,
       dataType: 'json',
@@ -45,6 +44,28 @@ var LoginModal = React.createClass({
       app.props.login(data);
     }).error(function() {
       console.log('Could not login.'); // TODO: handle incorrect login by rendering an error message
+    });
+  },
+
+  handleRegister: function () {
+    var app = this;
+    var request = {
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createUsr',
+      type: 'POST',
+      contentType: 'application/json',
+      cache: false,
+      dataType: 'json',
+      data: {
+        username: this.state.username,
+        password: this.state.password
+      }
+    };
+
+    $.ajax(request).done(function(data) {
+      // Now that the user is registered, log them in.
+      app.props.login(data);
+    }).error(function() {
+      console.log('Could not register.');
     });
   },
 
@@ -67,7 +88,10 @@ var LoginModal = React.createClass({
                 placeholder='Password'
                 label='Password'
                 onChange={this.updatePassword} />
-              <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
+              <ButtonToolbar>
+                <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
+                <ModalButton bsStyle='link' onClick={this.handleRegister}>Register</ModalButton>
+              </ButtonToolbar>
             </form>
             </div>
          </div>
