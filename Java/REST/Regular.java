@@ -22,8 +22,8 @@ import javax.naming.InitialContext;
 //Does not include being addressed as his/her majesty
 public class Regular extends User {
 
-	static Connection myConn;
-	static java.sql.Connection DBCon;
+  static Connection myConn;
+  static java.sql.Connection DBCon;
 
   // Variables to store user information
   public String username = null;
@@ -38,9 +38,30 @@ public class Regular extends User {
     this.joindate = null; // default Date constructor uses time/date
     
   }
+  public void DbAddUser( String name, String pswrd, String eml){
+    
+    Connection internalCon = null;
+    try {
+      try {
+        Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();
+      }
+      catch(Exception exc){}//empty until decide on procedure for not making connection
+      // create a statement and a result set to find the username string
+      Statement myStmt = internalCon.createStatement();
+      // execute sql command
+      myStmt.execute("INSERT INTO user VALUES( userName, password, email ) values(\"" + name + "\" \"" + pswrd + "\" \"" + eml + "\");");
+      internalCon.close();
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
   public Regular getUserFromDatabase(String username) throws SQLException {
-	this.Connect();
+  this.Connect();
     // try block for sqlException
     try {
       // try block for Connection Exception
@@ -49,9 +70,9 @@ public class Regular extends User {
         Context envCtx = (Context) initCtx.lookup("java:comp/env");
         DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
         internalCon = (Connection) ds.getConnection();
-			internalCon = DriverManager.getConnection
-			("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");*/
-	
+      internalCon = DriverManager.getConnection
+      ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");*/
+  
       }
       catch(Exception exc){}//empty until decide on procedure for not making connection
       // create a statement and a result set to find the username string
@@ -80,33 +101,33 @@ public class Regular extends User {
   }
 
   private void Close() {
-	// TODO Auto-generated method stub
-	
+  // TODO Auto-generated method stub
+  
 }
 
 // Connects to a Database Connection
   public void Connect(){
-	   // try block for Connection Exception
-	    try {/*
-	      Context initCtx = new InitialContext();
-	      Context envCtx = (Context) initCtx.lookup("java:comp/env");
-	      DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
-	      internalCon = (Connection) ds.getConnection();*/
-				internalCon = DriverManager.getConnection
-				("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");
-		
-	    }
-	    catch(Exception exc){}//empty until decide on procedure for not making connection
+     // try block for Connection Exception
+      try {/*
+        Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
+        internalCon = (Connection) ds.getConnection();*/
+        internalCon = DriverManager.getConnection
+        ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14","u309M14","vtGQsRyY+");
+    
+      }
+      catch(Exception exc){}//empty until decide on procedure for not making connection
   }
   
   // Disconnects from a database
   public void Disconnect(){
-	  try {
-		internalCon.close();
-	} catch (SQLException e) {
-		// TODO decide 
-		e.printStackTrace();
-	}
+    try {
+    internalCon.close();
+  } catch (SQLException e) {
+    // TODO decide 
+    e.printStackTrace();
+  }
   }
   
   
@@ -117,10 +138,10 @@ public class Regular extends User {
 
   // Adds a friend
   public void addFriend(Integer friendID) {
-	  Connection internalCon = null;
+    Connection internalCon = null;
     try {
-    	try {
-    		Context initCtx = new InitialContext();
+      try {
+        Context initCtx = new InitialContext();
         Context envCtx = (Context) initCtx.lookup("java:comp/env");
         DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
         internalCon = (Connection) ds.getConnection();
@@ -138,17 +159,17 @@ public class Regular extends User {
   }
 
   // adds a connection to connections
-  public void addConnection(String host, String port, String name) {
-	  try {
-	    this.Connect();
-	    Statement myStmt = internalCon.createStatement();
+  public void addConnection(String host, String port, String name, String pswrd) {
+    try {
+      this.Connect();
+      Statement myStmt = internalCon.createStatement();
         // initialize a String
         String id = "";
        
         // actually creates a connection in the connections table
-        myStmt.execute("INSERT INTO connections (host, port, name) VALUES (\""
-            + host + "\"," + port + "," + "\"" + name
-            + "\"" + ");");
+        myStmt.execute("INSERT INTO connections (host, port, name, password) VALUES (\""
+            + host + "\",\"" + port + "\"," + "\"" + name
+            + "\"," + "\"" + pswrd + "\");");
         // finds the id of the connection in order to create an edge
         ResultSet rs = myStmt.executeQuery("SELECT ID FROM connections where name = \"" + name + "\";");
         while (rs.next()) {
@@ -158,26 +179,26 @@ public class Regular extends User {
         System.out.println("User ID: " + userID);
         myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"" + userID + "\",\"" + id + "\");");
         //myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"6\", \"22\");");
-	  }
-	  catch (SQLException e) {
-		  e.printStackTrace();
-		  this.Close();
-	  }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+      this.Close();
+    }
     this.Close();
   }
   
   // removes a connections from database
   public void removeConnection(String MPDID) {
-	  try {
-	    this.Connect();
-	    Statement myStmt = internalCon.createStatement();
+    try {
+      this.Connect();
+      Statement myStmt = internalCon.createStatement();
         myStmt.execute("DELETE FROM connections where ID = " + MPDID + ";");
         myStmt.execute("DELETE FROM connectionEdges where connectionID = " + MPDID + ";");
-	  }
-	  catch (SQLException e) {
-		  e.printStackTrace();
-	  }
-	 this.Close();
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+   this.Close();
   }
 
   // checks how long the user has had an account. If it has been long enough
@@ -208,14 +229,14 @@ public class Regular extends User {
   }
   
   public String getUsername(){
-	  return this.username;
+    return this.username;
   }
   
   // Returns an array of connections that the user owns
   @SuppressWarnings("resource")
   public ArrayList<MpdConnection> getConnections(){
-	  this.Connect();
-	  try{
+    this.Connect();
+    try{
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       ResultSet Rs = myStmt.executeQuery("SELECT * FROM connectionEdges WHERE userID =" + userID + ";");
@@ -232,11 +253,11 @@ public class Regular extends User {
       
       MpdConnection mCon;
       for(int i = 0; i < conID.size(); i++) {
-    	  Rs = myStmt.executeQuery("SELECT * FROM connections WHERE ID =" + conID.get(i) + ";");
-    	  while(Rs.next()) {  
-    	        mCon = new MpdConnection( (Rs.getString("host")), Rs.getString("port") );
-    	        cons.add(mCon);
-    	  }
+        Rs = myStmt.executeQuery("SELECT * FROM connections WHERE ID =" + conID.get(i) + ";");
+        while(Rs.next()) {  
+              mCon = new MpdConnection( (Rs.getString("host")), Rs.getString("port"), Rs.getString("password") );
+              cons.add(mCon);
+        }
       }
       this.Close();
       return cons;

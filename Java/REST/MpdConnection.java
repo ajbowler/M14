@@ -6,12 +6,13 @@ import java.util.ArrayList;
 public class MpdConnection {
 
 private String host;
-
 private String port;
+private String password;
 
-public MpdConnection(String inHost, String inPort) {
+public MpdConnection(String inHost, String inPort, String inPss) {
  this.host = inHost;
  this.port = inPort;
+ this.password = inPss;
 }
 
 public String getHost() {
