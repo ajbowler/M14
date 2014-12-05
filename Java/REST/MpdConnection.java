@@ -1,4 +1,6 @@
+package sendingcommands;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 //data class that holds information for the user's connections
 public class MpdConnection {
@@ -21,7 +23,7 @@ public String getPort() {
 }
 
 // Returns an array of the users connections
-public MpdConnection[] retrieveMpdConnections(String userID){
+public ArrayList<MpdConnection> retrieveMpdConnections(String userID){
  Regular user = new Regular(userID);
  return user.getConnections();
 }
