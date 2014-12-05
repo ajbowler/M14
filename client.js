@@ -26,7 +26,7 @@ process.stdin.on('data', function (text) {
     content = {
       'host': args[1] || 'localhost',
       'port': args[2] || '6600',
-      'pass': args[3] || 'coms309M14'
+      'pass': args[3] || ''
     };
 
     console.log('==================>\ncreate\nhost: ' + content.host + '\nport: ' + content.port + '\npass: ' + content.pass);
