@@ -33,7 +33,7 @@ var WS = {
 var mpdConnectionList = {};
 
 
-MPD.prototype.setupMPD(host, port, pass) {
+MPD.prototype.setupMPD = function(host, port, pass) {
   var self = this;
 
   pass = pass || '';
@@ -46,7 +46,7 @@ MPD.prototype.setupMPD(host, port, pass) {
   self.netConnection.on('data', function(data) {
     // The string message that was sent to us
     var msgString = data.toString();
-    console.log((new Date()) + ' MPD says ' + msgString.replace(/^\s+|\s+$/g,''));
+    console.log((new Date()) + ' MPD at ' + host + ' says ' + msgString.replace(/^\s+|\s+$/g,''));
 
     // Loop through all clients
     _.forEach(WS.clients, function (client) {
