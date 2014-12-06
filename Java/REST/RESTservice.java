@@ -30,16 +30,6 @@ import com.m14.rest.DestroyBean;
 
 @Path("/app")
 public class RESTservice {
-	
-  @POST
-  @Path("/test")
-  public Response Test() {
-    
-    String result = "test to Catalina";
-    System.out.println(result);
-    return Response.status(200).entity(result).build();
-    
-  }
   
   @POST
   @Path("/login")
@@ -74,14 +64,16 @@ public class RESTservice {
   @POST
   @Path("/createUsr")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response createUser(final UserBean input) {
+  @Consumes(MediaType.TEXT_PLAIN)
+  public Response createUser(String input) {
     try {
+      JSONObject obj = new JSONObject(input);
+      UserBean userBean = new UserBean(obj.getString("username"), obj.getString("password"), obj.getString("email"));
       Regular registeredUser = new Regular();
 
       // Instantiate and add the user to the database.
-      registeredUser.dbAddUser(input.getUsername(), input.getPassword(), input.getEmail());
-      return Response.status(201).entity(registeredUser).build();
+      registeredUser.dbAddUser(userBean.getUsername(), userBean.getPassword(), userBean.getEmail());
+      return Response.status(201).entity(userBean).build();
     }
     catch(Exception exc) {
       StringWriter errors = new StringWriter();
@@ -95,13 +87,15 @@ public class RESTservice {
   @POST
   @Path("/getConnections")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response getMPDConnectionsForUser(final AuthBean input) {
+  @Consumes(MediaType.TEXT_PLAIN)
+  public Response getMPDConnectionsForUser(String input) {
     try {
+      JSONObject obj = new JSONObject(input);
+      AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
       Regular user = new Regular();
-      user = user.getUserFromDatabase(input.getUsername());
-
+      user = user.getUserFromDatabase(authBean.getUsername());
       ArrayList<MpdConnection> mpdConnections = user.getConnections();
+      
       // TODO: Convert ArrayList into JSON somehow, and return it in the Response.
       return null; // TODO
     }
@@ -117,16 +111,16 @@ public class RESTservice {
   @POST
   @Path("/createConnection")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response createMPDConnection(final MpdClientBean input) {
+  @Consumes(MediaType.TEXT_PLAIN)
+  public Response createMPDConnection(String input) {
     return null; // TODO
   }
 
   @POST
   @Path("/destroy")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response destroyMPDConnection(final DestroyBean input) {
+  @Consumes(MediaType.TEXT_PLAIN)
+  public Response destroyMPDConnection(String input) {
     return null; // TODO
   }
 
