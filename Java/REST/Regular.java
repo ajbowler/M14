@@ -58,14 +58,14 @@ public class Regular extends User {
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // execute sql command
-      myStmt.execute("INSERT INTO user ( username, password, EmailAddress ) values(\"" + name
+      myStmt.execute("INSERT INTO user ( username, password, email ) values(\"" + name
           + "\", \"" + pswrd + "\", \"" + eml + "\");");
     } catch (SQLException e) {
       StringWriter errors = new StringWriter();
       e.printStackTrace(new PrintWriter(errors));
       System.out.println(errors.toString());
     }
-    this.disconnect();
+    this.disconnect();  
   }
 
   /**
@@ -87,7 +87,7 @@ public class Regular extends User {
         this.username = Rs.getString("username");
         this.password = Rs.getString("password");
         this.userID = Rs.getString("userID");
-        this.email = Rs.getString("EmailAddress");
+        this.email = Rs.getString("email");
       }
     } catch (SQLException e) {
       StringWriter errors = new StringWriter();
@@ -109,10 +109,10 @@ public class Regular extends User {
       DataSource ds = (DataSource) envCtx.lookup("jdbc/db309M14");
       internalCon = (Connection) ds.getConnection();
       // following connection for testing with local driver
-      /*
-       * internalCon = DriverManager.getConnection
-       * ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14" ,"u309M14","vtGQsRyY+");
-       */
+
+      //  internalCon = DriverManager.getConnection
+      // ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14" ,"u309M14","vtGQsRyY+");
+       
     } catch (Exception exc) {
     }// empty until decide on procedure for not making connection
   }
@@ -161,15 +161,16 @@ public class Regular extends User {
    * @param name name of MPD Connection
    * @param pswrd MPD Password
    */
-  public void addConnection(String host, String port, String name, String pswrd) {
+  public void addConnection(String name, String mpdHost, String mpdPort, String mpdPassword, String streamHost, String streamPort, String streamSuffix) {
     try {
       this.connect();
       Statement myStmt = internalCon.createStatement();
       // initialize a String
       String id = "";
       // actually creates a connection in the connections table
-      myStmt.execute("INSERT INTO connections (host, port, name, password) VALUES (\"" + host
-          + "\",\"" + port + "\"," + "\"" + name + "\",\"" + pswrd + "\");");
+      myStmt.execute("INSERT INTO connections (name, mpdHost, mpdPort, mpdPassword, streamHost, streamPort, streamSuffix) VALUES (\"" + name
+          + "\",\"" + mpdHost + "\",\"" + mpdPort + "\",\"" + mpdPassword + "\",\"" + streamHost
+          + "\",\"" + streamPort + "\",\"" + streamSuffix + "\");");
       // finds the id of the connection in order to create an edge
       ResultSet rs =
           myStmt.executeQuery("SELECT ID FROM connections where name = \"" + name + "\";");
@@ -271,8 +272,8 @@ public class Regular extends User {
         Rs = myStmt.executeQuery("SELECT * FROM connections WHERE ID =" + conID.get(i) + ";");
         while (Rs.next()) {
           mCon =
-              new MpdConnection((Rs.getString("host")), Rs.getString("port"),
-                  Rs.getString("password"));
+              new MpdConnection((Rs.getString("name")), Rs.getString("mpdPort"),
+                  Rs.getString("mpdPassword"));
           cons.add(mCon);
         }
       }
