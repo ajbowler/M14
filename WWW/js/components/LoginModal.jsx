@@ -1,9 +1,6 @@
 /** @jsx React.DOM */
 
 /* jslint browserify: true */
-'use strict';
-
-/* jslint browserify: true */
 /* jslint devel: true */
 'use strict';
 
