@@ -14,14 +14,18 @@ var ModalTrigger = require('react-bootstrap/ModalTrigger');
 var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 var ButtonToolbar = require('react-bootstrap/ButtonToolbar');
+var Alert = require('react-bootstrap/Alert');
 
 var LoginModal = React.createClass({
   getInitialState: function() {
     return {
       loggedIn: false,
+      loginFailed: false,
+      registerFailed: false,
       username: '',
       password: '',
-      email: ''
+      email: '',
+      errorMessage: ''
     };
   },
 
@@ -33,47 +37,59 @@ var LoginModal = React.createClass({
     });
   },
 
+  showLoginFailed: function() {
+    this.setState({
+      loginFailed: !(this.state.loginFailed),
+      errorMessage: 'Unable to login, empty headed animal food trough wiper!'
+    });
+  },
+
+  showRegisterFailed: function() {
+    this.setState({
+      registerFailed: !(this.state.registerFailed),
+      errorMessage: 'Could not register, silly goose!'
+    });
+  },
+
   handleLogin: function() {
     var app = this;
     var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/login',
+      url: 'http://65.110.226.243:8080/REST/app/login',
       type: 'POST',
-      contentType: 'application/json',
+      contentType: 'text/plain',
       cache: false,
-      dataType: 'json',
-      data: {
+      data: JSON.stringify({
         username: this.state.username,
         password: this.state.password
-      }
+      })
     };
     
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
-      console.log('Could not login.'); // TODO: handle incorrect login by rendering an error message
+      app.showLoginFailed();
     });
   },
 
   handleRegister: function() {
     var app = this;
     var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createUsr',
+      url: 'http://65.110.226.243:8080/REST/app/createUsr',
       type: 'POST',
-      contentType: 'application/json',
+      contentType: 'text/plain',
       cache: false,
-      dataType: 'json',
-      data: {
+      data: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
         email: this.state.email
-      }
+      })
     };
 
     $.ajax(request).done(function(data) {
       // Now that the user is registered, log them in.
       app.props.login(data);
     }).error(function() {
-      console.log('Could not register.');
+      app.showRegisterFailed();
     });
   },
 
@@ -82,6 +98,8 @@ var LoginModal = React.createClass({
       /*jslint ignore: start */
       <Modal title='Login' backdrop={true} animation={true} >
         <div className='modal-body'>
+          {this.state.loginFailed ? <AuthError message={this.state.errorMessage} /> : null}
+          {this.state.registerFailed ? <AuthError message={this.state.errorMessage} /> : null}
           <div className='form-group'>
             <form>
               <UserInput
@@ -115,6 +133,12 @@ var LoginModal = React.createClass({
       </Modal>
       /*jslint ignore: end */
     );
+  }
+});
+
+var AuthError = React.createClass({
+  render: function() {
+    return <Alert bsStyle='danger'><strong>{this.props.message}!</strong></Alert>
   }
 });
 
