@@ -35,12 +35,6 @@ var LoginModal = React.createClass({
 
   handleLogin: function() {
     var app = this;
-    var u = this.state.username;
-    var p = this.state.password;
-    var e = this.state.email;
-    console.log(u);
-    console.log(p);
-    console.log(e);
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/login',
       type: 'POST',
@@ -52,9 +46,7 @@ var LoginModal = React.createClass({
         password: this.state.password
       }
     };
-
-    console.log(request.data);
-
+    
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
