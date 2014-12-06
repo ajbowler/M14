@@ -3,7 +3,6 @@ package com.m14.rest;
 import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +20,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
+import java.util.ArrayList;
+
+import org.json.*;
 
 import com.m14.rest.Regular;
 import com.m14.rest.AuthBean;
@@ -30,18 +32,31 @@ import com.m14.rest.DestroyBean;
 public class RESTservice {
 	
   @POST
+  @Path("/test")
+  public Response Test() {
+    
+    String result = "test to Catalina";
+    System.out.println(result);
+    return Response.status(200).entity(result).build();
+    
+  }
+  
+  @POST
   @Path("/login")
   @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response loginUser(final AuthBean input) {
+  @Consumes(MediaType.TEXT_PLAIN)
+  public Response loginUser(String input) {
+
     try {
+      JSONObject obj = new JSONObject(input);
+      AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
       // Must first create the object before getting information from input.username with getUserFromDatabase
       Regular user =  new Regular();
-      user = user.getUserFromDatabase(input.username);
-      
+      user = user.getUserFromDatabase(authBean.getUsername());
       // Authentication
-      if (user.password.equals(input.password)) {
-        return Response.status(201).entity(user).build();
+      UserBean userBean = new UserBean(user.getUsername(), user.getPassword(), user.getEmail());
+      if (user.password.equals(authBean.getPassword())) {
+        return Response.status(201).entity(userBean).build();
       } else {
         return Response.status(401).entity("Authentication failed!").build();
       }
@@ -53,18 +68,19 @@ public class RESTservice {
       System.out.println(errors.toString());
       return Response.status(401).entity("Authentication failed!").build();
     }
+    
   }
 
   @POST
   @Path("/createUsr")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response createUser(final AuthBean input) {
+  public Response createUser(final UserBean input) {
     try {
       Regular registeredUser = new Regular();
 
       // Instantiate and add the user to the database.
-      user.dbAddUser(input.username, input.password, input.email);
+      registeredUser.dbAddUser(input.getUsername(), input.getPassword(), input.getEmail());
       return Response.status(201).entity(registeredUser).build();
     }
     catch(Exception exc) {
@@ -83,7 +99,7 @@ public class RESTservice {
   public Response getMPDConnectionsForUser(final AuthBean input) {
     try {
       Regular user = new Regular();
-      user = user.getUserFromDatabase(input.username);
+      user = user.getUserFromDatabase(input.getUsername());
 
       ArrayList<MpdConnection> mpdConnections = user.getConnections();
       // TODO: Convert ArrayList into JSON somehow, and return it in the Response.
