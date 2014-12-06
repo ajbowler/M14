@@ -5,6 +5,21 @@ var $ = require('jquery');
 var MusicPlayer = require('./components/MusicPlayer.jsx');
 var LoginModal = require('./components/LoginModal.jsx');
 
+var App = React.createClass({
+  getInitialState: function() {
+    return {
+      loggedIn: false,
+      username: 'GUEST',
+      userID: '-1',
+      email: null
+    };
+  },
+
+  render: function() {
+    var app = this;
+    var login = function(user) {
+      app.setState({
+        loggedIn: true,
         username: user.username,
         userID: user.userID,
         email: user.email

@@ -7,7 +7,7 @@ var React = require('react/addons');
 var Panel = require('react-bootstrap/Panel');
 var PlayerControls = require('./PlayerControls.jsx');
 var Html5AudioStreamer = require('./Html5AudioStreamer.jsx');
-var StatusModal = require('./StatusModal.jsx');
+var StatusPanel = require('./StatusPanel.jsx');
 var DropdownMenu = require('./DropdownMenu.jsx');
 
 var MusicPlayer = React.createClass({
@@ -28,7 +28,7 @@ var MusicPlayer = React.createClass({
           </div>
         </Panel>
         <Html5AudioStreamer />
-        <StatusModal />
+        <StatusPanel ws={new WebSocket('ws://proj-309-m14.cs.iastate.edu:8007', 'echo-protocol')}/>
       </div>
       /* jshint ignore: end */
     );
