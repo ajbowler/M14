@@ -43,7 +43,27 @@ var ProfileModal = React.createClass({
   },
 
   addConnection: function() {
-    // TODO
+    var request = {
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
+      type: 'POST',
+      contentType: 'application/json',
+      cache: false,
+      dataType: 'json',
+      data: {
+        connectionName: this.refs.connectionName.getValue(),
+        mpdHost: this.refs.mpdHost.getValue(),
+        mpdPort: this.refs.mpdPort.getValue(),
+        mpdPass: this.refs.mpdPass.getValue(),
+        streamHost: this.refs.streamHost.getValue(),
+        streamPort: this.refs.streamHost.getValue(),
+        streamSuffix: this.refs.streamSuffix.getValue()
+      }
+    };
+
+    $.ajax(request).done(function(data) {
+      // TODO Select the connection with SocketService.
+      console.log(data);
+    })
   },
 
   getInitialState: function() {
@@ -96,9 +116,13 @@ var ProfileModal = React.createClass({
             <h3>Add New Connection</h3>
             <div className='form-group'>
           <form>
-            <UserInput type='text' placeholder='Connection Name'/>
-            <UserInput type='text' placeholder='MPD Server Host'/>
-            <UserInput type='password' placeholder='MPD Server Password (if required)'/>
+            <UserInput type='text' placeholder='Connection Name' ref='connectionHost'/>
+            <UserInput type='text' placeholder='MPD Server Host' ref='mpdHost'/>
+            <UserInput type='text' placeholder='MPD Server Port' ref='mpdPort'/>
+            <UserInput type='password' placeholder='MPD Server Password (if required)' ref='mpdPass'/>
+            <UserInput type='text' placeholder='MPD Stream Host' ref='streamHost'/>
+            <UserInput type='text' placeholder='MPD Stream Port' ref='streamPort'/>
+            <UserInput type='text' placeholder='MPD Stream Suffix (mpd.ogg or mpd.mp3)' value='mpd.ogg' ref='streamSuffix'/>
             <ModalButton bsStyle='success' onClick={this.addConnection}>Add Connection</ModalButton>
           </form>
         </div>

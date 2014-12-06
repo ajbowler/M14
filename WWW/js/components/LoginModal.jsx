@@ -18,20 +18,29 @@ var ButtonToolbar = require('react-bootstrap/ButtonToolbar');
 var LoginModal = React.createClass({
   getInitialState: function() {
     return {
-      loggedIn: false
+      loggedIn: false,
+      username: '',
+      password: '',
+      email: ''
     };
   },
 
-  updateUsername: function() {
-    this.setState({username: $('#login_username').val()});
-  },
-
-  updatePassword: function() {
-    this.setState({password: $('#login_password').val()});
+  updateFields: function() {
+    this.setState({
+      username: this.refs.username.getValue(),
+      password: this.refs.password.getValue(),
+      email: this.refs.email.getValue()
+    });
   },
 
   handleLogin: function() {
     var app = this;
+    var u = this.state.username;
+    var p = this.state.password;
+    var e = this.state.email;
+    console.log(u);
+    console.log(p);
+    console.log(e);
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/login',
       type: 'POST',
@@ -43,6 +52,8 @@ var LoginModal = React.createClass({
         password: this.state.password
       }
     };
+
+    console.log(request.data);
 
     $.ajax(request).done(function(data) {
       app.props.login(data);
@@ -61,7 +72,8 @@ var LoginModal = React.createClass({
       dataType: 'json',
       data: {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        email: this.state.email
       }
     };
 
@@ -82,16 +94,25 @@ var LoginModal = React.createClass({
             <form>
               <UserInput
                 type='text'
-                id='login_username'
+                ref='username'
                 placeholder='Username'
                 label='Username'
-                onChange={this.updateUsername} />
+                value={this.state.username}
+                onChange={this.updateFields} />
               <UserInput
                 type='password'
-                id='login_password'
+                ref='password'
                 placeholder='Password'
                 label='Password'
-                onChange={this.updatePassword} />
+                value={this.state.password}
+                onChange={this.updateFields} />
+              <UserInput
+                type='text'
+                ref='email'
+                placeholder='Email'
+                label='Email (when registering only)'
+                value={this.state.email}
+                onChange={this.updateFields} />
               <ButtonToolbar>
                 <ModalButton bsStyle='success' onClick={this.handleLogin}>Login</ModalButton>
                 <ModalButton bsStyle='link' onClick={this.handleRegister}>Register</ModalButton>
