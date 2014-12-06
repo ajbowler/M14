@@ -51,7 +51,7 @@ var LoginModal = React.createClass({
   handleLogin: function() {
     var app = this;
     var request = {
-      url: 'http://65.110.226.243:8080/REST/app/login',
+      url: 'http://proj-309-M14.cs.iastate.edu/REST/app/login',
       type: 'POST',
       contentType: 'text/plain',
       cache: false,
@@ -71,7 +71,7 @@ var LoginModal = React.createClass({
   handleRegister: function() {
     var app = this;
     var request = {
-      url: 'http://65.110.226.243:8080/REST/app/createUsr',
+      url: 'http://proj-309-M14.cs.iastate.edu/REST/app/createUsr',
       type: 'POST',
       contentType: 'text/plain',
       cache: false,
