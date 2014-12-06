@@ -63,7 +63,7 @@ var ProfileModal = React.createClass({
     $.ajax(request).done(function(data) {
       // TODO Select the connection with SocketService.
       console.log(data);
-    })
+    });
   },
 
   getInitialState: function() {
