@@ -286,7 +286,7 @@ public class Regular extends User {
           mCon =
               new MpdConnection((Rs.getString("name")), Rs.getString("mpdHost"),
                   Rs.getString("mpdPort"), Rs.getString("mpdPassword"), Rs.getString("streamHost"),
-                  Rs.getString("streamPort"), Rs.getString("streamSuffix"));
+                  Rs.getString("streamPort"), Rs.getString("streamSuffix"), "");
           cons.add(mCon);
         }
       }
