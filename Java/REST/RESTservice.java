@@ -135,7 +135,9 @@ public class RESTservice {
       JSONObject mpdConnections = new JSONObject();
       mpdConnections.put("mpdConnections", mpdConnectionsJSON);
 
-      return Response.status(201).entity(mpdConnections).build();
+      MpdConnectionListBean mpdListBean = new MpdConnectionListBean(mpdConnections);
+
+      return Response.status(201).entity(mpdListBean).build();
 
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
