@@ -87,19 +87,15 @@ public class RESTservice {
 
   @POST
   @Path("/getConnections")
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response getMPDConnectionsForUser(String input) {
     try {
       JSONObject obj = new JSONObject(input);
       AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
-
       Regular user = new Regular();
       user = user.getUserFromDatabase(authBean.getUsername());
-
       ArrayList<MpdConnection> mpdConnectionArrayList = user.getConnections();
-      System.out.println(mpdConnectionArrayList.toString());
-
       // 1. Make a JSONArray.
       // 2. Loop through the arraylist and for each MpdConnection, add it to the JSONArray.
       // 3. Make wrapper JSONObject for the array.
@@ -108,7 +104,7 @@ public class RESTservice {
       JSONArray mpdConnectionsJSON = new JSONArray();
 
       // 2.
-      for(MpdConnection mpdConn : mpdConnectionArrayList) {
+      for (MpdConnection mpdConn : mpdConnectionArrayList) {
         JSONObject mpdJSON = new JSONObject();
 
         String connName = mpdConn.getConnectionName();
@@ -130,21 +126,11 @@ public class RESTservice {
         mpdConnectionsJSON.put(mpdJSON);
       }
 
-      System.out.println(mpdConnectionsJSON);
-
       JSONObject mpdConnections = new JSONObject();
       mpdConnections.put("mpdConnections", mpdConnectionsJSON);
 
       MpdConnectionListBean mpdListBean = new MpdConnectionListBean(mpdConnections);
-      System.out.println();
-      System.out.println();
-      System.out.println();
-      
-      System.out.println("mpd list bean: " + mpdListBean.toString());
-      System.out.println();
-      System.out.println();
-      
-      return Response.status(201).entity(mpdListBean).build();
+      return Response.status(201).entity(mpdListBean.toString()).build();
 
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
