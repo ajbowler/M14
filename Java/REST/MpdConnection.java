@@ -1,40 +1,83 @@
 package com.m14.rest;
-import java.sql.Statement;
-import java.util.ArrayList;
 
-//data class that holds information for the user's connections
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class MpdConnection {
+  private String connectionName;
+  private String serverHost;
+  private String serverPort;
+  private String serverPassword;
+  private String streamHost;
+  private String streamPort;
+  private String streamSuffix;
 
-private String host;
-private String port;
-private String password;
+  public MpdConnection() {} // JAXB needs this
+  
+  public MpdConnection(String connectionName, String serverHost, String serverPort, String serverPass, String streamHost, String streamPort, String streamSuffix) {
+    this.connectionName = connectionName;
+    this.serverHost = serverHost;
+    this.serverPort = serverPort;
+    this.serverPassword = serverPass;
+    this.streamHost = streamHost;
+    this.streamPort = streamPort;
+    this.streamSuffix = streamSuffix;
+  }
 
-public MpdConnection(String inHost, String inPort, String inPss) {
- this.host = inHost;
- this.port = inPort;
- this.password = inPss;
-}
+  public String getConnectionName() {
+    return this.connectionName;
+  }
 
-public String getHost() {
- return this.host;
-}
+  public String getServerHost() {
+    return this.serverHost;
+  }
 
-public String getPort() {
- return this.port;
-}
+  public String getServerPort() {
+    return this.serverPort;
+  }
 
-// Returns an array of the users connections
-public ArrayList<MpdConnection> retrieveMpdConnections(){
- Regular user = new Regular();
- return user.getConnections();
-}
+  public String getServerPass() {
+    return this.serverPassword;
+  }
 
-public Statement createStatement() {
- // TODO Auto-generated method stub
- return null;
-}
+  public String getStreamHost() {
+    return this.streamHost;
+  }
 
-//TODO
-//find all the necessary properties needed for the Connection class
+  public String getStreamPort() {
+    return this.streamPort;
+  }
+
+  public String getStreamSuffix() {
+    return this.streamSuffix;
+  }
+  
+  public void setConnectionName(String connectionName) {
+    this.connectionName = connectionName;
+  }
+  
+  public void setServerHost(String serverHost) {
+    this.serverHost = serverHost;
+  }
+ 
+  public void setStreamHost(String streamHost) {
+    this.streamHost = streamHost;
+  }
+  
+  public void setServerPort(String serverPort) {
+    this.serverPort = serverPort;
+  }
+  
+  public void setServerPass(String serverPassword) {
+    this.serverPassword = serverPassword;
+  }
+  
+  public void setStreamPort(String streamPort) {
+    this.streamPort = streamPort;
+  }
+  
+  public void setStreamSuffix(String streamSuffix) {
+    this.streamSuffix = streamSuffix;
+  }
 
 }

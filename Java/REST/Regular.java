@@ -58,14 +58,14 @@ public class Regular extends User {
       // create a statement and a result set to find the username string
       Statement myStmt = internalCon.createStatement();
       // execute sql command
-      myStmt.execute("INSERT INTO user ( username, password, email ) values(\"" + name
-          + "\", \"" + pswrd + "\", \"" + eml + "\");");
+      myStmt.execute("INSERT INTO user ( username, password, email ) values(\"" + name + "\", \""
+          + pswrd + "\", \"" + eml + "\");");
     } catch (SQLException e) {
       StringWriter errors = new StringWriter();
       e.printStackTrace(new PrintWriter(errors));
       System.out.println(errors.toString());
     }
-    this.disconnect();  
+    this.disconnect();
   }
 
   /**
@@ -110,9 +110,9 @@ public class Regular extends User {
       internalCon = (Connection) ds.getConnection();
       // following connection for testing with local driver
 
-      //  internalCon = DriverManager.getConnection
+      // internalCon = DriverManager.getConnection
       // ("jdbc:mysql://mysql.cs.iastate.edu:3306/db309M14" ,"u309M14","vtGQsRyY+");
-       
+
     } catch (Exception exc) {
     }// empty until decide on procedure for not making connection
   }
@@ -160,17 +160,29 @@ public class Regular extends User {
    * @param port port
    * @param name name of MPD Connection
    * @param pswrd MPD Password
+   * @param streamHost the stream host for MPD
+   * @param streamPort the stream port for MPD
+   * @param streamSuffix the stream suffix, either mpd.ogg or mpd.mp3
    */
-  public void addConnection(String name, String mpdHost, String mpdPort, String mpdPassword, String streamHost, String streamPort, String streamSuffix) {
+  public void addConnection(String name, String mpdHost, String mpdPort, String mpdPassword,
+      String streamHost, String streamPort, String streamSuffix) {
     try {
       this.connect();
       Statement myStmt = internalCon.createStatement();
       // initialize a String
       String id = "";
       // actually creates a connection in the connections table
-      myStmt.execute("INSERT INTO connections (name, mpdHost, mpdPort, mpdPassword, streamHost, streamPort, streamSuffix) VALUES (\"" + name
-          + "\",\"" + mpdHost + "\",\"" + mpdPort + "\",\"" + mpdPassword + "\",\"" + streamHost
-          + "\",\"" + streamPort + "\",\"" + streamSuffix + "\");");
+      myStmt
+          .execute("INSERT INTO connections (name, mpdHost, mpdPort, mpdPassword, streamHost, streamPort, streamSuffix) VALUES (\""
+              + name
+              + "\",\""
+              + mpdHost
+              + "\",\""
+              + mpdPort
+              + "\",\""
+              + mpdPassword
+              + "\",\""
+              + streamHost + "\",\"" + streamPort + "\",\"" + streamSuffix + "\");");
       // finds the id of the connection in order to create an edge
       ResultSet rs =
           myStmt.executeQuery("SELECT ID FROM connections where name = \"" + name + "\";");
@@ -181,7 +193,6 @@ public class Regular extends User {
       System.out.println("User ID: " + userID);
       myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"" + userID
           + "\",\"" + id + "\");");
-      // myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"6\", \"22\");");
     } catch (SQLException e) {
       e.printStackTrace();
       this.disconnect();
@@ -190,7 +201,8 @@ public class Regular extends User {
   }
 
   /**
-   * Removes a connections from database
+   * Removes a connections from database, takes in the CONNECTION ID given in the body of the
+   * request
    * 
    * @param MPDID MPD Connection to delete
    */
@@ -272,8 +284,9 @@ public class Regular extends User {
         Rs = myStmt.executeQuery("SELECT * FROM connections WHERE ID =" + conID.get(i) + ";");
         while (Rs.next()) {
           mCon =
-              new MpdConnection((Rs.getString("name")), Rs.getString("mpdPort"),
-                  Rs.getString("mpdPassword"));
+              new MpdConnection((Rs.getString("name")), Rs.getString("mpdHost"),
+                  Rs.getString("mpdPort"), Rs.getString("mpdPassword"), Rs.getString("streamHost"),
+                  Rs.getString("streamPort"), Rs.getString("streamSuffix"));
           cons.add(mCon);
         }
       }
