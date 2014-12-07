@@ -19,41 +19,56 @@ var ProfileModal = React.createClass({
     email: React.PropTypes.string.isRequired
   },
 
-  updateUserInfo: function() {
-    var updatedUserInfo = {
-      newUserName: this.props.editUserName,
-      newEmail: this.props.editEmail
+  getInitialState: function() {
+    return {
+      mpdHost: '',
+      mpdPort: '',
+      mpdPass: '',
+      streamHost: '',
+      streamPort: '',
+      streamSuffix: '',
+      showNewConnectionForm: false
     };
+  },
 
+  addConnection: function() {
     var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu/userInfo',
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
       type: 'POST',
       contentType: 'application/json',
       cache: false,
       dataType: 'json',
-      data: JSON.stringify(updatedUserInfo)
+      data: {
+        connectionName: this.state.connectionName,
+        mpdHost: this.state.mpdHost,
+        mpdPort: this.state.mpdPort,
+        mpdPass: this.state.mpdPass,
+        streamHost: this.state.streamHost,
+        streamPort: this.state.streamPort,
+        streamSuffix: this.state.streamSuffix
+      }
     };
 
     $.ajax(request).done(function(data) {
-      this.props.username = data.newUserName;
-      this.props.email = data.newEmail;
+      // TODO Select the connection with SocketService.
+      console.log(data);
     });
-
-    this.setState({ allowEdit: !(this.state.allowEdit)});
   },
 
-  addConnection: function() {
-    // TODO
+  updateFields: function() {
+    this.setState({
+      connectionName: this.refs.connectionName.getValue(),
+      mpdHost: this.refs.mpdHost.getValue(),
+      mpdPort: this.refs.mpdPort.getValue(),
+      mpdPass: this.refs.mpdPass.getValue(),
+      streamHost: this.refs.streamHost.getValue(),
+      streamPort: this.refs.streamHost.getValue(),
+      streamSuffix: this.refs.streamSuffix.getValue()
+    });
   },
 
-  getInitialState: function() {
-    return {
-      allowEdit: false
-    };
-  },
-
-  showEdit: function() {
-    this.setState({ allowEdit: !(this.state.allowEdit) });
+  showConnectionForm: function() {
+    this.setState({showNewConnectionForm: !(this.state.showNewConnectionForm)});
   },
 
   render: function() {
@@ -67,10 +82,6 @@ var ProfileModal = React.createClass({
             <div>
               <div>
                 <h3>Basic Info</h3>
-                <a onClick={this.showEdit}>Edit</a>
-              </div>
-              <div>
-                {this.state.allowEdit ? <EditInfo /> : null}
               </div>
               <div>
                 <ListGroup>
@@ -93,15 +104,12 @@ var ProfileModal = React.createClass({
               <h3>MPD Connections</h3>
               //TODO: list current connections to this user
             </div>
-            <h3>Add New Connection</h3>
-            <div className='form-group'>
-          <form>
-            <UserInput type='text' placeholder='Connection Name'/>
-            <UserInput type='text' placeholder='MPD Server Host'/>
-            <UserInput type='password' placeholder='MPD Server Password (if required)'/>
-            <ModalButton bsStyle='success' onClick={this.addConnection}>Add Connection</ModalButton>
-          </form>
-        </div>
+            <ModalButton 
+              bsStyle='link' 
+              onClick={this.showConnectionForm}>
+              Add New Connection
+            </ModalButton>
+            {this.state.showNewConnectionForm ? <NewConnection /> : null}
           </TabPane>
       </TabbedArea>
     </div>
@@ -114,21 +122,26 @@ var ProfileModal = React.createClass({
   }
 });
 
-var EditInfo = React.createClass({
+var NewConnection = React.createClass({
   render: function() {
     return (
       /*jslint ignore: start */
-      <div className='input-group'>
-        <form>
-          <UserInput type='text' className='form-control' placeholder='Name'  value={this.props.editHumanName}/>
-          <UserInput type='text' className='form-control' placeholder='Username' value={this.props.editUserName}/>
-          <UserInput type='text' className='form-control' placeholder='Email' value={this.props.editEmail}/>
-          <ModalButton bsStyle='success' onClick={this.updateUserInfo}>Update</ModalButton>
-          <br/>
-          <br/>
-        </form>
+      <div>
+        <h3>Add New Connection</h3>
+        <div className='form-group'>
+          <form>
+            <UserInput type='text' placeholder='Connection Name' ref='connectionHost' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='MPD Server Host' ref='mpdHost' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='MPD Server Port' ref='mpdPort' onChange={this.updateFields}/>
+            <UserInput type='password' placeholder='MPD Server Password (if required)' ref='mpdPass' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='MPD Stream Host' ref='streamHost' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='MPD Stream Port' ref='streamPort' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='MPD Stream Suffix (mpd.ogg or mpd.mp3)' value='mpd.ogg' ref='streamSuffix' onChange={this.updateFields}/>
+            <ModalButton bsStyle='success' onClick={this.addConnection}>Add Connection</ModalButton>
+          </form>
+        </div>
       </div>
-    /*jslint ignore: end */
+      /*jslint ignore: end */
     );
   }
 });
