@@ -160,6 +160,9 @@ public class Regular extends User {
    * @param port port
    * @param name name of MPD Connection
    * @param pswrd MPD Password
+   * @param streamHost the stream host for MPD
+   * @param streamPort the stream port for MPD
+   * @param streamSuffix the stream suffix, either mpd.ogg or mpd.mp3
    */
   public void addConnection(String name, String mpdHost, String mpdPort, String mpdPassword, String streamHost, String streamPort, String streamSuffix) {
     try {

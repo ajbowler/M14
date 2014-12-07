@@ -5,36 +5,56 @@ import java.util.ArrayList;
 //data class that holds information for the user's connections
 public class MpdConnection {
 
-private String host;
-private String port;
-private String password;
+  private String connectionName;
+  private String serverHost;
+  private String serverPort;
+  private String serverPassword;
+  private String streamHost;
+  private String streamPort;
+  private String streamSuffix;
 
-public MpdConnection(String inHost, String inPort, String inPss) {
- this.host = inHost;
- this.port = inPort;
- this.password = inPss;
-}
+  public MpdConnection(String connectionName, String serverHost, String serverPort, 
+    String serverPass, String streamHost, String streamPort, String streamSuffix) {
+    this.connectionName = connectionName;
+    this.serverHost = serverHost;
+    this.serverPort = serverPort;
+    this.serverPass = serverPass;
+    this.streamHost = streamHost;
+    this.streamPort = streamPort;
+    this.streamSuffix = streamSuffix;
+  }
 
-public String getHost() {
- return this.host;
-}
+  public String getConnectionName() {
+    return this.connectionName;
+  }
 
-public String getPort() {
- return this.port;
-}
+  public String getServerHost() {
+    return this.host;
+  }
 
-// Returns an array of the users connections
-public ArrayList<MpdConnection> retrieveMpdConnections(){
- Regular user = new Regular();
- return user.getConnections();
-}
+  public String getServerPort() {
+    return this.port;
+  }
 
-public Statement createStatement() {
- // TODO Auto-generated method stub
- return null;
-}
+  public String getServerPass() {
+    return this.serverPass;
+  }
 
-//TODO
-//find all the necessary properties needed for the Connection class
+  public String getStreamHost() {
+    return this.streamHost;
+  }
 
+  public String getStreamPort() {
+    return this.streamPort;
+  }
+
+  public String getStreamSuffix() {
+    return this.streamSuffix;
+  }
+
+  // Returns an array of the users connections
+  public ArrayList<MpdConnection> retrieveMpdConnections(){
+    Regular user = new Regular();
+    return user.getConnections();
+  }
 }

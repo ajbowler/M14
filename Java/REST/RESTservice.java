@@ -92,11 +92,21 @@ public class RESTservice {
     try {
       JSONObject obj = new JSONObject(input);
       AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
+
       Regular user = new Regular();
       user = user.getUserFromDatabase(authBean.getUsername());
-      ArrayList<MpdConnection> mpdConnections = user.getConnections();
-      System.out.println(mpdConnections.toString());
+
+      ArrayList<MpdConnection> mpdConnectionArrayList = user.getConnections();
+      System.out.println(mpdConnectionsArrayList.toString());
+
+      // 1. Make a JSONArray.
+      // 2. Loop through the arraylist and for each MpdConnection, add it to the JSONArray.
+      // 3. Make wrapper JSONObject for the array.
+
+      JSONArray mpdConnectionsJSON = new JSONArray();
+
       return null; // TODO
+
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
