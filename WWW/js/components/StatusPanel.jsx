@@ -14,12 +14,16 @@ var Panel = require('react-bootstrap/Panel');
  * @return a JSON representation of the response
  */
 function mpd2json(msg) {
-  console.log('msg str: ' + msg);
-
   var arr = msg.split('\n');
 
-  arr.pop(); // This gets rid of the last empty string
-  if (arr.pop() !== 'OK') return null; // Checks that the response is OK
+  // This gets rid of the last empty string that is in all responses
+  arr.pop();
+
+  // Checks that the response is OK
+  if (arr.pop() !== 'OK') return null;
+
+  // Checks if there is anything left to parse
+  if (arr.length === 0) return null;
 
   for(var i = 0; i < arr.length; i++) {
     arr[i] = arr[i].split(': ');
@@ -43,28 +47,29 @@ var StatusPanel = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.ws.onmessage = this.handleMessage;
+    this.props.websocket.onmessage = this.handleMessage;
   },
 
   handleMessage: function(e) {
     var response = mpd2json(e.data);
-    console.log(response);
-    this.setState({status: response});
+    if (response !== null) {
+      console.log(response);
+      this.setState({status: response});
+    }
   },
 
   getInfo: function () {
-    console.log(this.ws);
     console.log('sending: currentsong');
-    this.props.ws.send(JSON.stringify({
+    this.props.websocket.send(JSON.stringify({
       mpdCommand: 'currentsong',
-      mpdHost: '10.27.253.137:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: '10.30.121.50:6600' // TODO: make this variable instead of hardcoded
     }));
   },
 
   render : function() {
     return (
       /* jslint ignore: start */
-      <div>
+      <div id='statuspanel'>
         <Panel header={"Playing"} bsStyle="primary">
           {this.state.status}
         </Panel>

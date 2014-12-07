@@ -8,12 +8,6 @@ var React = require('react/addons');
 var Control = require('react-bootstrap/Button.js');
 var Glyphicon = require('react-bootstrap/Glyphicon.js');
 
-var ws = new WebSocket('ws://proj-309-m14.cs.iastate.edu:8007', 'echo-protocol');
-
-ws.onmessage = function(e) {
-  console.log(e.data);
-};
-
 var StopButton = React.createClass({
   render: function() {
     /*jslint ignore: start */
@@ -22,11 +16,10 @@ var StopButton = React.createClass({
   },
 
   stop: function() {
-    console.log(ws);
     console.log('sending: stop');
-    ws.send(JSON.stringify({
+    this.props.websocket.send(JSON.stringify({
       mpdCommand: 'stop',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: '10.30.121.50:6600' // TODO: make this variable instead of hardcoded
     }));
   }
 });

@@ -60,7 +60,7 @@ var LoginModal = React.createClass({
         password: this.state.password
       })
     };
-    
+
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
@@ -135,7 +135,9 @@ var LoginModal = React.createClass({
 
 var AuthError = React.createClass({
   render: function() {
+    /* jslint ignore: start */
     return <Alert bsStyle='danger'><strong>{this.props.message}!</strong></Alert>
+    /* jslint ignore: end */
   }
 });
 
