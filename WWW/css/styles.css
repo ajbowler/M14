@@ -1,8 +1,23 @@
 #logo {
   height: 45px;
+}
+
+#header {
+  margin-bottom: 10px;
+}
+
+#container {
   margin: 10px;
 }
 
-#profile {
-  margin: 10px;
+/*
+#statuspanel {
+  width: 240px;
+  float: left;
+  display: inline-block;
 }
+
+#controls {
+  display: inline-block;
+}
+*/
