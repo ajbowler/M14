@@ -73,7 +73,7 @@ var StatusPanel = React.createClass({
     return (
       /* jslint ignore: start */
       <div id='statuspanel' >
-        <Panel header={"Playing"} bsStyle="primary">
+        <Panel header='Playing' bsStyle='primary'>
           Title: {this.state.status.Title}<br/>
           Artist: {this.state.status.Artist}<br/>
           Album: {this.state.status.Album}<br/>

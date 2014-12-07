@@ -5,7 +5,6 @@
 'use strict';
 
 var React = require('react/addons');
-var $ = require('jquery');
 
 var Html5AudioStreamer = React.createClass({
   render: function() {
