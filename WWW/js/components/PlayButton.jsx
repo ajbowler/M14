@@ -16,10 +16,10 @@ var PlayButton = React.createClass({
   },
 
   play: function() {
-    console.log('sending: play');
+    console.log('sending: play to ' + this.props.host + ':' + this.props.port);
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'play',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: this.props.host + ':' + this.props.port
     }));
   }
 });

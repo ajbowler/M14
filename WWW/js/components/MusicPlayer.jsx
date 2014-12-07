@@ -47,7 +47,7 @@ var MusicPlayer = React.createClass({
   },
 
   render: function() {
-    var connection = this.state.connections[this.state.selectedConnection] || '';
+    var connection = this.state.connections[this.state.selectedConnection] || {};
     return (
       /* jshint ignore: start */
       <div id='musicplayer'>
@@ -63,10 +63,10 @@ var MusicPlayer = React.createClass({
         </div>
         <Panel id='controls' className='panel-heading text-center'>
           <div>
-            <PlayerControls websocket={ws}/>
+            <PlayerControls websocket={ws} host={connection.serverHost} port={connection.serverPort}/>
           </div>
         </Panel>
-        <StatusPanel websocket={ws}/>
+        <StatusPanel websocket={ws} host={connection.serverHost} port={connection.serverPort}/>
         <Html5AudioStreamer
           host={connection.streamHost}
           port={connection.streamPort}

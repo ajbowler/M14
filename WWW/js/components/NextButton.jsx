@@ -16,10 +16,10 @@ var NextButton = React.createClass({
   },
 
   next: function() {
-    console.log('sending: next');
+    console.log('sending: next to ' + this.props.host + ':' + this.props.port);
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'next',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: this.props.host + ':' + this.props.port
     }));
   }
 });

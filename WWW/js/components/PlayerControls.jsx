@@ -17,11 +17,11 @@ var PlayerControls = React.createClass({
     return (
       /*jslint ignore: start */
       <ButtonGroup>
-        <PreviousButton websocket={this.props.websocket}/>
-        <PlayButton websocket={this.props.websocket}/>
-        <PauseButton websocket={this.props.websocket}/>
-        <StopButton websocket={this.props.websocket}/>
-        <NextButton websocket={this.props.websocket}/>
+        <PreviousButton websocket={this.props.websocket} host={this.props.host} port={this.props.port}/>
+        <PlayButton websocket={this.props.websocket} host={this.props.host} port={this.props.port}/>
+        <PauseButton websocket={this.props.websocket} host={this.props.host} port={this.props.port}/>
+        <StopButton websocket={this.props.websocket} host={this.props.host} port={this.props.port}/>
+        <NextButton websocket={this.props.websocket} host={this.props.host} port={this.props.port}/>
       </ ButtonGroup>
       /*jslint ignore: end */
     );

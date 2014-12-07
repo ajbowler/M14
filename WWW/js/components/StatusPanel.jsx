@@ -62,10 +62,10 @@ var StatusPanel = React.createClass({
   },
 
   getInfo: function () {
-    console.log('sending: currentsong');
+    console.log('sending: currentsong to ' + this.props.host + ':' + this.props.port);
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'currentsong',
-      mpdHost: 'localhost:6600'
+      mpdHost: this.props.host + ':' + this.props.port
     }));
   },
 

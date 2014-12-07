@@ -16,10 +16,10 @@ var StopButton = React.createClass({
   },
 
   stop: function() {
-    console.log('sending: stop');
+    console.log('sending: stop to ' + this.props.host + ':' + this.props.port);
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'stop',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: this.props.host + ':' + this.props.port
     }));
   }
 });

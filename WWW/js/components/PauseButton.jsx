@@ -16,10 +16,10 @@ var PauseButton = React.createClass({
   },
 
   pause: function() {
-    console.log('sending: pause');
+    console.log('sending: pause to ' + this.props.host + ':' + this.props.port);
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'pause',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: this.props.host + ':' + this.props.port
     }));
   }
 });

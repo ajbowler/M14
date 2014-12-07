@@ -139,7 +139,6 @@ var ProfileModal = React.createClass({
               <h3>MPD Connections</h3>
               <Accordion>
                 {this.props.connections.map(function(connection, idx) {
-                  console.log(this);
                   return (
                     <Connection
                       onClick={this.selectConnection.bind(null, connection, idx)}
