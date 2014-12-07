@@ -10,28 +10,28 @@ private String port;
 private String password;
 
 public MpdConnection(String inHost, String inPort, String inPss) {
- this.host = inHost;
- this.port = inPort;
- this.password = inPss;
+  this.host = inHost;
+  this.port = inPort;
+  this.password = inPss;
 }
 
 public String getHost() {
- return this.host;
+  return this.host;
 }
 
 public String getPort() {
- return this.port;
+  return this.port;
 }
 
 // Returns an array of the users connections
 public ArrayList<MpdConnection> retrieveMpdConnections(){
- Regular user = new Regular();
- return user.getConnections();
+  Regular user = new Regular();
+  return user.getConnections();
 }
 
 public Statement createStatement() {
- // TODO Auto-generated method stub
- return null;
+  // TODO Auto-generated method stub
+  return null;
 }
 
 //TODO
