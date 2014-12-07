@@ -75,6 +75,7 @@ public class RESTservice {
       // Instantiate and add the user to the database.
       registeredUser.dbAddUser(userBean.getUsername(), userBean.getPassword(), userBean.getEmail());
       return Response.status(201).entity(userBean).build();
+
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
@@ -103,9 +104,38 @@ public class RESTservice {
       // 2. Loop through the arraylist and for each MpdConnection, add it to the JSONArray.
       // 3. Make wrapper JSONObject for the array.
 
+      // 1.
       JSONArray mpdConnectionsJSON = new JSONArray();
 
-      return null; // TODO
+      // 2.
+      for(MpdConnection mpdConn : mpdConnectionsArrayList) {
+        JSONObject mpdJSON = new JSONObject();
+
+        String connName = mpdConn.getConnectionName();
+        String connServeHost = mpdConn.getServerHost();
+        String connServePort = mpdConn.getServerPort();
+        String connServePass = mpdConn.getServerPass();
+        String connStreamHost = mpdConn.getStreamHost();
+        String connStreamPort = mpdConn.getStreamPort();
+        String connStreamSuffix = mpdConn.getStreamSuffix();
+
+        mpdJSON.put("connectionName", connName);
+        mpdJSON.put("serverHost", connServeHost);
+        mpdJSON.put("serverPort", connServePort);
+        mpdJSON.put("serverPass", connServePass);
+        mpdJSON.put("streamHost", connStreamHost);
+        mpdJSON.put("streamPort", connStreamPort);
+        mpdJSON.put("streamSuffix", connStreamSuffix);
+
+        mpdConnectionsJSON.put(mpdJSON);
+      }
+
+      System.out.println(mpdConnectionsJSON);
+
+      JSONObject mpdConnections = new JSONObject();
+      mpdConnections.put("mpdConnections", mpdConnectionsJSON);
+
+      return Response.status(201).entity(mpdConnections).build();
 
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
