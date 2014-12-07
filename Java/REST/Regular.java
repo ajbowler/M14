@@ -193,7 +193,6 @@ public class Regular extends User {
       System.out.println("User ID: " + userID);
       myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"" + userID
           + "\",\"" + id + "\");");
-      // myStmt.execute("insert into connectionEdges (userID, connectionID) VALUES (\"6\", \"22\");");
     } catch (SQLException e) {
       e.printStackTrace();
       this.disconnect();

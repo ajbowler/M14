@@ -98,9 +98,6 @@ public class RESTservice {
     }
   }
 
-  /*
-   * 
-   */
   /**
    * Grabs all connections correlated with a user and returns them as a String in JSON format
    * 
