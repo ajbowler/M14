@@ -31,12 +31,19 @@ import com.m14.rest.DestroyBean;
 @Path("/app")
 public class RESTservice {
 
+
+  /**
+   * Authenticates and logs in
+   * 
+   * @param input text in JSON format with username and password
+   * @return
+   */
   @POST
   @Path("/login")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response loginUser(String input) {
-    
+
     try {
       JSONObject obj = new JSONObject(input);
       AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
@@ -61,6 +68,12 @@ public class RESTservice {
 
   }
 
+  /**
+   * Creates a user to put in the user table on the database
+   * 
+   * @param input text in JSON format with username, password, and email
+   * @return
+   */
   @POST
   @Path("/createUsr")
   @Produces(MediaType.APPLICATION_JSON)
@@ -84,9 +97,15 @@ public class RESTservice {
       return Response.status(401).entity("Couldn't register user!").build();
     }
   }
-  
+
   /*
    * 
+   */
+  /**
+   * Grabs all connections correlated with a user and returns them as a String in JSON format
+   * 
+   * @param input text in JSON format with username and password
+   * @return
    */
   @POST
   @Path("/getConnections")
@@ -144,10 +163,14 @@ public class RESTservice {
     }
   }
 
-
-  /*
+  /**
+   * 
    * NOTE: This method relies on the assumption that only logged-in users can add connections. This
    * is because in order to create the Regular user it simply calls getUserFromDatabase.
+   * 
+   * @param input text in JSON format with connectoinName, serverHost, serverPort, serverPass,
+   *        streamHost, streamPort, and streamSuffix
+   * @return
    */
   @POST
   @Path("/createConnection")
@@ -173,7 +196,7 @@ public class RESTservice {
           mpdConnection.getStreamHost(), mpdConnection.getStreamPort(),
           mpdConnection.getStreamSuffix());
       return Response.status(201).entity(mpdConnection).build();
-      
+
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
@@ -183,11 +206,13 @@ public class RESTservice {
     }
   }
 
-  /*
-   * Request body must contain - connectionID: "(connection ID)"
-   * NOTE: Also assumes user is already logged in
-   * Only receives a connectionID, used to delete the connection
-   * This connectionID taken from the client calling getConnections
+  /**
+   * Request body must contain - connectionID: "(connection ID)" NOTE: Also assumes user is already
+   * logged in Only receives a connectionID, used to delete the connection This connectionID taken
+   * from the client calling getConnections
+   * 
+   * @param input text in JSON format with username, password, and connectionID
+   * @return
    */
   @POST
   @Path("/destroy")
@@ -211,7 +236,7 @@ public class RESTservice {
         return Response.status(401).entity("Authentication failed!").build();
       }
     }
-    
+
     catch (JSONException exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
