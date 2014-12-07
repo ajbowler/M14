@@ -192,8 +192,52 @@ public class RESTservice {
           mpdConnection.getServerPort(), mpdConnection.getServerPass(),
           mpdConnection.getStreamHost(), mpdConnection.getStreamPort(),
           mpdConnection.getStreamSuffix());
-      return Response.status(201).entity(mpdConnection).build();
 
+      // Send new MPD connection as a JSON over to Node
+      JSONObject mpdJSON = new JSONObject();
+      mpdJSON.put("host", mpdConnection.getServerHost());
+      mpdJSON.put("port", mpdConnection.getServerPort());
+      mpdJSON.put("pass", mpdConnection.getServerPass());
+      String mpdJSONString = mpdJSON.toString();
+
+      // Set up the request.
+      String url = "http://localhost:8008/create";
+      URL nodeURL = new URL(url);
+      HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
+      nodeConnection.setDoOutput(true);
+      nodeConnection.setDoInput(true);
+      nodeConnection.setRequestProperty("Content-Type", "application/json");
+      nodeConnection.setRequestProperty("Content-Length", mpdJSONString.length);
+      nodeConnection.setRequestProperty("Connection", "keep-alive");
+      nodeConnection.setRequestProperty("Accept", "*/*");
+      nodeConnection.setRequestMethod("POST");
+
+      // Set up the output stream.
+      OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
+      wr.write(mpdJSONString);
+      wr.flush();
+
+      // Check the response from Node.
+      int HttpResult = nodeConnection.getResponseCode();
+      if(HttpResult == HttpURLConnection.HTTP_OK) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));  
+
+        String line = null;  
+
+        while ((line = br.readLine()) != null) {  
+         sb.append(line + "\n");  
+        }  
+
+        br.close();  
+
+        System.out.println(""+sb.toString());
+
+        return Response.status(201).entity(mpdConnection).build();
+      } else {
+        System.out.println("Error reading response from Node.");
+        System.out.println("Response message: " + nodeConnection.getResponseMessage());
+        return Response.status(401).entity("Could not add connection").build();
+      }
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
@@ -248,96 +292,4 @@ public class RESTservice {
       return Response.status(401).entity("Could not add connection").build();
     }
   }
-
-  // @POST
-  // @Path("/post")
-  // @Consumes(MediaType.APPLICATION_JSON)
-  // public Response createUsrinJSON(Regular Usr) {
-  // Usr.getUsername();
-  // Usr.getEmail();
-  // Usr.getJoinDate();
-  // Usr.getPassword();
-
-  // String usrInfo = "User Info: " + Usr.toString();
-  // return Response.status(201).entity(usrInfo).build();
-  // }
-
-  // @POST
-  // @Path("/create")
-  // @Produces("application/json")
-  // @Consumes(MediaType.APPLICATION_JSON)
-  // public Response createConnectionJSON(Regular user, String ip, String port, String mpdPassword)
-  // {
-  // try {
-  // user.addConnection(ip, port, user.getUsername());
-  // }
-
-  // catch (SQLException exc) {
-  // StringWriter errors = new StringWriter();
-  // exc.printStackTrace(new PrintWriter(errors));
-  // // prints stack trace to Catalina.out
-  // System.out.println(errors.toString());
-  // return Response.status(420).entity("Error in adding connection " + user.getUsername() +
-  // ". See log at Catalina.out").build();
-  // }
-
-  // // The location of the Node.js server
-  // String nodeURL = "http://localhost:8007";
-  // URL obj = new URL(nodeURL);
-  // HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
-
-  // nodeConnection.setDoOutput(true);
-  // nodeConnection.setRequestMethod("POST");
-  // nodeConnection.setRequestProperty("Content-Type", "application/json");
-  // nodeConnection.setRequestProperty("Accept", "application/json");
-
-  // DataOutputStream wr = new DataOutputStream(nodeConnection.getOutputStream());
-  // JSONObject mpdConnection = new JSONObject();
-  // mpdConnection.put("host", ip);
-  // mpdConnection.put("port", port);
-  // mpdConnection.put("password", mpdPassword);
-  // wr.writeBytes(mpdConnection.toString());
-  // wr.flush();
-  // wr.close();
-
-  // return Response.status(200).entity(mpdConnection.toString()).build();
-  // }
-
-  // @POST
-  // @Path("/destroy")
-  // @Produces("application/json")
-  // @Consumes(MediaType.APPLICATION_JSON)
-  // public Response destroyConnectionJSON(Regular user, String ip, Integer port, String
-  // mpdPassword) {
-  // try {
-  // user.removeConnection(ip, port, name);
-  // }
-
-  // catch (SQLException e) {
-  // e.printStackTrace();
-  // return Response.status(420).entity("Didn't Work").build();
-  // }
-
-  // // The location of the Node.js server
-  // String nodeURL = "http://localhost:8007";
-  // URL obj = new URL(nodeURL);
-  // HttpURLConnection nodeConnection = (HttpURLConnection) obj.openConnection();
-
-  // nodeConnection.setDoOutput(true);
-  // nodeConnection.setRequestMethod("POST");
-  // nodeConnection.setRequestProperty("Content-Type", "application/json");
-  // nodeConnection.setRequestProperty("Accept", "application/json");
-
-  // DataOutputStream wr = new DataOutputStream(nodeConnection.getOutputStream());
-  // JSONObject mpdConnection = new JSONObject();
-  // mpdConnection.put("host", ip);
-  // mpdConnection.put("port", port);
-  // mpdConnection.put("password", mpdPassword);
-  // wr.writeBytes(mpdConnection.toString());
-  // wr.flush();
-  // wr.close();
-
-  // return Response.status(200).entity(mpdConnection.toString()).build();
-  // }
-
 }
