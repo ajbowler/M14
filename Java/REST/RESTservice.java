@@ -36,7 +36,7 @@ public class RESTservice {
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response loginUser(String input) {
-
+    
     try {
       JSONObject obj = new JSONObject(input);
       AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
@@ -84,7 +84,10 @@ public class RESTservice {
       return Response.status(401).entity("Couldn't register user!").build();
     }
   }
-
+  
+  /*
+   * 
+   */
   @POST
   @Path("/getConnections")
   @Produces(MediaType.TEXT_PLAIN)
@@ -141,20 +144,87 @@ public class RESTservice {
     }
   }
 
+
+  /*
+   * NOTE: This method relies on the assumption that only logged-in users can add connections. This
+   * is because in order to create the Regular user it simply calls getUserFromDatabase.
+   */
   @POST
   @Path("/createConnection")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response createMPDConnection(String input) {
-    return null; // TODO
+    try {
+      JSONObject obj = new JSONObject(input);
+
+      // Create ConnectionBean from JSON
+      MpdConnection mpdConnection =
+          new MpdConnection(obj.getString("connectionName"), obj.getString("serverHost"),
+              obj.getString("serverPort"), obj.getString("serverPass"),
+              obj.getString("streamHost"), obj.getString("streamPort"),
+              obj.getString("streamSuffix"));
+
+      Regular user = new Regular();
+      // Instantiate and add the user to the database.
+      user = user.getUserFromDatabase(obj.getString("username"));
+      // Add connection tied to user just created
+      user.addConnection(mpdConnection.getConnectionName(), mpdConnection.getServerHost(),
+          mpdConnection.getServerPort(), mpdConnection.getServerPass(),
+          mpdConnection.getStreamHost(), mpdConnection.getStreamPort(),
+          mpdConnection.getStreamSuffix());
+      return Response.status(201).entity(mpdConnection).build();
+      
+    } catch (Exception exc) {
+      StringWriter errors = new StringWriter();
+      exc.printStackTrace(new PrintWriter(errors));
+      // prints stack trace to Catalina.out
+      System.out.println(errors.toString());
+      return Response.status(401).entity("Could not add connection").build();
+    }
   }
 
+  /*
+   * Request body must contain - connectionID: "(connection ID)"
+   * NOTE: Also assumes user is already logged in
+   * Only receives a connectionID, used to delete the connection
+   * This connectionID taken from the client calling getConnections
+   */
   @POST
   @Path("/destroy")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response destroyMPDConnection(String input) {
-    return null; // TODO
+    JSONObject obj;
+    try {
+      obj = new JSONObject(input);
+      AuthBean authBean = new AuthBean(obj.getString("username"), obj.getString("password"));
+      Regular user = new Regular();
+      user = user.getUserFromDatabase(authBean.getUsername());
+      // Authentication
+      UserBean userBean = new UserBean(user.getUsername(), user.getPassword(), user.getEmail());
+      if (user.password.equals(authBean.getPassword())) {
+        String connectionID = obj.getString("connectionID");
+        Regular usr = new Regular();
+        usr.removeConnection(connectionID);
+        return Response.status(201).entity(userBean).build();
+      } else {
+        return Response.status(401).entity("Authentication failed!").build();
+      }
+    }
+    
+    catch (JSONException exc) {
+      StringWriter errors = new StringWriter();
+      exc.printStackTrace(new PrintWriter(errors));
+      // prints stack trace to Catalina.out
+      System.out.println(errors.toString());
+      return Response.status(401).entity("Could not add connection").build();
+    } catch (SQLException exc) {
+      StringWriter errors = new StringWriter();
+      exc.printStackTrace(new PrintWriter(errors));
+      // prints stack trace to Catalina.out
+      System.out.println(errors.toString());
+      return Response.status(401).entity("Could not add connection").build();
+    }
   }
 
   // @POST
