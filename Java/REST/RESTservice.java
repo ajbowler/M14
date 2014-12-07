@@ -220,7 +220,7 @@ public class RESTservice {
       // Check the response from Node.
       int HttpResult = nodeConnection.getResponseCode();
       if(HttpResult == HttpURLConnection.HTTP_OK) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));  
+        BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
 
         String line = null;  
 
@@ -269,9 +269,57 @@ public class RESTservice {
       // Authentication
       UserBean userBean = new UserBean(user.getUsername(), user.getPassword(), user.getEmail());
       if (user.password.equals(authBean.getPassword())) {
+
+        // Remove the connection from the user's list of connections in the database.
         String connectionID = obj.getString("connectionID");
         Regular usr = new Regular();
         usr.removeConnection(connectionID);
+
+        // Turn the connectionID into a JSONObject.
+        JSONObject destroyedConn = new JSONObject();
+        destroyedConn.put("connectionId", connectionID);
+
+        // Set up the request.
+        String destroyedConnString = destroyedConn.toString();
+        String url = "http://localhost:8008/destroy";
+        URL nodeURL = new URL(url);
+        HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
+        nodeConnection.setDoOutput(true);
+        nodeConnection.setDoInput(true);
+        nodeConnection.setRequestProperty("Content-Type", "application/json");
+        nodeConnection.setRequestProperty("Content-Length", destroyedConnString.length);
+        nodeConnection.setRequestProperty("Connection", "keep-alive");
+        nodeConnection.setRequestProperty("Accept", "*/*");
+        nodeConnection.setRequestMethod("POST");
+
+        // Set up the output stream.
+        OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
+        wr.write(destroyedConnString);
+        wr.flush();
+
+        //Check the response from Node.
+        int HttpResult = nodeConnection.getResponseCode();
+        if(HttpResult == HttpURLConnection.HTTP_OK) {
+          BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
+
+          String line = null;  
+
+          while ((line = br.readLine()) != null) {  
+           sb.append(line + "\n");  
+          }  
+
+          br.close();  
+
+          System.out.println(""+sb.toString());
+
+          return Response.status(201).entity(destroyedConn).build();
+        } else {
+          System.out.println("Error reading response from Node.");
+          System.out.println("Response message: " + nodeConnection.getResponseMessage());
+          return Response.status(401).entity("Could not destroy connection").build();
+        }        
+
+
         return Response.status(201).entity(userBean).build();
       } else {
         return Response.status(401).entity("Authentication failed!").build();
