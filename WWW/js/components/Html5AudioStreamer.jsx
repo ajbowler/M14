@@ -20,7 +20,7 @@ var Html5AudioStreamer = React.createClass({
 
   render: function() {
     // var url = 'http://' + this.state.host + ':' + this.state.port + '/' + this.state.suffix;
-    var url = 'http://10.30.121.50:8000/mpd.ogg';
+    var url = 'http://localhost:8000/mpd.ogg';
     return (
       /* jshint ignore: start */
       <audio autoPlay preload="auto" id="audioStream" src={url}>

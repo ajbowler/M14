@@ -19,7 +19,7 @@ var PlayButton = React.createClass({
     console.log('sending: play');
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'play',
-      mpdHost: '10.30.121.50:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
     }));
   }
 });
