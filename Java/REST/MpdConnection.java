@@ -13,7 +13,7 @@ public class MpdConnection {
   private String streamSuffix;
 
   public MpdConnection() {} // JAXB needs this
-  
+
   public MpdConnection(String connectionName, String serverHost, String serverPort, String serverPass, String streamHost, String streamPort, String streamSuffix) {
     this.connectionName = connectionName;
     this.serverHost = serverHost;
@@ -51,31 +51,31 @@ public class MpdConnection {
   public String getStreamSuffix() {
     return this.streamSuffix;
   }
-  
+
   public void setConnectionName(String connectionName) {
     this.connectionName = connectionName;
   }
-  
+
   public void setServerHost(String serverHost) {
     this.serverHost = serverHost;
   }
- 
+
   public void setStreamHost(String streamHost) {
     this.streamHost = streamHost;
   }
-  
+
   public void setServerPort(String serverPort) {
     this.serverPort = serverPort;
   }
-  
+
   public void setServerPass(String serverPassword) {
     this.serverPassword = serverPassword;
   }
-  
+
   public void setStreamPort(String streamPort) {
     this.streamPort = streamPort;
   }
-  
+
   public void setStreamSuffix(String streamSuffix) {
     this.streamSuffix = streamSuffix;
   }

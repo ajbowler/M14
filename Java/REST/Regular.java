@@ -23,7 +23,7 @@ import javax.naming.InitialContext;
 /**
  * A user that can do everything that premium can but change the background image Does not include
  * being addressed as his/her majesty
- * 
+ *
  * @author Nick and Thomas
  *
  */
@@ -47,7 +47,7 @@ public class Regular extends User {
 
   /**
    * Adds user to database
-   * 
+   *
    * @param name username in database
    * @param pswrd password tied to user
    * @param eml email tied to user
@@ -70,7 +70,7 @@ public class Regular extends User {
 
   /**
    * Connects to the database, queries for given user with username
-   * 
+   *
    * @param username user to fetch information froms
    * @return user with information from database
    * @throws SQLException
@@ -137,7 +137,7 @@ public class Regular extends User {
 
   /**
    * Adds a friend to database
-   * 
+   *
    * @param friendID
    */
   public void addFriend(Integer friendID) {
@@ -155,7 +155,7 @@ public class Regular extends User {
 
   /**
    * Adds a connection to connections
-   * 
+   *
    * @param host ip address
    * @param port port
    * @param name name of MPD Connection
@@ -203,7 +203,7 @@ public class Regular extends User {
   /**
    * Removes a connections from database, takes in the CONNECTION ID given in the body of the
    * request
-   * 
+   *
    * @param MPDID MPD Connection to delete
    */
   public void removeConnection(String MPDID) {
@@ -221,7 +221,7 @@ public class Regular extends User {
   /**
    * Checks how long the user has had an account. If it has been long enough the user will be
    * upgraded to premium
-   * 
+   *
    * @param date
    */
   public void checkLoyalty(Timestamp date) {
@@ -257,7 +257,7 @@ public class Regular extends User {
 
   /**
    * Gets list of connections tied to user in the database
-   * 
+   *
    * @return an array of connections that the user owns
    */
   public ArrayList<MpdConnection> getConnections() {

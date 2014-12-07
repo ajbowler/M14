@@ -25,9 +25,14 @@ var DropdownMenu = React.createClass({
       /*jslint ignore: start */
       <div className='pull-right'>
         <DropdownButton title = {<cogGlyph />} pullRight>
-          <ModalTrigger modal={<ProfileModal
-            username={this.props.username}
-            email={this.props.email}/>}>
+          <ModalTrigger modal={
+            <ProfileModal
+              username={this.props.username}
+              email={this.props.email}
+              connections={this.props.connections}
+              selected={this.props.selected}
+              select={this.props.select}/>
+            }>
             <MenuItem id='profile'>Profile</MenuItem>
           </ModalTrigger>
           </DropdownButton>

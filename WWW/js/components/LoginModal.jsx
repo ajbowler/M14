@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 
 /* jslint browserify: true */
-/* jslint devel: true */
 'use strict';
 
 var React = require('react/addons');
@@ -60,7 +59,7 @@ var LoginModal = React.createClass({
         password: this.state.password
       })
     };
-    
+
     $.ajax(request).done(function(data) {
       app.props.login(data);
     }).error(function() {
@@ -84,6 +83,7 @@ var LoginModal = React.createClass({
 
     $.ajax(request).done(function(data) {
       // Now that the user is registered, log them in.
+      data.password = this.state.password;
       app.props.login(data);
     }).error(function() {
       app.showRegisterFailed();
@@ -135,7 +135,9 @@ var LoginModal = React.createClass({
 
 var AuthError = React.createClass({
   render: function() {
+    /* jslint ignore: start */
     return <Alert bsStyle='danger'><strong>{this.props.message}!</strong></Alert>
+    /* jslint ignore: end */
   }
 });
 
