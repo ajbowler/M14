@@ -8,18 +8,8 @@ var React = require('react/addons');
 var $ = require('jquery');
 
 var Html5AudioStreamer = React.createClass({
-  getInitialState: function() {
-    return {
-      connection: {}
-    };
-  },
-
-  componentDidMount: function() {
-
-  },
-
   render: function() {
-    // var url = 'http://' + this.state.host + ':' + this.state.port + '/' + this.state.suffix;
+    // var url = 'http://' + this.props.host + ':' + this.props.port + '/' + this.props.suffix;
     var url = 'http://localhost:8000/mpd.ogg';
     return (
       /* jshint ignore: start */
@@ -29,7 +19,6 @@ var Html5AudioStreamer = React.createClass({
       /* jshint ignore: end */
     );
   }
-
 });
 
 module.exports = Html5AudioStreamer;

@@ -7,9 +7,6 @@
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
 
-var i;
-var j;
-
 /**
  * @desc Takes an MPD command response and turns it into a JSON Object
  *
@@ -26,13 +23,15 @@ function mpd2json(msg) {
   if (arr.pop() !== 'OK') {
     return null;
   }
+
   // Checks if there is anything left to parse
   if (arr.length === 0) {
     return null;
   }
-  for(i = 0; i < arr.length; i++) {
+
+  for(var i = 0; i < arr.length; i++) {
     arr[i] = arr[i].split(': ');
-    for (j = 0; j < arr[i].length; j++) {
+    for (var j = 0; j < arr[i].length; j++) {
       arr[i][j] = '"' + arr[i][j] + '"';
     }
     arr[i] = arr[i].join(':');
@@ -66,7 +65,7 @@ var StatusPanel = React.createClass({
     console.log('sending: currentsong');
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'currentsong',
-      mpdHost: 'localchost:6600'
+      mpdHost: 'localhost:6600'
     }));
   },
 

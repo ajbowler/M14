@@ -12,8 +12,26 @@ var ListGroup = require('react-bootstrap/ListGroup');
 var ListGroupItem = require('react-bootstrap/ListGroupItem');
 var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
+var Panel = require('react-bootstrap/Panel');
+var Accordion = require('react-bootstrap/Accordion');
+
+var ModalScrollFixMixin = {
+  componentDidMount: function() {
+    if (document && document.body) {
+      var orig = document.body.className;
+      document.body.className = orig + (orig ? ' ' : '') + 'modal-open';
+    }
+  },
+  componentWillUnmount: function() {
+    if (document && document.body) {
+      document.body.className = document.body.className.replace(/ ?modal-open/, '');
+    }
+  }
+};
 
 var ProfileModal = React.createClass({
+  mixins: [ModalScrollFixMixin],
+
   propTypes: {
     username: React.PropTypes.string.isRequired,
     email: React.PropTypes.string.isRequired
@@ -27,7 +45,8 @@ var ProfileModal = React.createClass({
       streamHost: '',
       streamPort: '',
       streamSuffix: '',
-      showNewConnectionForm: false
+      showNewConnectionForm: false,
+      selectedConnection: 0
     };
   },
 
@@ -35,10 +54,11 @@ var ProfileModal = React.createClass({
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
       type: 'POST',
-      contentType: 'application/json',
+      contentType: 'text/plain',
       cache: false,
-      dataType: 'json',
-      data: {
+      dataType: 'text',
+      data: JSON.stringify({
+        username: this.props.username,
         connectionName: this.state.connectionName,
         mpdHost: this.state.mpdHost,
         mpdPort: this.state.mpdPort,
@@ -46,7 +66,7 @@ var ProfileModal = React.createClass({
         streamHost: this.state.streamHost,
         streamPort: this.state.streamPort,
         streamSuffix: this.state.streamSuffix
-      }
+      })
     };
 
     $.ajax(request).done(function(data) {
@@ -71,11 +91,24 @@ var ProfileModal = React.createClass({
     this.setState({showNewConnectionForm: !(this.state.showNewConnectionForm)});
   },
 
+  selectConnection: function(connection, idx) {
+    this.setState({
+      mpdHost: connection.serverHost,
+      mpdPort: connection.serverPort,
+      mpdPass: connection.serverPass,
+      streamHost: connection.streamHost,
+      streamPort: connection.streamPort,
+      streamSuffix: connection.streamSuffix,
+      selectedConnection: idx
+    });
+  },
+
   render: function() {
-    return this.transferPropsTo(
+    return (
     /*jslint ignore: start */
       <Modal title='Profile'
-        animation={true}>
+        animation={true}
+        className='modal-scrollable'>
         <div className='modal-body'>
         <TabbedArea defaultActiveKey={1}>
           <TabPane key={1} tab='About Me'>
@@ -102,11 +135,21 @@ var ProfileModal = React.createClass({
           <TabPane key={2} tab='MPD Connections'>
             <div>
               <h3>MPD Connections</h3>
-              //TODO: list current connections to this user
+              <Accordion>
+                {this.props.connections.map(function(connection, idx) {
+                  console.log(this);
+                  return (
+                    <Connection
+                      onClick={this.selectConnection.bind(null, connection, idx)}
+                      connection={connection}
+                      index={idx}
+                      selected={this.state.selectedConnection}
+                    />
+                  );
+                }.bind(this))}
+              </Accordion>
             </div>
-            <ModalButton 
-              bsStyle='link' 
-              onClick={this.showConnectionForm}>
+            <ModalButton bsStyle='link' onClick={this.showConnectionForm}>
               Add New Connection
             </ModalButton>
             {this.state.showNewConnectionForm ? <NewConnection /> : null}
@@ -114,7 +157,9 @@ var ProfileModal = React.createClass({
       </TabbedArea>
     </div>
         <div className='modal-footer'>
-          <ModalButton bsStyle='primary' onClick={this.props.onRequestHide}>Close</ModalButton>
+          <ModalButton bsStyle='primary' onClick={this.props.onRequestHide}>
+            Close
+          </ModalButton>
         </div>
       </Modal>
       /*jslint ignore: end */
@@ -141,6 +186,33 @@ var NewConnection = React.createClass({
           </form>
         </div>
       </div>
+      /*jslint ignore: end */
+    );
+  }
+});
+
+var Connection = React.createClass({
+  propTypes: {
+    connection: React.PropTypes.object.isRequired,
+    index: React.PropTypes.number.isRequired,
+    selected: React.PropTypes.number.isRequired,
+    onClick: React.PropTypes.func.isRequired
+  },
+  render: function() {
+    var connection = this.props.connection;
+    var index = this.props.index;
+    var style = this.props.selected === index ? 'primary' : 'info';
+    return (
+      /*jslint ignore: start */
+      <Panel bsStyle={style} header={connection.connectionName} eventKey={index + 1}>
+        MPD Server Host: {connection.serverHost}<br/>
+        MPD Server Port: {connection.serverPort}<br/>
+        MPD Server Pass: {connection.serverPass}<br/>
+        Audio Stream Host: {connection.streamHost}<br/>
+        Audio Stream Port: {connection.streamPort}<br/>
+        Audio Stream Suffix: {connection.streamSuffix}<br/>
+        <ModalButton onClick={this.props.onClick}>Select</ModalButton>
+      </Panel>
       /*jslint ignore: end */
     );
   }

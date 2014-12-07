@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
 
+/* jslint browserify: true */
+'use strict';
+
 var React = require('react');
 var $ = require('jquery');
 var MusicPlayer = require('./components/MusicPlayer.jsx');
@@ -22,7 +25,8 @@ var App = React.createClass({
         loggedIn: true,
         username: user.username,
         userID: user.userID,
-        email: user.email
+        email: user.email,
+        password: user.password
       });
     };
 
@@ -35,6 +39,7 @@ var App = React.createClass({
         username={this.state.username}
         userID={this.state.userID}
         email={this.state.email}
+        password={this.state.password}
       />;
     }
     /*jslint ignore: end */
