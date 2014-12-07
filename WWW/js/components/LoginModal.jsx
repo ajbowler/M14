@@ -83,7 +83,6 @@ var LoginModal = React.createClass({
 
     $.ajax(request).done(function(data) {
       // Now that the user is registered, log them in.
-      data.password = this.state.password;
       app.props.login(data);
     }).error(function() {
       app.showRegisterFailed();
