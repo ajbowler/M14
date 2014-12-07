@@ -7,6 +7,9 @@
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
 
+var i;
+var j;
+
 /**
  * @desc Takes an MPD command response and turns it into a JSON Object
  *
@@ -20,21 +23,22 @@ function mpd2json(msg) {
   arr.pop();
 
   // Checks that the response is OK
-  if (arr.pop() !== 'OK') return null;
-
+  if (arr.pop() !== 'OK') {
+    return null;
+  }
   // Checks if there is anything left to parse
-  if (arr.length === 0) return null;
-
-  for(var i = 0; i < arr.length; i++) {
+  if (arr.length === 0) {
+    return null;
+  }
+  for(i = 0; i < arr.length; i++) {
     arr[i] = arr[i].split(': ');
-    for (var j = 0; j < arr[i].length; j++) {
+    for (j = 0; j < arr[i].length; j++) {
       arr[i][j] = '"' + arr[i][j] + '"';
     }
     arr[i] = arr[i].join(':');
   }
 
   var jsonString = '{' + arr.toString() + '}';
-
   return JSON.parse(jsonString);
 }
 
@@ -62,16 +66,18 @@ var StatusPanel = React.createClass({
     console.log('sending: currentsong');
     this.props.websocket.send(JSON.stringify({
       mpdCommand: 'currentsong',
-      mpdHost: 'localhost:6600' // TODO: make this variable instead of hardcoded
+      mpdHost: 'localchost:6600'
     }));
   },
 
   render : function() {
     return (
       /* jslint ignore: start */
-      <div id='statuspanel'>
+      <div id='statuspanel' >
         <Panel header={"Playing"} bsStyle="primary">
-          {this.state.status}
+          Title: {this.state.status.Title}<br/>
+          Artist: {this.state.status.Artist}<br/>
+          Album: {this.state.status.Album}<br/>
         </Panel>
         <button onClick={this.getInfo}>Get Song</button>
       </div>
