@@ -94,7 +94,7 @@ public class RESTservice {
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Couldn't register user!").build();
+      return Response.status(500).entity(errors.toString()).build();
     }
   }
 
@@ -156,7 +156,7 @@ public class RESTservice {
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Couldn't return connections!").build();
+      return Response.status(500).entity(errors.toString()).build();
     }
   }
 
@@ -236,14 +236,14 @@ public class RESTservice {
       } else {
         System.out.println("Error reading response from Node.");
         System.out.println("Response message: " + nodeConnection.getResponseMessage());
-        return Response.status(401).entity("Could not add connection").build();
+        return Response.status(500).entity("Could not add connection").build();
       }
     } catch (Exception exc) {
       StringWriter errors = new StringWriter();
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Could not add connection").build();
+      return Response.status(500).entity(errors.toString()).build();
     }
   }
 
@@ -331,13 +331,13 @@ public class RESTservice {
       exc.printStackTrace(new PrintWriter(errors));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Could not add connection").build();
+      return Response.status(500).entity(errors).build();
     } catch (SQLException exc) {
       StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
+      exc.printStackTrace(new PrintWriter(errors.toString()));
       // prints stack trace to Catalina.out
       System.out.println(errors.toString());
-      return Response.status(401).entity("Could not add connection").build();
+      return Response.status(500).entity(errors.toString()).build();
     }
   }
 }
