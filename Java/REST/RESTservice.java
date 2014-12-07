@@ -59,10 +59,11 @@ public class RESTservice {
         return Response.status(401).entity("Authentication failed!").build();
       }
     } catch (Exception exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(401).entity("Authentication failed!").build();
     }
 
@@ -90,10 +91,11 @@ public class RESTservice {
       return Response.status(201).entity(userBean).build();
 
     } catch (Exception exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(500).entity(errors.toString()).build();
     }
   }
@@ -152,10 +154,11 @@ public class RESTservice {
       return Response.status(201).entity(mpdListBean.toString()).build();
 
     } catch (Exception exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(500).entity(errors.toString()).build();
     }
   }
@@ -202,47 +205,54 @@ public class RESTservice {
 
       // Set up the request.
       String url = "http://localhost:8008/create";
-      URL nodeURL = new URL(url);
-      HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
-      nodeConnection.setDoOutput(true);
-      nodeConnection.setDoInput(true);
-      nodeConnection.setRequestProperty("Content-Type", "application/json");
-      nodeConnection.setRequestProperty("Content-Length", mpdJSONString.length);
-      nodeConnection.setRequestProperty("Connection", "keep-alive");
-      nodeConnection.setRequestProperty("Accept", "*/*");
-      nodeConnection.setRequestMethod("POST");
+      // URL nodeURL = new URL(url);
+      // HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
+      // nodeConnection.setDoOutput(true);
+      // nodeConnection.setDoInput(true);
+      // nodeConnection.setRequestProperty("Content-Type", "application/json");
+      // nodeConnection.setRequestProperty("Content-Length", mpdJSONString.length);
+      // nodeConnection.setRequestProperty("Connection", "keep-alive");
+      // nodeConnection.setRequestProperty("Accept", "*/*");
+      // nodeConnection.setRequestMethod("POST");
+
+      HttpURLConnection nodeConnection = setupNodeConnection(url, mpdJSONString);
 
       // Set up the output stream.
-      OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
-      wr.write(mpdJSONString);
-      wr.flush();
+      // OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
+      // wr.write(mpdJSONString);
+      // wr.flush();
+
+      writeToNode(nodeConnection, mpdJSONString);
 
       // Check the response from Node.
-      int HttpResult = nodeConnection.getResponseCode();
-      if(HttpResult == HttpURLConnection.HTTP_OK) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
+      int httpResult = nodeConnection.getResponseCode();
+      return checkNodeResponse(httpResult, nodeConnection, "create", mpdConnection, "Could not add connection");
 
-        String line = null;  
+      // if(httpResult == HttpURLConnection.HTTP_OK) {
+      //   BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
 
-        while ((line = br.readLine()) != null) {  
-         sb.append(line + "\n");  
-        }  
+      //   String line = null;  
 
-        br.close();  
+      //   while ((line = br.readLine()) != null) {  
+      //    sb.append(line + "\n");  
+      //   }  
 
-        System.out.println(""+sb.toString());
+      //   br.close();  
 
-        return Response.status(201).entity(mpdConnection).build();
-      } else {
-        System.out.println("Error reading response from Node.");
-        System.out.println("Response message: " + nodeConnection.getResponseMessage());
-        return Response.status(500).entity("Could not add connection").build();
-      }
+      //   System.out.println(""+sb.toString());
+
+      //   return Response.status(201).entity(mpdConnection).build();
+      // } else {
+      //   System.out.println("Error reading response from Node.");
+      //   System.out.println("Response message: " + nodeConnection.getResponseMessage());
+      //   return Response.status(500).entity("Could not add connection").build();
+      // }
     } catch (Exception exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(500).entity(errors.toString()).build();
     }
   }
@@ -282,59 +292,120 @@ public class RESTservice {
         // Set up the request.
         String destroyedConnString = destroyedConn.toString();
         String url = "http://localhost:8008/destroy";
-        URL nodeURL = new URL(url);
-        HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
-        nodeConnection.setDoOutput(true);
-        nodeConnection.setDoInput(true);
-        nodeConnection.setRequestProperty("Content-Type", "application/json");
-        nodeConnection.setRequestProperty("Content-Length", destroyedConnString.length);
-        nodeConnection.setRequestProperty("Connection", "keep-alive");
-        nodeConnection.setRequestProperty("Accept", "*/*");
-        nodeConnection.setRequestMethod("POST");
+        // URL nodeURL = new URL(url);
+        // HttpURLConnection nodeConnection = (HttpURLConnection) nodeURL.openConnection();
+        // nodeConnection.setDoOutput(true);
+        // nodeConnection.setDoInput(true);
+        // nodeConnection.setRequestProperty("Content-Type", "application/json");
+        // nodeConnection.setRequestProperty("Content-Length", destroyedConnString.length);
+        // nodeConnection.setRequestProperty("Connection", "keep-alive");
+        // nodeConnection.setRequestProperty("Accept", "*/*");
+        // nodeConnection.setRequestMethod("POST");
+
+        HttpURLConnection nodeConnection = setupNodeConnection(url, destroyedConnString);
 
         // Set up the output stream.
-        OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
-        wr.write(destroyedConnString);
-        wr.flush();
+        // OutputStreamWriter wr = new OutputStreamWriter(nodeConnection.getOutputStream());
+        // wr.write(destroyedConnString);
+        // wr.flush();
+        writeToNode(nodeConnection, destroyedConnString);
 
         //Check the response from Node.
-        int HttpResult = nodeConnection.getResponseCode();
-        if(HttpResult == HttpURLConnection.HTTP_OK) {
-          BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
+        int httpResult = nodeConnection.getResponseCode();
+        return checkNodeResponse(httpResult, nodeConnection, "destroy", destroyedConn, "Could not destroy connection");
+        // if(httpResult == HttpURLConnection.HTTP_OK) {
+        //   BufferedReader br = new BufferedReader(new InputStreamReader(nodeConnection.getInputStream(),"utf-8"));  
 
-          String line = null;  
+        //   String line = null;  
 
-          while ((line = br.readLine()) != null) {  
-           sb.append(line + "\n");  
-          }  
+        //   while ((line = br.readLine()) != null) {  
+        //    sb.append(line + "\n");  
+        //   }  
 
-          br.close();  
+        //   br.close();  
 
-          System.out.println(""+sb.toString());
+        //   System.out.println(""+sb.toString());
 
-          return Response.status(200).entity(destroyedConn).build();
-        } else {
-          System.out.println("Error reading response from Node.");
-          System.out.println("Response message: " + nodeConnection.getResponseMessage());
-          return Response.status(401).entity("Could not destroy connection").build();
-        }
+        //   return Response.status(200).entity(destroyedConn).build();
+        // } else {
+        //   System.out.println("Error reading response from Node.");
+        //   System.out.println("Response message: " + nodeConnection.getResponseMessage());
+        //   return Response.status(401).entity("Could not destroy connection").build();
+        // }
       } else {
         return Response.status(401).entity("Authentication failed!").build();
       }
     }
 
     catch (JSONException exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(500).entity(errors).build();
     } catch (SQLException exc) {
-      StringWriter errors = new StringWriter();
-      exc.printStackTrace(new PrintWriter(errors.toString()));
-      // prints stack trace to Catalina.out
-      System.out.println(errors.toString());
+      // StringWriter errors = new StringWriter();
+      // exc.printStackTrace(new PrintWriter(errors.toString()));
+      // // prints stack trace to Catalina.out
+      // System.out.println(errors.toString());
+      String errors = printErrors(exc);
       return Response.status(500).entity(errors.toString()).build();
+    }
+  }
+
+  private HttpURLConnection setupNodeConnection(String url, String content) {
+    URL nodeURL = new URL(url);
+    HttpURLConnection connection = (HttpURLConnection) nodeURL.openConnection();
+    connection.setDoOutput(true);
+    connection.setDoInput(true);
+    connection.setRequestProperty("Content-Type", "application/json");
+    connection.setRequestProperty("Content-Length", content.length);
+    connection.setRequestProperty("Connection", "keep-alive");
+    connection.setRequestProperty("Accept", "*/*");
+    connection.setRequestMethod("POST");
+
+    return connection;
+  }
+
+  private String printErrors(Exception exc) {
+    StringWriter errors = new StringWriter();
+    exc.printStackTrace(new PrintWriter(errors));
+    // prints stack trace to Catalina.out
+    System.out.println(errors.toString());
+    return errors.toString();
+  }
+
+  private void writeToNode(HttpURLConnection connection, String content) {
+    OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
+    wr.write(content);
+    wr.flush();
+  }
+
+  private Response checkNodeResponse(int httpResult, HttpURLConnection connection, String method, Object contentReturned, String errorMessage) {
+    if(httpResult == HttpURLConnection.HTTP_OK) {
+      BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));  
+
+      String line = null;  
+
+      while ((line = br.readLine()) != null) {  
+       sb.append(line + "\n");  
+      }  
+
+      br.close();  
+
+      System.out.println(""+sb.toString());
+
+      if(method.equals("create")) {
+        return Response.status(201).entity((MpdConnection) contentReturned).build();
+      } else {
+        return Response.status(200).entity((JSONObject) contentReturned).build();
+      }
+    
+    } else {
+      System.out.println("Error reading response from Node.");
+      System.out.println("Response message: " + connection.getResponseMessage());
+      return Response.status(401).entity(errorMessage).build();
     }
   }
 }
