@@ -23,6 +23,10 @@ var MusicPlayer = React.createClass({
   },
 
   componentDidMount: function() {
+    this.getConnections();
+  },
+
+  getConnections: function() {
     $.ajax({
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/getConnections',
       type: 'POST',
@@ -55,11 +59,13 @@ var MusicPlayer = React.createClass({
           <img src="images/M14.svg" alt="M(usic)14" id="logo"/>
           <DropdownMenu
             username={this.props.username}
+            password={this.props.password}
             userID={this.props.userID}
             email={this.props.email}
             connections={this.state.connections}
             selected={this.state.selectedConnection}
-            select={this.selectConnection}/>
+            select={this.selectConnection}
+            getConnections={this.getConnections}/>
         </div>
         <Panel id='controls' className='panel-heading text-center'>
           <div>

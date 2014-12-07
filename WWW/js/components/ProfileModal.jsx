@@ -15,6 +15,7 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 var Panel = require('react-bootstrap/Panel');
 var Accordion = require('react-bootstrap/Accordion');
+var Alert = require('react-bootstrap/Alert');
 
 var ModalScrollFixMixin = {
   componentDidMount: function() {
@@ -46,7 +47,7 @@ var ProfileModal = React.createClass({
     };
   },
 
-  showConnectionForm: function() {
+  toggleConnectionForm: function() {
     this.setState({showNewConnectionForm: !(this.state.showNewConnectionForm)});
   },
 
@@ -99,19 +100,29 @@ var ProfileModal = React.createClass({
                 {this.props.connections.map(function(connection, idx) {
                   return (
                     <Connection
+                      username={this.props.username}
+                      password={this.props.password}
                       onClick={this.selectConnection.bind(null, connection, idx)}
                       connection={connection}
                       index={idx}
                       selected={this.state.selectedConnection}
+                      getConnections={this.props.getConnections}
                     />
                   );
                 }.bind(this))}
               </Accordion>
             </div>
-            <ModalButton bsStyle='link' onClick={this.showConnectionForm}>
+            <ModalButton bsStyle='link' onClick={this.toggleConnectionForm}>
               Add New Connection
             </ModalButton>
-            {this.state.showNewConnectionForm ? <NewConnection username={this.props.username} /> : null}
+            {this.state.showNewConnectionForm ?
+              <NewConnection
+                username={this.props.username}
+                password={this.props.password}
+                getConnections={this.props.getConnections}
+                profileModal={this}
+              /> :
+            null}
           </TabPane>
       </TabbedArea>
     </div>
@@ -127,9 +138,12 @@ var ProfileModal = React.createClass({
 });
 
 var NewConnection = React.createClass({
+  getInitialState: function() {
+    return {
+      showError: false
+    };
+  },
   addConnection: function() {
-
-    console.log(this.props);
 
     var request = {
       url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
@@ -150,16 +164,16 @@ var NewConnection = React.createClass({
     };
 
     request.success = function(e) {
-      // TODO: make this a success alert rather than a log
-      console.log('success');
-      console.log(e);
-    };
+      this.props.getConnections();
+      this.props.profileModal.toggleConnectionForm();
+    }.bind(this);
 
     request.error = function(e) {
       // TODO: make this an error alert rather than a log
       console.log('error');
       console.log(e);
-    };
+      this.setState({showError: !(this.state.showError)});
+    }.bind(this);
 
     $.ajax(request);
   },
@@ -169,6 +183,7 @@ var NewConnection = React.createClass({
       /*jslint ignore: start */
       <div>
         <h3>Add New Connection</h3>
+        {this.state.showError ? <Alert bsStyle='danger'><strong>The connection could not be created!</strong></Alert> : null}
         <div className='form-group'>
           <form>
             <UserInput type='text' placeholder='Connection Name' ref='connectionName'/>
@@ -194,6 +209,33 @@ var Connection = React.createClass({
     selected: React.PropTypes.number.isRequired,
     onClick: React.PropTypes.func.isRequired
   },
+
+  destroyConnection: function() {
+
+    var request = {
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/destroy',
+      type: 'POST',
+      contentType: 'text/plain',
+      cache: false,
+      dataType: 'text',
+      data: JSON.stringify({
+        username: this.props.username,
+        password: this.props.password,
+        connectionID: this.props.connection.connectionID
+      })
+    };
+
+    request.success = function(e) {
+      this.props.getConnections();
+    }.bind(this);
+
+    request.error = function(e) {
+      // TODO: Show some sort of error message for the user
+    }.bind(this);
+
+    $.ajax(request);
+  },
+
   render: function() {
     var connection = this.props.connection;
     var index = this.props.index;
@@ -208,6 +250,7 @@ var Connection = React.createClass({
         Audio Stream Port: {connection.streamPort}<br/>
         Audio Stream Suffix: {connection.streamSuffix}<br/>
         <ModalButton onClick={this.props.onClick}>Select</ModalButton>
+        <ModalButton onClick={this.destroyConnection} bsStyle='error'>Delete</ModalButton>
       </Panel>
       /*jslint ignore: end */
     );
