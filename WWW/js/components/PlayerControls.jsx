@@ -8,6 +8,7 @@ var PlayButton = require('./PlayButton.jsx');
 var PauseButton = require('./PauseButton.jsx');
 var StopButton = require('./StopButton.jsx');
 var NextButton = require('./NextButton.jsx');
+var PreviousButton = require('./PreviousButton.jsx');
 var ButtonGroup = require('react-bootstrap/ButtonGroup.js');
 
 
@@ -16,6 +17,7 @@ var PlayerControls = React.createClass({
     return (
       /*jslint ignore: start */
       <ButtonGroup>
+        <PreviousButton websocket={this.props.websocket}/>
         <PlayButton websocket={this.props.websocket}/>
         <PauseButton websocket={this.props.websocket}/>
         <StopButton websocket={this.props.websocket}/>

@@ -34,7 +34,8 @@ var ProfileModal = React.createClass({
 
   propTypes: {
     username: React.PropTypes.string.isRequired,
-    email: React.PropTypes.string.isRequired
+    email: React.PropTypes.string.isRequired,
+    select: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
@@ -46,7 +47,7 @@ var ProfileModal = React.createClass({
       streamPort: '',
       streamSuffix: '',
       showNewConnectionForm: false,
-      selectedConnection: 0
+      selectedConnection: this.props.selected
     };
   },
 
@@ -92,6 +93,7 @@ var ProfileModal = React.createClass({
   },
 
   selectConnection: function(connection, idx) {
+    this.props.select(idx);
     this.setState({
       mpdHost: connection.serverHost,
       mpdPort: connection.serverPort,

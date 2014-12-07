@@ -9,8 +9,7 @@ var $ = require('jquery');
 
 var Html5AudioStreamer = React.createClass({
   render: function() {
-    // var url = 'http://' + this.props.host + ':' + this.props.port + '/' + this.props.suffix;
-    var url = 'http://localhost:8000/mpd.ogg';
+    var url = 'http://' + this.props.host + ':' + this.props.port + '/' + this.props.suffix;
     return (
       /* jshint ignore: start */
       <audio autoPlay preload="auto" id="audioStream" src={url}>

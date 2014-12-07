@@ -9,6 +9,8 @@ var MusicPlayer = require('./components/MusicPlayer.jsx');
 var LoginModal = require('./components/LoginModal.jsx');
 
 var App = React.createClass({
+  renderedComponent: {},
+
   getInitialState: function() {
     return {
       loggedIn: false,
@@ -32,22 +34,22 @@ var App = React.createClass({
 
     /*jslint ignore: start */
     if (this.state.loggedIn === false) {
-      renderedComponent = <LoginModal login={login} />;
+      this.renderedComponent = <LoginModal login={login} />;
     } else {
-      renderedComponent =
+      this.renderedComponent = (
       <MusicPlayer
         username={this.state.username}
         userID={this.state.userID}
         email={this.state.email}
         password={this.state.password}
-      />;
+      />);
     }
     /*jslint ignore: end */
 
     return (
       /*jslint ignore: start */
       <div>
-        {renderedComponent}
+        {this.renderedComponent}
       </div>
       /*jslint ignore: end */
     );

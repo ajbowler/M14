@@ -17,7 +17,8 @@ var ws = new WebSocket('ws://proj-309-m14.cs.iastate.edu:8007', 'echo-protocol')
 var MusicPlayer = React.createClass({
   getInitialState: function() {
     return {
-      connections: []
+      connections: [],
+      selectedConnection: 0
     };
   },
 
@@ -38,7 +39,15 @@ var MusicPlayer = React.createClass({
       }.bind(this)
     });
   },
+
+  selectConnection: function(idx) {
+    this.setState({
+      selectedConnection: idx
+    });
+  },
+
   render: function() {
+    var connection = this.state.connections[this.state.selectedConnection] || '';
     return (
       /* jshint ignore: start */
       <div id='musicplayer'>
@@ -48,7 +57,9 @@ var MusicPlayer = React.createClass({
             username={this.props.username}
             userID={this.props.userID}
             email={this.props.email}
-            connections={this.state.connections} />
+            connections={this.state.connections}
+            selected={this.state.selectedConnection}
+            select={this.selectConnection}/>
         </div>
         <Panel id='controls' className='panel-heading text-center'>
           <div>
@@ -56,7 +67,10 @@ var MusicPlayer = React.createClass({
           </div>
         </Panel>
         <StatusPanel websocket={ws}/>
-        <Html5AudioStreamer />
+        <Html5AudioStreamer
+          host={connection.streamHost}
+          port={connection.streamPort}
+          suffix={connection.streamSuffix}/>
       </div>
       /* jshint ignore: end */
     );
