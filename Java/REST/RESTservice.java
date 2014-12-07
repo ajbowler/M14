@@ -312,15 +312,12 @@ public class RESTservice {
 
           System.out.println(""+sb.toString());
 
-          return Response.status(201).entity(destroyedConn).build();
+          return Response.status(200).entity(destroyedConn).build();
         } else {
           System.out.println("Error reading response from Node.");
           System.out.println("Response message: " + nodeConnection.getResponseMessage());
           return Response.status(401).entity("Could not destroy connection").build();
-        }        
-
-
-        return Response.status(201).entity(userBean).build();
+        }
       } else {
         return Response.status(401).entity("Authentication failed!").build();
       }
