@@ -58,9 +58,6 @@ public class MpdConnection {
     return this.connectionID;
   }
 
-  public String getConnectionID() {
-    return this.connectionID;
-  }
   public void setConnectionName(String connectionName) {
     this.connectionName = connectionName;
   }
