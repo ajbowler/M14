@@ -21,6 +21,11 @@ var PreviousButton = React.createClass({
       mpdCommand: 'previous',
       mpdHost: this.props.host + ':' + this.props.port
     }));
+    setTimeout(
+      this.props.websocket.send(JSON.stringify({
+        mpdCommand: 'currentsong',
+        mpdHost: this.props.host + ':' + this.props.port
+      })), 300);
   }
 });
 

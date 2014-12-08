@@ -21,6 +21,11 @@ var PauseButton = React.createClass({
       mpdCommand: 'pause',
       mpdHost: this.props.host + ':' + this.props.port
     }));
+    setTimeout(
+      this.props.websocket.send(JSON.stringify({
+        mpdCommand: 'currentsong',
+        mpdHost: this.props.host + ':' + this.props.port
+      })), 300);
   }
 });
 
