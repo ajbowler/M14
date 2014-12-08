@@ -53,6 +53,10 @@ public class MpdConnection {
   public String getStreamSuffix() {
     return this.streamSuffix;
   }
+  
+  public String getConnectionID(){
+    return this.connectionID;
+  }
 
   public String getConnectionID() {
     return this.connectionID;
@@ -83,6 +87,10 @@ public class MpdConnection {
 
   public void setStreamSuffix(String streamSuffix) {
     this.streamSuffix = streamSuffix;
+  }
+  
+  public void setConnectionID(String connectionID){
+    this.connectionID = connectionID;
   }
 
 }
