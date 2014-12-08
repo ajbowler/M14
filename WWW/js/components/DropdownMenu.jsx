@@ -28,10 +28,12 @@ var DropdownMenu = React.createClass({
           <ModalTrigger modal={
             <ProfileModal
               username={this.props.username}
+              password={this.props.password}
               email={this.props.email}
               connections={this.props.connections}
               selected={this.props.selected}
-              select={this.props.select}/>
+              select={this.props.select}
+              getConnections={this.props.getConnections}/>
             }>
             <MenuItem id='profile'>Profile</MenuItem>
           </ModalTrigger>

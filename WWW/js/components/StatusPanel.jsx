@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
 /* jslint browserify: true */
-/* jslint devel: true */
 'use strict';
 
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
+var _ = require('lodash');
 
 /**
  * @desc Takes an MPD command response and turns it into a JSON Object
@@ -14,15 +14,10 @@ var Panel = require('react-bootstrap/Panel');
  * @return a JSON representation of the response
  */
 function mpd2json(msg) {
+
   var arr = msg.split('\n');
 
-  // This gets rid of the last empty string that is in all responses
-  arr.pop();
-
-  // Checks that the response is OK
-  if (arr.pop() !== 'OK') {
-    return null;
-  }
+  _.pull(arr, '', 'OK MPD 0.17.0', 'OK MPD 0.18.0', 'OK MPD 0.19.0', 'OK');
 
   // Checks if there is anything left to parse
   if (arr.length === 0) {
@@ -72,14 +67,11 @@ var StatusPanel = React.createClass({
   render : function() {
     return (
       /* jslint ignore: start */
-      <div id='statuspanel' >
-        <Panel header='Playing' bsStyle='primary'>
-          Title: {this.state.status.Title}<br/>
-          Artist: {this.state.status.Artist}<br/>
-          Album: {this.state.status.Album}<br/>
-        </Panel>
-        <button onClick={this.getInfo}>Get Song</button>
-      </div>
+      <Panel header='Playing' bsStyle='primary'>
+        Title: {this.state.status.Title}<br/>
+        Artist: {this.state.status.Artist}<br/>
+        Album: {this.state.status.Album}<br/>
+      </Panel>
       /* jslint ignore: end */
     );
   }

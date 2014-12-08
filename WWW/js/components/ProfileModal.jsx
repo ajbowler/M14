@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
 /* jslint browserify: true */
+/* jslint devel: true */
 'use strict';
 
 var React = require('react/addons');
@@ -14,6 +15,7 @@ var UserInput = require('react-bootstrap/Input');
 var ModalButton = require('react-bootstrap/Button');
 var Panel = require('react-bootstrap/Panel');
 var Accordion = require('react-bootstrap/Accordion');
+var Alert = require('react-bootstrap/Alert');
 
 var ModalScrollFixMixin = {
   componentDidMount: function() {
@@ -40,55 +42,12 @@ var ProfileModal = React.createClass({
 
   getInitialState: function() {
     return {
-      mpdHost: '',
-      mpdPort: '',
-      mpdPass: '',
-      streamHost: '',
-      streamPort: '',
-      streamSuffix: '',
       showNewConnectionForm: false,
       selectedConnection: this.props.selected
     };
   },
 
-  addConnection: function() {
-    var request = {
-      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
-      type: 'POST',
-      contentType: 'text/plain',
-      cache: false,
-      dataType: 'text',
-      data: JSON.stringify({
-        username: this.props.username,
-        connectionName: this.state.connectionName,
-        mpdHost: this.state.mpdHost,
-        mpdPort: this.state.mpdPort,
-        mpdPass: this.state.mpdPass,
-        streamHost: this.state.streamHost,
-        streamPort: this.state.streamPort,
-        streamSuffix: this.state.streamSuffix
-      })
-    };
-
-    $.ajax(request).done(function(data) {
-      // TODO Select the connection with SocketService.
-      console.log(data);
-    });
-  },
-
-  updateFields: function() {
-    this.setState({
-      connectionName: this.refs.connectionName.getValue(),
-      mpdHost: this.refs.mpdHost.getValue(),
-      mpdPort: this.refs.mpdPort.getValue(),
-      mpdPass: this.refs.mpdPass.getValue(),
-      streamHost: this.refs.streamHost.getValue(),
-      streamPort: this.refs.streamHost.getValue(),
-      streamSuffix: this.refs.streamSuffix.getValue()
-    });
-  },
-
-  showConnectionForm: function() {
+  toggleConnectionForm: function() {
     this.setState({showNewConnectionForm: !(this.state.showNewConnectionForm)});
   },
 
@@ -141,19 +100,29 @@ var ProfileModal = React.createClass({
                 {this.props.connections.map(function(connection, idx) {
                   return (
                     <Connection
+                      username={this.props.username}
+                      password={this.props.password}
                       onClick={this.selectConnection.bind(null, connection, idx)}
                       connection={connection}
                       index={idx}
                       selected={this.state.selectedConnection}
+                      getConnections={this.props.getConnections}
                     />
                   );
                 }.bind(this))}
               </Accordion>
             </div>
-            <ModalButton bsStyle='link' onClick={this.showConnectionForm}>
+            <ModalButton bsStyle='link' onClick={this.toggleConnectionForm}>
               Add New Connection
             </ModalButton>
-            {this.state.showNewConnectionForm ? <NewConnection /> : null}
+            {this.state.showNewConnectionForm ?
+              <NewConnection
+                username={this.props.username}
+                password={this.props.password}
+                getConnections={this.props.getConnections}
+                profileModal={this}
+              /> :
+            null}
           </TabPane>
       </TabbedArea>
     </div>
@@ -169,20 +138,61 @@ var ProfileModal = React.createClass({
 });
 
 var NewConnection = React.createClass({
+  getInitialState: function() {
+    return {
+      showError: false
+    };
+  },
+  addConnection: function() {
+
+    var request = {
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/createConnection',
+      type: 'POST',
+      contentType: 'text/plain',
+      cache: false,
+      dataType: 'text',
+      data: JSON.stringify({
+        username: this.props.username,
+        connectionName: this.refs.connectionName.getValue(),
+        serverHost: this.refs.serverHost.getValue(),
+        serverPort: this.refs.serverPort.getValue(),
+        serverPass: this.refs.serverPass.getValue(),
+        streamHost: this.refs.streamHost.getValue(),
+        streamPort: this.refs.streamPort.getValue(),
+        streamSuffix: this.refs.streamSuffix.getValue()
+      })
+    };
+
+    request.success = function(e) {
+      this.props.getConnections();
+      this.props.profileModal.toggleConnectionForm();
+    }.bind(this);
+
+    request.error = function(e) {
+      // TODO: make this an error alert rather than a log
+      console.log('error');
+      console.log(e);
+      this.setState({showError: !(this.state.showError)});
+    }.bind(this);
+
+    $.ajax(request);
+  },
+
   render: function() {
     return (
       /*jslint ignore: start */
       <div>
         <h3>Add New Connection</h3>
+        {this.state.showError ? <Alert bsStyle='danger'><strong>The connection could not be created!</strong></Alert> : null}
         <div className='form-group'>
           <form>
-            <UserInput type='text' placeholder='Connection Name' ref='connectionHost' onChange={this.updateFields}/>
-            <UserInput type='text' placeholder='MPD Server Host' ref='mpdHost' onChange={this.updateFields}/>
-            <UserInput type='text' placeholder='MPD Server Port' ref='mpdPort' onChange={this.updateFields}/>
-            <UserInput type='password' placeholder='MPD Server Password (if required)' ref='mpdPass' onChange={this.updateFields}/>
-            <UserInput type='text' placeholder='MPD Stream Host' ref='streamHost' onChange={this.updateFields}/>
-            <UserInput type='text' placeholder='MPD Stream Port' ref='streamPort' onChange={this.updateFields}/>
-            <UserInput type='text' placeholder='MPD Stream Suffix (mpd.ogg or mpd.mp3)' value='mpd.ogg' ref='streamSuffix' onChange={this.updateFields}/>
+            <UserInput type='text' placeholder='Connection Name' ref='connectionName'/>
+            <UserInput type='text' placeholder='MPD Server Host' ref='serverHost'/>
+            <UserInput type='text' placeholder='MPD Server Port' ref='serverPort'/>
+            <UserInput type='password' placeholder='MPD Server Password (if required)' ref='serverPass'/>
+            <UserInput type='text' placeholder='MPD Stream Host' ref='streamHost'/>
+            <UserInput type='text' placeholder='MPD Stream Port' ref='streamPort'/>
+            <UserInput type='text' placeholder='MPD Stream Suffix (mpd.ogg or mpd.mp3)' value='mpd.ogg' ref='streamSuffix'/>
             <ModalButton bsStyle='success' onClick={this.addConnection}>Add Connection</ModalButton>
           </form>
         </div>
@@ -199,6 +209,33 @@ var Connection = React.createClass({
     selected: React.PropTypes.number.isRequired,
     onClick: React.PropTypes.func.isRequired
   },
+
+  destroyConnection: function() {
+
+    var request = {
+      url: 'http://proj-309-m14.cs.iastate.edu/REST/app/destroy',
+      type: 'POST',
+      contentType: 'text/plain',
+      cache: false,
+      dataType: 'text',
+      data: JSON.stringify({
+        username: this.props.username,
+        password: this.props.password,
+        connectionID: this.props.connection.connectionID
+      })
+    };
+
+    request.success = function(e) {
+      this.props.getConnections();
+    }.bind(this);
+
+    request.error = function(e) {
+      // TODO: Show some sort of error message for the user
+    }.bind(this);
+
+    $.ajax(request);
+  },
+
   render: function() {
     var connection = this.props.connection;
     var index = this.props.index;
@@ -213,6 +250,7 @@ var Connection = React.createClass({
         Audio Stream Port: {connection.streamPort}<br/>
         Audio Stream Suffix: {connection.streamSuffix}<br/>
         <ModalButton onClick={this.props.onClick}>Select</ModalButton>
+        <ModalButton onClick={this.destroyConnection} bsStyle='error'>Delete</ModalButton>
       </Panel>
       /*jslint ignore: end */
     );
