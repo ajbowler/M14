@@ -134,6 +134,7 @@ public class RESTservice {
         String connStreamHost = mpdConn.getStreamHost();
         String connStreamPort = mpdConn.getStreamPort();
         String connStreamSuffix = mpdConn.getStreamSuffix();
+        String connConnectionID = mpdConn.getConnectionID();
 
         mpdJSON.put("connectionName", connName);
         mpdJSON.put("serverHost", connServeHost);
@@ -142,6 +143,7 @@ public class RESTservice {
         mpdJSON.put("streamHost", connStreamHost);
         mpdJSON.put("streamPort", connStreamPort);
         mpdJSON.put("streamSuffix", connStreamSuffix);
+        mpdJSON.put("connectionID", connConnectionID);
 
         mpdConnectionsJSON.put(mpdJSON);
       }
@@ -200,7 +202,7 @@ public class RESTservice {
       String mpdJSONString = mpdJSON.toString();
 
       // Set up the request.
-      String url = "http://proj-309-m14.cs.iastate.edu:8008/create";
+      String url = "http://localhost:8008/create";
 
       HttpURLConnection nodeConnection = setupNodeConnection(url, mpdJSONString);
 
@@ -211,7 +213,7 @@ public class RESTservice {
       return checkNodeResponse(httpResult, nodeConnection, "create", mpdConnection,
           "Could not add connection");
     } catch (Exception exc) {
-      
+
       String errors = printErrors(exc);
       return Response.status(500).entity(errors.toString()).build();
     }
@@ -227,7 +229,7 @@ public class RESTservice {
    */
   @POST
   @Path("/destroy")
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN)
   @Consumes(MediaType.TEXT_PLAIN)
   public Response destroyMPDConnection(String input) {
     JSONObject obj;
@@ -295,7 +297,7 @@ public class RESTservice {
       connection.setDoOutput(true);
       connection.setDoInput(true);
       connection.setRequestProperty("Content-Type", "application/json");
-      connection.setRequestProperty("Content-Length", "" +content.length());
+      connection.setRequestProperty("Content-Length", "" + content.length());
       connection.setRequestProperty("Connection", "keep-alive");
       connection.setRequestProperty("Accept", "*/*");
       try {
@@ -336,7 +338,7 @@ public class RESTservice {
       if (method.equals("create")) {
         return Response.status(201).entity((MpdConnection) contentReturned).build();
       } else {
-        return Response.status(200).entity((JSONObject) contentReturned).build();
+        return Response.status(200).entity(contentReturned.toString()).build();
       }
 
     } else {
