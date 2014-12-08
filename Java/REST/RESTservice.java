@@ -67,7 +67,7 @@ public class RESTservice {
       }
     } catch (Exception exc) {
       String errors = printErrors(exc);
-      return Response.status(401).entity("Authentication failed!").build();
+      return Response.status(500).entity(errors.toString()).build();
     }
 
   }
