@@ -24,4 +24,3 @@ We follow the [Google Java Style Guide](http://google-styleguide.googlecode.com/
 - Class names use `UpperCamelCase`.
 - Other variable or method names use `lowerCamelCase`.
 - Javadoc-style comments.
-- Don't be stupid. Others sould be able to read your code.
