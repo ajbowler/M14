@@ -1,3 +1,7 @@
+### This project is not maintained.
+This project was written for a college course in 2014. It most likely doesn't work. You might want to try out [Groovebasin](https://github.com/andrewrk/groovebasin) instead.
+
+
 # M14 (Music14)
 
 M14 is a web based client for [MPD](http://www.musicpd.org/). It features:
@@ -22,4 +26,3 @@ M14 is a web based client for [MPD](http://www.musicpd.org/). It features:
 1. Fork [M14](https://github.com/ajbowler/M14.git)
 2. Make awesome improvements!
 3. Make a pull request across forks to ajbowler/M14:master and include a description of the changes that you made.
-
